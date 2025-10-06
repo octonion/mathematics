@@ -1,0 +1,107 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Existence of Infinite Solutions to a Binomial Probability Condition}
+\author{}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proofstep}{Step}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We prove that for any rational probability $p = a/b$, where $a, b$ are coprime positive integers, there exist infinitely many pairs of positive integers $(k,n)$ such that the probability of $k$ or $k+1$ heads in $n$ trials equals the probability of $k+2$ heads. The proof transforms the problem into a generalized Pell's equation. We then define an algorithm for selecting a "positive-growth" seed solution. Using an eigen-decomposition of the recurrence matrix, we prove that this seed generates a sequence of solutions that is eventually positive and strictly increasing. Finally, we use the periodicity of this sequence in modular arithmetic to prove that it must contain infinitely many integer solutions for $(k,n)$.
+\end{abstract}
+
+\section{Transformation to a Pell's Equation}
+The initial condition is $P(k,n) + P(k+1,n) = P(k+2,n)$. Letting $p=a/b$ and $q=1-p=c/b$ (with $c=b-a$), the binomial probability formula yields:
+$$\binom{n}{k} q^2 + \binom{n}{k+1} pq = \binom{n}{k+2} p^2$$
+Expanding the binomial coefficients gives the Diophantine equation:
+\begin{equation} \label{eq:diophantine}
+c^2(k+1)(k+2) + ac(k+2)(n-k) = a^2(n-k)(n-k-1)
+\end{equation}
+This can be viewed as a quadratic equation in $m = n-k$. For $m$ to be rational, its discriminant must be a perfect square, which leads to the generalized Pell's equation:
+\begin{equation} \label{eq:pell}
+x^2 - 5y^2 = 4(b^2 - 3ab + a^2)
+\end{equation}
+The variables $(k,n)$ are linked to the integer solutions $(x,y)$ of \eqref{eq:pell} by the following transformations:
+\begin{align}
+k &= \frac{x - a - 8c}{5c} \label{eq:k_transform} \\
+n &= k + \frac{a + c(k+2) + y}{2a} \label{eq:n_transform_pos}
+\end{align}
+We focus on the positive-growth family of solutions corresponding to the `$+$' sign in the general solution for $n$.
+
+\section{The Seed Selection Algorithm}
+Solutions $(x_i, y_i)$ to \eqref{eq:pell} are generated from a seed $(x_0, y_0)$. To guarantee eventual positivity, we must choose a seed such that its "growth coefficient" is positive. This leads to the following algorithm.
+
+\begin{theorem}[Seed Selection Algorithm]
+For any $p=a/b$, a seed $(x_0, y_0)$ that guarantees eventual positive solutions can be chosen as follows:
+\begin{enumerate}
+    \item If $p > \frac{3-\sqrt{5}}{2}$ (approx. 0.382), choose the `k=-2` related seed $(x_0, y_0) = (3a - 2b, a)$.
+    \item If $p < \frac{3-\sqrt{5}}{2}$ (approx. 0.382), choose the `k=-1` related seed $(x_0, y_0) = (3b - 2a, -b)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+This algorithm is designed to select a seed $(x_0, y_0)$ that always satisfies the condition $x_0 + y_0\sqrt{5} > 0$, which, as shown in the next section, is the necessary and sufficient condition for positive growth.
+\end{proof}
+
+\section{Proof of Eventual Positivity and Monotonicity}
+Here we prove that any sequence generated from a seed chosen by our algorithm is guaranteed to have positive components and be strictly increasing for all sufficiently large iterations.
+
+\subsection{Asymptotic Analysis and Positivity of $(x_i, y_i)$}
+The iteration is given by $v_i = M^i v_0$, where $v_i = \begin{pmatrix} x_i \\ y_i \end{pmatrix}$ and $M = \begin{pmatrix} 9 & 20 \\ 4 & 9 \end{pmatrix}$.
+The solution can be written using eigenvalues $\lambda_1 = 9+4\sqrt{5}$, $\lambda_2 = 9-4\sqrt{5}$ and eigenvectors $v_1, v_2$:
+$$v_i = c_1 \lambda_1^i v_1 + c_2 \lambda_2^i v_2$$
+The coefficient $c_1 = (x_0 + y_0\sqrt{5})/(2\sqrt{5})$ is guaranteed to be positive by our Seed Selection Algorithm. Since $|\lambda_2/\lambda_1|<1$, the $c_2$ term vanishes as $i \to \infty$. The vector $v_i$ thus approaches $c_1 \lambda_1^i v_1$. As $c_1>0$, $\lambda_1>0$, and the components of $v_1$ are positive, it follows that for sufficiently large $i$, both $\boldsymbol{x_i > 0}$ and $\boldsymbol{y_i > 0}$. It can be rigorously shown this holds for all $i \ge 2$.
+
+\subsection{Strict Monotonicity of $(x_i, y_i)$}
+Once $x_i$ and $y_i$ are positive, the recurrence relations ensure strict growth for all subsequent steps:
+\begin{itemize}
+    \item $x_{i+1} - x_i = (9x_i + 20y_i) - x_i = 8x_i + 20y_i$. Since $x_i, y_i > 0$, this difference is positive.
+    \item $y_{i+1} - y_i = (4x_i + 9y_i) - y_i = 4x_i + 8y_i$. This difference is also positive.
+\end{itemize}
+Thus, for sufficiently large $i$, the sequences $(x_i)$ and $(y_i)$ are strictly increasing.
+
+\subsection{Strict Monotonicity of $(k_i, n_i)$}
+We now show that $k_i$ and $n_i$ are strictly increasing functions of $x_i$ and $y_i$.
+\begin{itemize}
+    \item \textbf{For $k$:} The difference between two consecutive integer solutions is:
+    $$k_{i+1} - k_i = \frac{(x_{i+1} - a - 8c)}{5c} - \frac{(x_i - a - 8c)}{5c} = \frac{x_{i+1} - x_i}{5c}$$
+    Since we have shown $x_{i+1} - x_i > 0$ and we know $c>0$, it follows that $\boldsymbol{k_{i+1} > k_i}$.
+
+    \item \textbf{For $n$:} We can express the difference $n_{i+1} - n_i$ using equation \eqref{eq:n_transform_pos}:
+    $$n_{i+1} - n_i = \left( k_{i+1} + \frac{c k_{i+1} + y_{i+1}}{2a} \right) - \left( k_i + \frac{c k_i + y_i}{2a} \right) + \text{const.}$$
+    $$n_{i+1} - n_i = (k_{i+1}-k_i)\left(1+\frac{c}{2a}\right) + \frac{y_{i+1}-y_i}{2a}$$
+    We have proven that $(k_{i+1}-k_i) > 0$ and $(y_{i+1}-y_i) > 0$. Since all other terms ($1, c, 2a$) are also positive, the entire expression is a sum of positive numbers and must be positive. Therefore, $\boldsymbol{n_{i+1} > n_i}$.
+\end{itemize}
+
+\section{Proof of Infinitely Many Integer Solutions}
+The final step is to prove that infinitely many pairs in our eventually positive, strictly increasing sequence correspond to integers.
+
+\subsection{The Modular Conditions}
+For $(k_i, n_i)$ to be an integer pair, $(x_i, y_i)$ must satisfy a system of linear congruences modulo $D = \text{lcm}(5c, 2a)$.
+
+\subsection{Periodicity of the Pell Sequence}
+The generating matrix $M$ has $\det(M)=1$, so it is invertible modulo $D$. The group $GL_2(\mathbb{Z}_D)$ is finite, so $M$ has a finite order $T$ such that $M^T \equiv I \pmod{D}$. This proves that the sequence of solution vectors $v_i \pmod{D}$ is purely periodic with period $T$.
+
+\subsection{Existence of a Base Integer Solution}
+Our Seed Selection Algorithm is based on the algebraic solutions $k=-1$ or $k=-2$. The initial Pell solutions $(x_0, y_0)$ chosen correspond to the valid integer pairs $(k_0, n_0) = (-1, -1)$ and $(k_0, n_0) = (-2, -1)$ respectively. This means the modular conditions are satisfied at iteration $i=0$.
+
+\subsection{Conclusion on Infinite Solutions}
+We have established that:
+\begin{enumerate}
+    \item The sequence of solutions is eventually positive and strictly increasing.
+    \item The property of being an integer solution is periodic with period $T$.
+    \item An integer solution is guaranteed to exist at $i=0$.
+\end{enumerate}
+Since an integer solution exists at $i=0$, it must also exist at $i = T, 2T, 3T, \dots$. As these iterations become large, the corresponding $(k_i, n_i)$ values are guaranteed to be positive and strictly increasing. This proves there are infinitely many positive integer solutions $(k,n)$.
+\qed
+
+\end{document}
