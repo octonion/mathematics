@@ -1,0 +1,158 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{Does the Writeup Discharge the First Requirement in \S 6.6?\\
+Simplicity and Evenness of the Lowest Eigenvector of $QW_\lambda$}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Section 6.6 (Connes) states that to apply Theorem 6.1 one needs to show that the smallest eigenvalue
+of the Weil quadratic form $QW_\lambda$ is simple with an even eigenvector, analogously to a known fact
+for the prolate wave operator. This note explains how the combined writeup establishes that property
+for the truncated/semi-local Weil form constructed from the local explicit-formula distributions,
+and it highlights which parts rely on standard external results.
+\end{abstract}
+
+\section{Statement from \S 6.6}
+The relevant requirement in \S 6.6 is:
+
+\begin{quote}
+``In order to apply Theorem 6.1 one needs to show that the smallest eigenvalue of the Weil quadratic form
+$QW_\lambda$ is simple with even eigenvector. The analogue of this property is known for the prolate wave operator.''
+\end{quote}
+
+\noindent The combined writeup addresses precisely this \emph{spectral simplicity and symmetry} property
+for the form it realizes (up to an additive constant shift).
+
+\section{What the writeup proves}
+Interpreting $QW_\lambda$ as the truncated (semi-local) Weil quadratic form attached to test functions
+supported in $[\lambda^{-1},\lambda]$ and defined using the local explicit-formula distributions
+$W_p$ and $W_{\mathbb R}$, the writeup establishes:
+
+\begin{itemize}[leftmargin=2em]
+\item \textbf{Simplicity of the bottom eigenvalue:}
+the lowest eigenvalue is simple and has a strictly positive eigenfunction (a.e.).
+\item \textbf{Evenness of a lowest eigenvector:}
+the ground state can be chosen even (under the reflection symmetry in logarithmic coordinates).
+\end{itemize}
+
+\noindent Since adding a constant multiple of the identity to a selfadjoint operator shifts the spectrum
+without changing eigenvectors or multiplicities, the same simplicity/eigenfunction conclusions hold
+for the quadratic form before/after such a constant shift.
+
+\section{How the writeup achieves ``simple + even''}
+The argument decomposes into three conceptual steps.
+
+\subsection{Step 1: Rewrite $QW_\lambda$ as a Dirichlet-form-type energy (up to a constant)}
+The local terms are rewritten as nonnegative translation-difference energies plus constants.
+
+\begin{itemize}[leftmargin=2em]
+\item \textbf{Archimedean term:} after the change of variables $x=e^t$,
+the term $-W_{\mathbb R}(f)$ is written in the form
+\[
+-W_{\mathbb R}(f)
+\;=\;
+\int w(t)\,\|\widetilde G - S_t \widetilde G\|^2\,dt
+\;+\; c_\infty(\lambda)\,\|G\|^2,
+\]
+where $S_t$ denotes translation on the logarithmic variable, and the tail $t>2L$ collapses to a constant
+multiple of $\|G\|^2$ by disjoint support.
+\item \textbf{Prime terms:} similarly, each $-W_p(f)$ becomes a (finite, by truncation) weighted sum of squared differences
+\[
+-W_p(f)
+\;=\;
+\sum_{m} \alpha_{p,m}\,\|\widetilde G - S_{m\log p}\widetilde G\|^2
+\;+\; c_p(\lambda)\,\|G\|^2,
+\]
+with only finitely many relevant $m$ because the support truncation forces $\langle g,U_a g\rangle=0$ for $a>\lambda^2$.
+\end{itemize}
+
+\noindent These formulas motivate the definition of the quadratic form $\mathcal E_\lambda$ as the sum of all
+translation-difference energies (prime and Archimedean), so that $QW_\lambda$ agrees with $\mathcal E_\lambda$
+up to an additive constant multiple of $\|G\|^2$.
+
+\subsection{Step 2: Show the ground state is simple (via positivity improving + compact resolvent)}
+The writeup then places $\mathcal E_\lambda$ in the framework of (symmetric) Dirichlet forms:
+
+\begin{itemize}[leftmargin=2em]
+\item \textbf{Markov property:} the form satisfies the normal contraction property
+$\mathcal E_\lambda(\Phi(\phi))\le \mathcal E_\lambda(\phi)$ for standard contractions $\Phi$.
+This yields a positive semigroup (standard Dirichlet form theory).
+
+\item \textbf{Irreducibility criterion:} the writeup proves a key measurable-set lemma:
+if $B\subset I$ and $\mathcal E_\lambda(\mathbf 1_B)=0$, then $B$ is null or conull in $I$.
+Combined with standard equivalences in Dirichlet form theory, this gives \emph{irreducibility}
+of the associated semigroup.
+
+\item \textbf{Compact resolvent:} the writeup realizes the form as a closed form and uses translation-control
+and the Kolmogorov--Riesz compactness criterion to show the embedding of the form domain into $L^2(I)$ is compact,
+hence the selfadjoint operator $A_\lambda$ has compact resolvent.
+
+\item \textbf{Positivity improving:} invoking a standard theorem of the form
+\[
+\text{positive} + \text{irreducible} + \text{holomorphic semigroup}
+\;\Longrightarrow\;
+\text{positivity improving},
+\]
+the semigroup maps nonzero $f\ge 0$ to strictly positive functions for $t>0$.
+
+\item \textbf{Perron--Frobenius/Krein--Rutman:} positivity improving together with compact resolvent implies
+the principal (lowest) eigenvalue is simple and admits a strictly positive eigenfunction.
+\end{itemize}
+
+\noindent This establishes the \emph{simplicity} portion required in \S 6.6 (for the realized/truncated form).
+
+\subsection{Step 3: Force evenness by reflection symmetry}
+Finally, the writeup checks that the form is invariant under reflection in the logarithmic variable:
+\[
+(RG)(u) := G(-u).
+\]
+Form invariance implies the associated operator commutes with $R$.
+Since the lowest eigenspace is one-dimensional by Step 2, it is invariant under $R$ and $R$ acts by a scalar $\pm 1$
+on that eigenspace. Because the ground state is strictly positive a.e., it cannot be odd; hence it is even.
+
+\section{Does this resolve the first part of \S 6.6?}
+\subsection{Answer}
+\textbf{Yes}, \emph{for the truncated/semi-local Weil form $QW_\lambda$ as realized in the writeup}
+(from local explicit-formula distributions and test functions supported in $[\lambda^{-1},\lambda]$):
+the writeup proves the smallest eigenvalue is \textbf{simple} and its eigenvector can be chosen \textbf{even}.
+
+\subsection{What is still ``input'' rather than proved in-line}
+The conclusion relies on the following external or assumed items:
+\begin{enumerate}[leftmargin=2.2em]
+\item \textbf{Identification of $QW_\lambda$ with the realized form:}
+one must match Connes's definition of $QW_\lambda$ with the writeup's explicit-formula-based construction
+(up to an additive constant shift). The constant shift does not affect eigenvectors/multiplicity,
+but the equality of the underlying quadratic form must be checked at the level of definitions.
+
+\item \textbf{Standard Dirichlet-form equivalences:}
+the step from the indicator-energy lemma to semigroup irreducibility uses standard theorems
+(not reproved in full detail).
+
+\item \textbf{Positivity-improving and Perron--Frobenius consequences:}
+the implication ``positive + irreducible + holomorphic $\Rightarrow$ positivity improving''
+and the resulting simplicity/positivity of the ground state with compact resolvent
+are standard inputs (e.g.\ Arendt--Batty--Hieber--Neubrander and Jentzsch/Krein--Rutman type results).
+\end{enumerate}
+
+\section{Important: \S 6.6 mentions an additional remaining step}
+Section 6.6 also states that it \emph{still remains} to show an approximation property
+(e.g.\ that a certain $k_\lambda$ approximates $\theta_x$ with $\lambda=\sqrt{x}$).
+The writeup under discussion addresses the \emph{spectral simplicity/evenness} requirement,
+but it does \emph{not} by itself resolve that separate approximation problem.
+
+\section{Conclusion}
+The writeup does discharge the first prerequisite singled out in \S 6.6:
+it establishes that the bottom of the spectrum of the realized/truncated Weil quadratic form
+is \emph{simple} and its eigenfunction can be taken \emph{even}.
+The remaining work in \S 6.6 (as stated there) concerns approximation of auxiliary kernels/functions,
+which is logically separate from the Perron--Frobenius/symmetry analysis.
+\end{document}

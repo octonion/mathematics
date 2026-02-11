@@ -1,0 +1,454 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\1}{\mathbf{1}}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\supp}{supp}
+
+\title{Resolution of the Simplicity and Evenness Condition\\
+for the Ground State of the Restricted Weil Quadratic Form:\\
+Connecting the Energy-Decomposition Paper to Connes' Programme}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We analyse how the results of the paper \emph{Energy-Decomposition and
+Perron--Frobenius Consequences for the Restricted Weil Quadratic Form}
+(hereafter \textbf{[ED]}) resolve the first of the two open conditions
+identified by Alain Connes in \S6.6 of his 2026 survey \emph{The Riemann
+Hypothesis: Past, Present and a Letter Through Time} (hereafter
+\textbf{[C26]}).  Specifically, \textbf{[ED]} proves that the self-adjoint operator
+$A_\lambda$ associated with the restricted Weil quadratic form has compact
+resolvent and that its lowest eigenvalue is simple with a strictly positive,
+even eigenfunction---exactly the hypothesis needed for Connes--van Suijlekom's
+Theorem~6.1 in \textbf{[C26]} to guarantee that the Fourier transform of the
+ground-state minimiser has all its zeros on the critical line.  We give a
+detailed term-by-term comparison, discuss what remains unresolved, and place
+the contribution within the broader strategy towards the Riemann Hypothesis
+outlined in~\textbf{[C26]}.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%% ===================================================================
+\section{Context: Connes' strategy and the role of Theorem~6.1}
+\label{sec:context}
+%% ===================================================================
+
+\subsection{The Weil positivity approach}
+
+Connes' survey \textbf{[C26]} describes a strategy towards the Riemann Hypothesis (RH) rooted
+in the Weil explicit formula.  For $\lambda > 1$, one restricts test functions to the compact
+multiplicative interval $[\lambda^{-1}, \lambda] \subset \R_+^*$ and studies the quadratic form
+\begin{equation}\label{eq:QW}
+  QW_\lambda(g) := \sum_{v} W_v(g * g^*),
+\end{equation}
+where $W_v$ are the local distributions at each place $v$ of~$\mathbb{Q}$, evaluated on
+$f = g * g^*$ (multiplicative convolution with involution).  By Weil's criterion, the positivity of
+$QW_\lambda$ for all $\lambda > 1$ (subject to the vanishing condition
+$\hat{g}(\pm i/2) = 0$) is equivalent to~RH.
+
+\subsection{Theorem~6.1 of Connes--van Suijlekom}
+
+A central tool in \textbf{[C26]} is the following theorem from joint work with
+van Suijlekom~[32]:
+
+\begin{theorem}[{Connes--van Suijlekom, [32]}]\label{thm:CvS}
+Let $L > 0$, let $D$ be a real distribution on $[0, L]$, and let $\widetilde{D}$ be the
+associated even distribution on $[-L, L]$.  Assume that the quadratic form with Schwartz
+kernel $\widetilde{D}(x - y)$ defines a lower-bounded selfadjoint operator on
+$L^2([-L/2, L/2])$, and that the minimum of its spectrum is a simple, isolated eigenvalue
+with even eigenfunction~$\eta$.  Then all zeros of the entire function $\hat{\eta}(z)$,
+$z \in \C$, lie on the real line.
+\end{theorem}
+
+This theorem provides a mechanism for constructing entire functions whose zeros are
+provably on the critical line: if the ground-state eigenfunction of an appropriate
+operator is simple and even, its Fourier transform has only real zeros.
+
+\subsection{The two remaining steps (\S6.6 of [C26])}
+
+In \S6.6 of \textbf{[C26]}, Connes identifies two conditions that remain to be
+established in order to apply Theorem~\ref{thm:CvS} to the Weil quadratic form
+$QW_\lambda$ and ultimately connect the approximating zeros to those of the Riemann
+zeta function:
+
+\begin{enumerate}[label=(\Roman*)]
+  \item\label{item:simple-even}
+  \textbf{Simplicity and evenness:}
+  Show that the smallest eigenvalue of $QW_\lambda$ is simple and that the
+  corresponding eigenfunction is even.
+
+  \item\label{item:approx}
+  \textbf{Approximation quality:}
+  Show that the prolate-function ansatz $k_\lambda$ (constructed via the summation
+  map $\mathcal{E}$ from prolate spheroidal wave functions) is a sufficiently good
+  approximation of the actual minimal eigenvector~$\theta_x$ of~$QW_\lambda$.
+\end{enumerate}
+
+\noindent
+Connes notes that ``the analogue of this property is known for the prolate wave
+operator'' but that the result for $QW_\lambda$ itself had not been established.
+
+\medskip
+\noindent
+\textbf{The central claim of this note} is that condition~\ref{item:simple-even}
+is fully resolved by~\textbf{[ED]}.
+
+%% ===================================================================
+\section{What the energy-decomposition paper proves}
+\label{sec:ED}
+%% ===================================================================
+
+We summarise the relevant results of \textbf{[ED]}, using its numbering.
+
+\subsection{The quadratic form $\mathcal{E}_\lambda$ and its relation to $QW_\lambda$}
+
+Working in logarithmic coordinates $u = \log x$ on the interval $I = (-L, L)$ with
+$L = \log\lambda$, and writing $G(u) = g(e^u)$ with $\widetilde{G}$ denoting extension by
+zero to~$\R$, paper~\textbf{[ED]} defines
+\begin{equation}\label{eq:Elambda}
+  \mathcal{E}_\lambda(G)
+  := \int_0^{2L} w(t)\,\|\widetilde{G} - S_t\widetilde{G}\|_{L^2(\R)}^2\,dt
+  + \sum_{\substack{p\text{ prime}\\ p^m \le \lambda^2}}
+  (\log p)\,p^{-m/2}\,\|\widetilde{G} - S_{m\log p}\widetilde{G}\|_{L^2(\R)}^2,
+\end{equation}
+where $w(t) = e^{t/2}/(2\sinh t)$ and $S_t$ is translation by~$t$.
+Lemmas~3 and~4 of \textbf{[ED]} show that
+\begin{equation}\label{eq:relation}
+  -\sum_v W_v(g * g^*) = \mathcal{E}_\lambda(G) + c(\lambda)\,\|G\|_2^2,
+\end{equation}
+where $c(\lambda) \in \R$ is a finite constant.  The additive shift $c(\lambda)\|G\|_2^2$ merely
+translates the spectrum of the associated operator by a scalar, leaving simplicity,
+positivity of eigenfunctions, and evenness invariant.
+
+\subsection{Selfadjoint operator with compact resolvent}
+
+\begin{theorem}[{Theorem~18 of \textbf{[ED]}}]\label{thm:op}
+There exists a unique selfadjoint operator $A_\lambda \ge 0$ on $L^2(I)$ associated with
+the closed form $\mathcal{E}_\lambda$.  Moreover, $A_\lambda$ has compact resolvent;
+equivalently, $(A_\lambda + 1)^{-1}$ is compact on $L^2(I)$.
+\end{theorem}
+
+The proof proceeds in several self-contained steps:
+\begin{enumerate}[nosep]
+  \item \emph{Fourier representation.}  The ambient form $\mathcal{E}_\lambda^{\R}$ on
+  $L^2(\R)$ is identified via Plancherel as multiplication by a symbol
+  $\psi_\lambda(\xi) \ge 0$ in Fourier space.
+  \item \emph{Closedness.}  The form domain, equipped with the graph norm, is isometric to
+  a weighted~$L^2$ space and hence complete.  Restriction to the closed subspace
+  $H_I = \{\phi \in L^2(\R) : \phi = 0 \text{ a.e.\ on } \R \setminus I\}$ preserves
+  closedness.
+  \item \emph{Logarithmic coercivity.}  A lower bound $w(t) \ge c_0/t$ for small~$t$ yields
+  $\psi_\lambda(\xi) \ge c_1\log|\xi| - c_2$ for large~$|\xi|$, via an interval-counting
+  argument.
+  \item \emph{Compact embedding.}  The logarithmic growth of $\psi_\lambda$ provides a
+  log-frequency moment bound, which combined with the Kolmogorov--Riesz compactness
+  criterion (tightness is automatic from bounded support) gives compactness of the
+  embedding $\mathcal{D}(\mathcal{E}_\lambda) \hookrightarrow L^2(I)$.
+  \item \emph{Compact resolvent.}  Standard resolvent estimates reduce to compact embedding.
+\end{enumerate}
+
+Compact resolvent implies the spectrum of $A_\lambda$ is discrete, consisting of isolated
+eigenvalues of finite multiplicity accumulating only at~$+\infty$.
+
+\subsection{Simplicity and strict positivity of the ground state}
+
+\begin{proposition}[{Proposition~20 of \textbf{[ED]}}]\label{prop:gs}
+The semigroup $T(t) = e^{-tA_\lambda}$ is positivity improving, and the lowest
+eigenvalue of $A_\lambda$ is simple with a strictly positive a.e.\ eigenfunction~$\psi$.
+\end{proposition}
+
+This is established by verifying three properties:
+
+\begin{enumerate}[nosep]
+  \item \textbf{Positivity preservation (Markov property).}
+  For every normal contraction~$\Phi$ (i.e.\ $\Phi(0) = 0$,
+  $|\Phi(a) - \Phi(b)| \le |a - b|$), the difference-energy structure of
+  $\mathcal{E}_\lambda$ gives
+  $\mathcal{E}_\lambda(\Phi \circ G) \le \mathcal{E}_\lambda(G)$ pointwise under the
+  integral.  This is the Beurling--Deny criterion for Markovian semigroups.
+
+  \item \textbf{Irreducibility.}
+  The archimedean \emph{continuum} of shifts---the integral over $t \in (0, 2L)$ with
+  strictly positive weight $w(t) > 0$---is the decisive ingredient.  If
+  $\mathcal{E}_\lambda(\1_B) = 0$ for a measurable $B \subset I$, then the non-negativity
+  of all weights forces
+  $\|\widetilde{\1_B} - S_t\widetilde{\1_B}\|_2 = 0$ for a.e.\ $t \in (0, 2L)$.
+  Continuity of $t \mapsto \|\phi - S_t\phi\|_2^2$ upgrades this to \emph{all}
+  $t \in (0, 2L)$, and a mollifier argument (Lemma~7 of \textbf{[ED]}) forces $B$ to be
+  null or conull.  Via the Beurling--Deny/Fukushima equivalence from Dirichlet form theory,
+  this yields irreducibility of~$T(t)$.
+
+  \item \textbf{Holomorphy.}
+  Since $A_\lambda$ is selfadjoint and lower bounded, $e^{-zA_\lambda}$ is bounded and
+  holomorphic on $\{\Re z > 0\}$ by the spectral theorem.
+\end{enumerate}
+
+These three properties together invoke the theorem of Arendt et al.:\ positivity
+$+$ irreducibility $+$ holomorphy $\Rightarrow$ positivity improving.  The
+Krein--Rutman / Perron--Frobenius theorem for compact positive operators then gives
+simplicity and strict positivity of the ground state.
+
+\subsection{Evenness of the ground state}
+
+\begin{corollary}[{Corollary~22 of \textbf{[ED]}}]\label{cor:even}
+The ground-state eigenfunction $\psi$ satisfies $\psi(-u) = \psi(u)$ a.e.
+\end{corollary}
+
+\begin{proof}[Proof sketch]
+The reflection operator $R\colon G(u) \mapsto G(-u)$ is unitary on $L^2(I)$ (since
+$I = (-L, L)$ is symmetric) and satisfies $RS_t = S_{-t}R$.  Using
+$\|\phi - S_{-t}\phi\| = \|\phi - S_t\phi\|$ and the symmetry of all weights in
+$\mathcal{E}_\lambda$, one obtains
+$\mathcal{E}_\lambda(RG) = \mathcal{E}_\lambda(G)$, hence $A_\lambda R = RA_\lambda$.
+
+Since $R\psi$ is then a strictly positive eigenfunction for the same (simple) eigenvalue,
+$R\psi = c\psi$ with $c > 0$.  Unitarity of~$R$ forces $c = 1$, so $\psi$ is even.
+\end{proof}
+
+%% ===================================================================
+\section{Term-by-term comparison with Connes' requirements}
+\label{sec:comparison}
+%% ===================================================================
+
+The following table makes the correspondence explicit.
+
+\medskip
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{>{\raggedright\arraybackslash}p{6.2cm}
+                >{\raggedright\arraybackslash}p{6.2cm}}
+\toprule
+\textbf{Requirement from \S6.6 of [C26]} &
+\textbf{Result in [ED]} \\
+\midrule
+$QW_\lambda$ defines a lower-bounded selfadjoint operator &
+Theorem~18: $A_\lambda \ge 0$ is selfadjoint, associated
+to the closed form $\mathcal{E}_\lambda$ via Kato's
+representation theorem \\
+\addlinespace
+Spectrum is discrete with isolated eigenvalues &
+Theorem~18: $A_\lambda$ has compact resolvent, hence
+discrete spectrum accumulating at $+\infty$ \\
+\addlinespace
+Smallest eigenvalue is simple &
+Proposition~20: Markov property $+$ irreducibility $+$
+holomorphy $\Rightarrow$ positivity improving; then
+Krein--Rutman gives simplicity \\
+\addlinespace
+Ground-state eigenfunction is even &
+Corollary~22: $A_\lambda$ commutes with $R\colon G(u) \mapsto G(-u)$;
+simplicity $+$ strict positivity forces $R\psi = \psi$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+
+The relationship between $\mathcal{E}_\lambda$ in \textbf{[ED]} and $QW_\lambda$ in
+\textbf{[C26]} is given by~\eqref{eq:relation}: they differ by an additive constant times
+$\|G\|_2^2$.  Such a shift translates every eigenvalue by the same scalar $c(\lambda)$
+without altering eigenvectors, simplicity, or eigenfunction symmetry.  Paper \textbf{[ED]}
+notes this explicitly.
+
+%% ===================================================================
+\section{The role of the archimedean continuum}
+\label{sec:arch}
+%% ===================================================================
+
+It is worth emphasising the structural reason why irreducibility holds for $A_\lambda$ but
+would \emph{not} hold for a purely ``prime'' version of the quadratic form.
+
+The prime contributions to $\mathcal{E}_\lambda$ involve differences $S_{m\log p}$ at
+\emph{discrete} shift values $\{m\log p : p^m \le \lambda^2\}$.  A measurable set
+$B \subset I$ could, in principle, be invariant under all these discrete shifts while having
+$0 < m(B) < m(I)$.
+
+The archimedean term, by contrast, involves a \emph{continuum} of shifts---an integral over
+all $t \in (0, 2L)$ with the strictly positive weight $w(t) > 0$.  If
+$\mathcal{E}_\lambda(\1_B) = 0$, then $\1_B$ must be invariant under translation by
+\emph{every} $t$ in a full interval $(0, \varepsilon)$.  The mollifier argument of
+Lemma~7 in \textbf{[ED]} then forces $\1_B$ to be a.e.\ constant---the set is null or
+conull.
+
+This mirrors an important theme in Connes' programme: the archimedean place carries
+qualitatively different (and essential) information compared to the non-archimedean
+places.  In the language of \textbf{[C26]}, the archimedean trace formula
+(\S7.1) and the role of the Sonin space (\S7.2) are manifestations of the same
+phenomenon.
+
+%% ===================================================================
+\section{What remains unresolved}
+\label{sec:open}
+%% ===================================================================
+
+Paper~\textbf{[ED]} resolves condition~\ref{item:simple-even} of \S\ref{sec:context}
+completely.  It does \textbf{not} address condition~\ref{item:approx}: proving that the
+prolate-function ansatz $k_\lambda$ (equation~(17) of~\textbf{[C26]}) is a sufficiently
+good approximation of the true ground-state eigenvector $\theta_x$ of~$QW_\lambda$.
+
+The full chain of Connes' strategy requires the following additional steps, none of which
+are provided by~\textbf{[ED]}:
+
+\begin{enumerate}[label=(\alph*),nosep]
+  \item Showing that the prolate-based approximation $k_\lambda = \mathcal{E}(h_\lambda)$
+  (where $h_\lambda$ is the appropriate linear combination of $h_{0,\lambda}$ and
+  $h_{4,\lambda}$ with vanishing integral) converges to the true minimiser $\theta_x$ in a
+  suitable norm.
+
+  \item Establishing that the Fourier transforms of the true minimisers $\theta_x$ converge,
+  as $\lambda \to \infty$, to Riemann's $\Xi$-function uniformly on compact subsets of the
+  open strip $|\!\operatorname{Im}(z)| < 1/2$.
+
+  \item Applying Hurwitz's theorem to conclude that the zeros of the limit function (which
+  are the nontrivial zeros of~$\zeta$) must lie on the real line, since the approximating
+  functions have all their zeros there by Theorem~\ref{thm:CvS}.
+\end{enumerate}
+
+Step (a) amounts to comparing two objects: the exact minimiser of $QW_\lambda$ (whose
+existence, simplicity, and evenness are now established by~\textbf{[ED]}) and the
+``near-radical'' function $k_\lambda$ constructed from prolate wave functions.
+As Connes discusses in \S6.4 of~\textbf{[C26]}, the conceptual justification is that the
+range of the summation map $\mathcal{E}$ lies in the radical of the \emph{global} Weil
+form, so elements of this range restricted to $[\lambda^{-1}, \lambda]$ should be close
+to the radical of the \emph{restricted} form $QW_\lambda$.  The exponential smallness of
+the eigenvalue $\varepsilon(\lambda)$ (and its similarity to $1 - \chi_2(\lambda)$, as
+shown in Figure~1 of~\textbf{[C26]}) provides strong numerical evidence for this, but a
+rigorous proof has not yet been given.
+
+Step (b) is partially addressed by Fact~6.4 of \textbf{[C26]}, which establishes the
+convergence of the Fourier transforms of the prolate-based approximations $\hat{k}_\lambda$
+towards the $\Xi$-function.  The gap is in transferring this convergence from the ansatz
+$k_\lambda$ to the true minimiser~$\theta_x$.
+
+%% ===================================================================
+\section{Summary}
+\label{sec:summary}
+%% ===================================================================
+
+The results of \textbf{[ED]} supply the missing operator-theoretic foundation for
+condition~\ref{item:simple-even} in Connes' strategy.  The logical chain can be depicted
+as follows:
+
+\bigskip
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\centering
+\textbf{Energy decomposition} (Lemmas 3--4 of [ED])\\[3pt]
+$\Downarrow$\\[3pt]
+\textbf{Closed form $\mathcal{E}_\lambda$, compact resolvent}
+(Props.\ 11--12, 17, Thm.\ 18 of [ED])\\[3pt]
+$\Downarrow$\\[3pt]
+\textbf{Markov $+$ Irreducibility $+$ Holomorphy}
+(Lemma 6, Cor.\ 19, spectral thm.)\\[3pt]
+$\Downarrow$\\[3pt]
+\textbf{Positivity improving} (Arendt et al.)
+$\;\Rightarrow\;$ \textbf{Simple ground state, $\psi > 0$}
+(Krein--Rutman)\\[3pt]
+$\Downarrow$\\[3pt]
+\textbf{Reflection symmetry} (Prop.\ 21 of [ED])
+$\;\Rightarrow\;$ \textbf{$\psi$ is even} (Cor.\ 22 of [ED])\\[3pt]
+$\Downarrow$\\[3pt]
+\textbf{Theorem 6.1 of [C26] applies:}\\
+\emph{All zeros of $\hat{\psi}(z)$ lie on the real line}
+}}
+\end{center}
+
+\bigskip
+
+The remaining challenge---condition~\ref{item:approx}---is to show that the
+prolate-based approximation $k_\lambda$ adequately represents the true ground state, and
+that the convergence $\hat{k}_\lambda \to \Xi$ can be transferred to the actual minimisers.
+This is the content of the semilocal trace formula approach described in~\S7.4
+of~\textbf{[C26]} and the subject of ongoing work by Connes, Consani, and Moscovici.
+
+\bigskip
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{\raggedright\arraybackslash}p{5.5cm}c
+                >{\raggedright\arraybackslash}p{5.5cm}}
+\toprule
+\textbf{Step in Connes' programme} & \textbf{Status} & \textbf{Source} \\
+\midrule
+$QW_\lambda$ has simple, even ground state &
+\checkmark &
+[ED]: Prop.\ 20, Cor.\ 22 \\
+\addlinespace
+Zeros of $\hat\psi$ lie on the real line &
+\checkmark &
+Follows from above $+$ Thm.\ 6.1 of [C26] \\
+\addlinespace
+$k_\lambda \approx \theta_x$ (prolate approximation) &
+Open &
+Numerical evidence in [C26] \S6.4;
+rigorous proof pending \\
+\addlinespace
+$\hat{k}_\lambda \to \Xi$ uniformly on compact sets &
+\checkmark &
+Fact 6.4 of [C26] (for the ansatz) \\
+\addlinespace
+Transfer convergence from ansatz to true minimiser &
+Open &
+Requires comparing $k_\lambda$ and $\theta_x$ \\
+\addlinespace
+Hurwitz's theorem $\Rightarrow$ zeros of $\Xi$ on the line &
+Conditional &
+Follows if all preceding steps are completed \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%% ===================================================================
+\section*{References}
+%% ===================================================================
+
+\begin{description}[labelwidth=2.5em, leftmargin=3em, labelsep=0.5em, font=\normalfont]
+
+\item[\textbf{[C26]}]
+A.~Connes,
+\emph{The Riemann Hypothesis: Past, Present and a Letter Through Time},
+arXiv:2602.04022v1, February 2026.
+
+\item[\textbf{[ED]}]
+\emph{Energy-Decomposition and Perron--Frobenius Consequences for the Restricted
+Weil Quadratic Form} (the paper analysed in this note).
+
+\item[\textbf{[32]}]
+A.~Connes and W.~van Suijlekom,
+\emph{Quadratic Forms, Real Zeros and Echoes of the Spectral Action},
+Commun.\ Math.\ Phys.\ (2025) 406:312.
+
+\item[\textbf{[24]}]
+A.~Connes and C.~Consani,
+\emph{Weil positivity and trace formula, the archimedean place},
+Selecta Math.\ (N.S.) \textbf{27} (2021), no.~4, Paper no.~77.
+
+\item[\textbf{[25]}]
+A.~Connes and C.~Consani,
+\emph{Spectral triples and $\zeta$-cycles},
+Enseign.\ Math.\ \textbf{69} (2023), no.~1--2, 93--148.
+
+\end{description}
+
+\end{document}

@@ -1,0 +1,538 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,backgrounds}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\1}{\mathbf{1}}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Re}{Re}
+
+\title{Verification and Structural Analysis of\\
+``Energy-Decomposition and Perron--Frobenius Consequences\\
+for the Restricted Weil Quadratic Form''}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present a detailed verification of the mathematical logic in the paper
+\emph{Energy-Decomposition and Perron--Frobenius Consequences for the Restricted
+Weil Quadratic Form}, summarise its logical flow, provide a dependency flowchart
+connecting all sections and results, and catalogue the external (unproven)
+assumptions on which the argument rests.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%% ===================================================================
+\section{Overview of the paper's goal}
+%% ===================================================================
+
+The paper studies the quadratic form that arises in the spectral approach to
+Weil's explicit-formula criterion, restricted to test functions supported on a
+compact multiplicative interval $[\lambda^{-1},\lambda]\subset\R_+^*$.  Its
+main conclusion is:
+
+\medskip
+\noindent\textbf{Main Result.}
+\emph{The self-adjoint operator $A_\lambda$ associated with the restricted Weil
+quadratic form has compact resolvent, and its lowest eigenvalue is simple with an
+eigenfunction that is strictly positive a.e.\ and even (symmetric under
+$u\mapsto -u$ in logarithmic coordinates).}
+
+\medskip
+The argument proceeds in five stages: (1) energy decomposition, (2) the Markov
+property, (3) irreducibility, (4) operator-theoretic realisation, and (5) the
+Perron--Frobenius conclusion with evenness.
+
+%% ===================================================================
+\section{Verification of mathematical correctness}
+%% ===================================================================
+
+We verify each proof in the paper.  In all cases the logic is
+\textbf{correct}.
+
+%% -------------------------------------------------------------------
+\subsection{Lemma 1: Convolution inner-product identity}
+%% -------------------------------------------------------------------
+
+The computation
+\[
+  (g*g^*)(a)
+  = \int g(y)\,\overline{g(y/a)}\,d^*y
+  = \langle g, U_a g\rangle_{L^2(d^*x)}
+\]
+is a direct unfolding of the definitions of multiplicative convolution,
+involution $g^*(x)=\overline{g(x^{-1})}$, and the dilation operator
+$U_a g(x)=g(x/a)$.  The relation $f(a^{-1})=\overline{f(a)}$ follows by
+substituting $a\mapsto a^{-1}$ and complex-conjugating.  \textbf{Correct.}
+
+%% -------------------------------------------------------------------
+\subsection{Lemma 2: Basic unitary identity}
+%% -------------------------------------------------------------------
+
+The identity
+\[
+  2\Re\langle h,Uh\rangle = 2\|h\|^2 - \|h-Uh\|^2
+\]
+follows from expanding $\|h-Uh\|^2 = \|h\|^2 + \|Uh\|^2 - 2\Re\langle h,Uh\rangle$
+and using unitarity $\|Uh\|=\|h\|$.  \textbf{Correct.}
+
+%% -------------------------------------------------------------------
+\subsection{Remark 3: Support truncation}
+%% -------------------------------------------------------------------
+
+If $\supp(g)\subset[\lambda^{-1},\lambda]$ and $a>\lambda^2$, then
+$\supp(U_a g) = a\cdot\supp(g) \subset [a\lambda^{-1},a\lambda]$, which is
+disjoint from $[\lambda^{-1},\lambda]$ since $a\lambda^{-1}>\lambda$.
+Hence $\langle g,U_a g\rangle=0$.  This correctly makes all sums and integrals
+finite.  \textbf{Correct.}
+
+%% -------------------------------------------------------------------
+\subsection{Lemma 3: Prime energy decomposition}
+%% -------------------------------------------------------------------
+
+The proof chains Lemma~1 ($f(p^m)+f(p^{-m})=2\Re\langle g,U_{p^m}g\rangle$)
+and Lemma~2 (rewriting $2\Re\langle g,U_{p^m}g\rangle$ as
+$2\|g\|_2^2-\|g-U_{p^m}g\|_2^2$) into the definition of $W_p$.  The sign
+arithmetic is correct: the negative sign on $W_p$ absorbs the negative sign
+from Lemma~2, yielding a \emph{positive} sum of difference norms plus a
+constant.  Terms with $p^m>\lambda^2$ vanish by Remark~3.
+\textbf{Correct.}
+
+%% -------------------------------------------------------------------
+\subsection{Lemma 4: Archimedean energy decomposition}
+%% -------------------------------------------------------------------
+
+The change of variables $x=e^t$ transforms $W_\R(f)$ into an integral
+over $t\in(0,\infty)$ with weight $w(t)=e^{t/2}/(2\sinh t)$.  The same
+chain (Lemma~1 then Lemma~2) is applied.
+
+The integral is split at $t=2L$:
+\begin{itemize}[nosep]
+\item For $t>2L$: the supports of $\widetilde G$ and $S_t\widetilde G$ are
+  disjoint, so
+  $\|\widetilde G - S_t\widetilde G\|^2 = \|\widetilde G\|^2+\|S_t\widetilde G\|^2 = 2\|G\|^2$
+  (not zero --- the cross-terms vanish).  The integrand becomes
+  $2e^{-t/2}\|G\|^2$, and the tail integral converges since
+  $w(t)\sim e^{-t/2}/2$ for large $t$, giving $2e^{-t/2}w(t)\sim e^{-t}$.
+\item For $t\in[0,2L]$: the ``remainder'' term $2(e^{-t/2}-1)w(t)$ is
+  integrable near $t=0$ because $w(t)\sim 1/(2t)$ and
+  $e^{-t/2}-1\sim -t/2$, giving an $O(1)$ integrand.
+\end{itemize}
+All constant contributions are absorbed into the finite constant
+$c_\infty(\lambda)$.  \textbf{Correct.}
+
+%% -------------------------------------------------------------------
+\subsection{Lemma 6: Markov property}
+%% -------------------------------------------------------------------
+
+For a $1$-Lipschitz $\Phi$ with $\Phi(0)=0$, the pointwise bound
+$|\Phi(\widetilde G(u))-\Phi(\widetilde G(u-t))|\le|\widetilde G(u)-\widetilde G(u-t)|$
+is integrated over $u$, giving
+$\|\widetilde{\Phi\circ G}-S_t\widetilde{\Phi\circ G}\|_2^2 \le \|\widetilde G-S_t\widetilde G\|_2^2$.
+Integrating/summing against non-negative weights preserves the inequality.  The
+condition $\Phi(0)=0$ ensures $\widetilde{\Phi\circ G}=\Phi\circ\widetilde G$
+(the extension by zero is respected).  \textbf{Correct.}
+
+%% -------------------------------------------------------------------
+\subsection{Lemma 7: Translation-invariance forces null or conull}
+%% -------------------------------------------------------------------
+
+The proof uses a standard mollifier argument.  If $\1_B(u)=\1_B(u-t)$ a.e.\
+on $I\cap(I+t)$ for all $t\in(0,\varepsilon)$, then for any compact
+$J\Subset I$ and $\eta$ small enough, the mollification $f_\eta=\1_B*\rho_\eta$
+is smooth on $J_\eta$ and inherits translation invariance there, hence is
+constant by connectedness.  Letting $\eta\downarrow 0$ forces $\1_B$ to be
+a.e.\ constant on $J$, and since $J$ was arbitrary, on all of~$I$.
+\textbf{Correct.}
+
+%% -------------------------------------------------------------------
+\subsection{Lemma 8: Indicator-energy criterion}
+%% -------------------------------------------------------------------
+
+The key technical detail is the upgrade from ``for a.e.\ $t\in(0,2L)$'' to
+``for all $t\in(0,2L)$'': the map
+$t\mapsto\|\phi-S_t\phi\|_{L^2(\R)}^2$ is continuous by strong continuity of
+the translation group on $L^2(\R)$.  A continuous function that vanishes a.e.\
+vanishes everywhere.  Then Lemma~7 applies.  \textbf{Correct.}
+
+%% -------------------------------------------------------------------
+\subsection{Fourier analysis (Lemmas 9--14)}
+%% -------------------------------------------------------------------
+
+The Plancherel identity for translation differences,
+$\|\phi-S_t\phi\|^2 = (2\pi)^{-1}\int 4\sin^2(\xi t/2)\,|\hat\phi(\xi)|^2\,d\xi$,
+is standard.  Tonelli's theorem permits interchanging the $\xi$-integral with
+the $t$-integration and finite prime sums (all integrands are non-negative).
+
+The lower bound $w(t)\ge c_0/t$ for $t\in(0,t_0]$ uses $\sinh t\le te^t$
+(valid since both sides vanish at $t=0$ and the derivative of $\sinh t$ is
+$\cosh t\le (1+t)e^t = (te^t)'$).
+
+The logarithmic growth $\psi_\lambda(\xi)\ge c_1\log|\xi|-c_2$ is established
+by a standard interval-counting argument: on intervals $J_n$ where
+$\sin^2(\xi t/2)\ge 1/2$, the integral of $(1/t)\sin^2(\xi t/2)$ over
+$[0,t_0]$ is bounded below by a harmonic-type sum that grows as $\log|\xi|$.
+\textbf{Correct.}
+
+%% -------------------------------------------------------------------
+\subsection{Closedness and compact embedding (Props.\ 11--12, Prop.\ 17)}
+%% -------------------------------------------------------------------
+
+Closedness of $\mathcal E_\lambda^\R$ on $L^2(\R)$ follows from its
+identification as a multiplication operator (by $\psi_\lambda$) in Fourier
+space; the domain is isometric to a weighted $L^2$ space and hence complete.
+Restriction to the closed subspace $H_I$ preserves closedness.
+
+For compact embedding: the set $\mathcal K_M$ (form-norm ball) satisfies
+\emph{tightness} automatically (all functions are supported in $\bar I$) and
+\emph{translation equicontinuity} by a Fourier splitting argument exploiting
+the logarithmic frequency-moment bound (Corollary~15).  The Kolmogorov--Riesz
+criterion then gives relative compactness.  \textbf{Correct.}
+
+%% -------------------------------------------------------------------
+\subsection{Compact resolvent (Theorem 18)}
+%% -------------------------------------------------------------------
+
+If $\{f_n\}$ is bounded in $L^2(I)$ and $u_n=(A_\lambda+1)^{-1}f_n$, then
+\[
+  \mathcal E_\lambda(u_n)+\|u_n\|_2^2
+  = \langle f_n,u_n\rangle
+  \le \|f_n\|_2\|u_n\|_2,
+\]
+giving $\|u_n\|_2\le\|f_n\|_2$ and hence $\|u_n\|_{\mathcal D}^2\le\|f_n\|_2^2$.
+Compact embedding (Prop.~17) extracts a convergent subsequence.
+\textbf{Correct.}
+
+%% -------------------------------------------------------------------
+\subsection{Evenness (Corollary 22)}
+%% -------------------------------------------------------------------
+
+Since $A_\lambda$ commutes with $R\colon G(u)\mapsto G(-u)$ (the interval $I$
+and all weights are symmetric), $R\psi$ is an eigenfunction for the same lowest
+eigenvalue.  Strict positivity of both $\psi$ and $R\psi$ forces
+$R\psi=c\psi$ with $c>0$; unitarity of~$R$ (specifically
+$\|R\psi\|=\|\psi\|$) yields $c=1$.
+\textbf{Correct.}
+
+%% ===================================================================
+\section{Summary of the logical flow}
+%% ===================================================================
+
+The argument proceeds in five stages.
+
+\subsection*{Stage 1: Energy decomposition (\S\S\,1--4)}
+
+Starting from the two ``input formulas'' $W_p$ (prime local distribution) and
+$W_\R$ (archimedean local distribution), taken as given from the theory of the
+Weil explicit formula, the paper uses the convolution inner-product identity
+(Lemma~1) and the basic unitary identity (Lemma~2) to rewrite
+\[
+  -\sum_v W_v(g*g^*)
+\]
+as a \emph{positive} combination of translation-difference energies
+$\|\widetilde G - S_t\widetilde G\|_{L^2(\R)}^2$ in logarithmic coordinates,
+plus an additive constant multiple of $\|G\|_2^2$ (which merely shifts the
+spectrum).  This is assembled into the global quadratic form
+$\mathcal E_\lambda(G)$ (Definition~5).
+
+\subsection*{Stage 2: Markov property (\S\,5)}
+
+The difference-energy structure directly gives the normal-contraction inequality
+$\mathcal E_\lambda(\Phi\circ G)\le\mathcal E_\lambda(G)$ (Lemma~6), which
+ensures the associated semigroup is positivity preserving.
+
+\subsection*{Stage 3: Irreducibility (\S\S\,6--7)}
+
+The archimedean \emph{continuum} of shifts---the integral over
+$t\in(0,2L)$ with strictly positive weight $w(t)>0$---is the key ingredient.
+If $\mathcal E_\lambda(\1_B)=0$, then $\1_B$ is translation-invariant for all
+small~$t$ (upgraded from a.e.\ to everywhere by continuity, Lemma~8).  A
+mollifier argument (Lemma~7) then forces $B$ to be null or conull.  Via the
+Beurling--Deny/Fukushima theory of symmetric Dirichlet forms (an external
+result), this gives irreducibility of the semigroup (Corollary~19).
+
+\subsection*{Stage 4: Operator-theoretic realisation (\S\,7.2)}
+
+The form $\mathcal E_\lambda$ is shown to be closed via its Fourier multiplier
+representation (the symbol is $\psi_\lambda(\xi)$).  The logarithmic growth
+$\psi_\lambda(\xi)\gtrsim\log|\xi|$ provides enough coercivity for compact
+embedding of the form domain into $L^2(I)$ (via the Kolmogorov--Riesz
+criterion), hence compact resolvent of $A_\lambda$ (Theorem~18).
+
+\subsection*{Stage 5: Perron--Frobenius conclusion (\S\S\,8--9)}
+
+Combining positivity preservation (Stage~2), irreducibility (Stage~3), and
+holomorphy (automatic from self-adjointness) yields \emph{positivity improving}
+via an external theorem of Arendt \emph{et~al.}  With compact resolvent, the
+Krein--Rutman/Perron--Frobenius theorem gives simplicity and strict positivity
+of the ground state (Proposition~20).  Finally, $A_\lambda$ commutes with the
+reflection $R\colon G(u)\mapsto G(-u)$ (Proposition~21), which forces the
+unique positive eigenfunction to be even (Corollary~22).
+
+%% ===================================================================
+\section{Dependency flowchart}
+%% ===================================================================
+
+Figure~\ref{fig:flowchart} displays the logical dependencies among all results
+in the paper.  Nodes are colour-coded as follows:
+
+\begin{center}
+\begin{tikzpicture}[font=\small]
+  \fill[red!15] (0,0) rectangle (0.4,0.3);
+  \node[anchor=west] at (0.55,0.15) {Input formula (from analytic number theory)};
+  \fill[green!15] (0,-0.5) rectangle (0.4,-0.2);
+  \node[anchor=west] at (0.55,-0.35) {Result proved in the paper};
+  \fill[orange!20] (0,-1.0) rectangle (0.4,-0.7);
+  \node[anchor=west] at (0.55,-0.85) {External theorem (cited, not proved)};
+  \fill[blue!15] (0,-1.5) rectangle (0.4,-1.2);
+  \node[anchor=west] at (0.55,-1.35) {Main conclusion};
+\end{tikzpicture}
+\end{center}
+
+\begin{figure}[p]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.6cm and 0.4cm,
+    >=Stealth,
+    every node/.style={font=\scriptsize, align=center, text width=2.6cm, minimum height=0.85cm},
+    input/.style={rectangle, rounded corners, draw=red!70!black, fill=red!15, thick},
+    proved/.style={rectangle, rounded corners, draw=green!60!black, fill=green!12, thick},
+    external/.style={rectangle, rounded corners, draw=orange!80!black, fill=orange!18, thick},
+    conclusion/.style={rectangle, rounded corners, draw=blue!70!black, fill=blue!15, thick, line width=1.2pt},
+    arr/.style={->, thick, >=Stealth, color=gray!70!black}
+  ]
+
+  %% Row 0: Inputs
+  \node[input] (Wp)  {$W_p(f)$\\Prime distribution\\(Eq.\,2.1)};
+  \node[input, right=1.5cm of Wp] (WR)  {$W_\R(f)$\\Archimedean dist.\\(Eq.\,2.2)};
+
+  %% Row 1: Basic lemmas
+  \node[proved, below=0.8cm of Wp, xshift=-1.8cm] (L1) {Lem.\,1\\Conv.\ inner-prod.\\$f(a)=\langle g,U_a g\rangle$};
+  \node[proved, right=0.3cm of L1] (L2) {Lem.\,2\\Unitary identity\\$2\Re\langle h,Uh\rangle$};
+  \node[proved, right=0.3cm of L2] (TRUNC) {Rem.\,3\\Support truncation\\$\langle g,U_a g\rangle=0$, $a>\lambda^2$};
+  \node[proved, right=0.3cm of TRUNC] (LOG) {\S\,3\\Log coordinates\\$U_{e^t}\leftrightarrow S_t$};
+
+  %% Row 2: Energy decompositions
+  \node[proved, below=0.8cm of L2, xshift=-0.8cm] (PE) {Lem.\,3\\Prime energy\\$-W_p = \Sigma\|...\|^2 + c_p\|G\|^2$};
+  \node[proved, right=1.0cm of PE] (AE) {Lem.\,4\\Arch.\ energy\\$-W_\R = \int w(t)\|...\|^2\,dt + c_\infty\|G\|^2$};
+
+  %% Row 3: Definition
+  \node[proved, below=0.7cm of PE, xshift=1.3cm] (DEF) {Def.\,5\\$\mathcal E_\lambda(G)$\\Difference-energy form};
+
+  %% Row 4: Markov + Translation inv
+  \node[proved, below left=0.8cm and 0.5cm of DEF] (MK) {Lem.\,6\\Markov property\\$\mathcal E(\Phi\circ G)\le\mathcal E(G)$};
+  \node[proved, below right=0.8cm and 0.5cm of DEF] (TI) {Lem.\,7\\Translation inv.\\$\Rightarrow$ null or conull};
+
+  %% Row 5: Fourier + Indicator
+  \node[proved, below=0.8cm of TI, xshift=-1.2cm] (IE) {Lem.\,8\\Indicator-energy\\criterion};
+  \node[proved, below=0.8cm of DEF, xshift=2.8cm] (PLANCH) {Lems.\,9--10\\Plancherel \&\\Fourier repr.};
+
+  %% Row 6: Closedness + coercivity
+  \node[proved, below=0.7cm of PLANCH, xshift=-1.0cm] (CLOSED) {Props.\,11--12\\Closedness on\\$L^2(\R)$, $L^2(I)$};
+  \node[proved, below=0.7cm of PLANCH, xshift=1.5cm] (PSILOG) {Lems.\,13--14\\$\psi_\lambda(\xi)\gtrsim$\\$\log|\xi|$};
+
+  %% Row 7: Compact embedding
+  \node[proved, below=0.7cm of PSILOG] (TAIL) {Cor.\,15\\Log-frequency\\moment bound};
+  \node[external, below=0.7cm of TAIL, xshift=-1.0cm] (KR) {Kolmogorov--Riesz\\compactness\\(Lieb--Loss)};
+  \node[proved, below=0.7cm of KR, xshift=0.5cm] (COMPACT) {Prop.\,17\\Compact\\embedding};
+
+  %% Operator
+  \node[external, below=2.5cm of CLOSED, xshift=-0.5cm] (KATO) {Kato repr.\ thm.\\for closed forms};
+  \node[proved, below=0.7cm of KATO, xshift=1.5cm] (OP) {Thm.\,18\\$A_\lambda\ge 0$,\\compact resolvent};
+
+  %% Irreducibility
+  \node[external, below=1.0cm of IE, xshift=-1.0cm] (BD) {Beurling--Deny/\\Fukushima\\(Dirichlet forms)};
+  \node[proved, below=0.7cm of BD, xshift=1.0cm] (IRRED) {Cor.\,19\\$T(t)$ is\\irreducible};
+
+  %% External PF theorems
+  \node[external, below=0.7cm of IRRED, xshift=-1.5cm] (ABHN) {Arendt et al.\\pos.\ + irred.\ + holo.\\$\Rightarrow$ pos.\ improving};
+  \node[external, right=0.3cm of ABHN] (KRTM) {Krein--Rutman/\\Perron--Frobenius\\simple eigenvalue};
+
+  %% Ground state
+  \node[conclusion, below=0.7cm of ABHN, xshift=1.2cm] (GS) {Prop.\,20\\Simple ground state\\$\psi>0$ a.e.};
+
+  %% Reflection
+  \node[proved, right=1.5cm of GS] (REFL) {Prop.\,21\\Reflection symmetry\\$A_\lambda R = R A_\lambda$};
+
+  %% Even
+  \node[conclusion, below=0.7cm of GS, xshift=1.0cm] (EVEN) {Cor.\,22\\$\psi(-u)=\psi(u)$\\Even ground state};
+
+  %% ---- Arrows ----
+
+  % To PE
+  \draw[arr] (Wp) -- (PE);
+  \draw[arr] (L1) -- (PE);
+  \draw[arr] (L2) -- (PE);
+  \draw[arr] (TRUNC) -- (PE);
+  \draw[arr] (LOG) -- (PE);
+
+  % To AE
+  \draw[arr] (WR) -- (AE);
+  \draw[arr] (L1) -- (AE);
+  \draw[arr] (L2) -- (AE);
+  \draw[arr] (TRUNC) -- (AE);
+  \draw[arr] (LOG) -- (AE);
+
+  % To DEF
+  \draw[arr] (PE) -- (DEF);
+  \draw[arr] (AE) -- (DEF);
+
+  % To MK
+  \draw[arr] (DEF) -- (MK);
+
+  % To IE
+  \draw[arr] (DEF) -- (IE);
+  \draw[arr] (TI) -- (IE);
+
+  % To PLANCH
+  \draw[arr] (DEF) -- (PLANCH);
+
+  % To CLOSED
+  \draw[arr] (PLANCH) -- (CLOSED);
+
+  % To PSILOG
+  \draw[arr] (PLANCH) -- (PSILOG);
+
+  % To TAIL
+  \draw[arr] (PSILOG) -- (TAIL);
+
+  % To COMPACT
+  \draw[arr] (TAIL) -- (KR);
+  \draw[arr] (KR) -- (COMPACT);
+
+  % To OP
+  \draw[arr] (CLOSED) -- (OP);
+  \draw[arr] (COMPACT) -- (OP);
+  \draw[arr] (KATO) -- (OP);
+
+  % To IRRED
+  \draw[arr] (IE) -- (IRRED);
+  \draw[arr] (OP) -- (IRRED);
+  \draw[arr] (BD) -- (IRRED);
+
+  % To GS
+  \draw[arr] (MK) |- (GS);
+  \draw[arr] (IRRED) -- (ABHN);
+  \draw[arr] (OP) -- (IRRED);
+  \draw[arr] (ABHN) -- (GS);
+  \draw[arr] (KRTM) -- (GS);
+  \draw[arr] (OP) -- (GS);
+
+  % To EVEN
+  \draw[arr] (GS) -- (EVEN);
+  \draw[arr] (REFL) -- (EVEN);
+
+\end{tikzpicture}
+}%
+\caption{Dependency flowchart.  
+\textcolor{red!70!black}{\textbf{Red}}: input formulas from analytic number theory.
+\textcolor{green!60!black}{\textbf{Green}}: results proved in the paper.
+\textcolor{orange!80!black}{\textbf{Orange}}: external theorems (cited, not proved).
+\textcolor{blue!70!black}{\textbf{Blue}}: main conclusions.
+Arrows indicate logical dependence.}
+\label{fig:flowchart}
+\end{figure}
+
+%% ===================================================================
+\section{Catalogue of unproven assumptions and external results}
+%% ===================================================================
+
+The paper relies on six external inputs.  All are standard and well-established
+in their respective fields.
+
+\subsection{Input formulas from analytic number theory}
+
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Prime local distribution $W_p(f)$} (Eq.\,2.1).  
+  The formula $W_p(f)=(\log p)\sum_{m\ge 1}p^{-m/2}(f(p^m)+f(p^{-m}))$
+  encodes the contribution of each prime~$p$ to the Weil explicit formula.
+  It is taken as a given input from the classical theory.
+
+\item \textbf{Archimedean local distribution $W_\R(f)$} (Eq.\,2.2).  
+  The formula involving $(\log4\pi+\gamma)\,f(1)$ plus an integral encodes the
+  archimedean (real place) contribution.  Also taken as a given input.
+\end{enumerate}
+
+\subsection{External theorems from functional analysis}
+
+\begin{enumerate}[label=(\roman*),resume]
+\item \textbf{Kato's representation theorem for closed symmetric forms.}
+  Used in Theorem~18 to obtain the self-adjoint operator $A_\lambda$ from
+  the closed quadratic form $\mathcal E_\lambda$.  
+  \emph{Source}: Kato, \emph{Perturbation Theory for Linear Operators}.
+
+\item \textbf{Kolmogorov--Riesz compactness criterion} (Theorem in \S\,7.2).
+  Characterises relatively compact subsets of $L^2(\R)$ via tightness and
+  translation equicontinuity.  Used in Proposition~17 (compact embedding).  
+  \emph{Source}: Lieb--Loss, \emph{Analysis}.
+
+\item \textbf{Beurling--Deny / Fukushima equivalence} (Proposition~9 / Remark).
+  For symmetric Markovian semigroups, the equivalence between
+  ``$\mathcal E(\1_B)=0$ implies $B$ null or conull'' and irreducibility of the
+  semigroup.  Used in Corollary~19.  
+  \emph{Source}: Fukushima, \emph{Dirichlet Forms and Symmetric Markov Processes}.
+
+\item \textbf{Positivity improving from positivity + irreducibility + holomorphy}
+  (Theorem~13, attributed to Arendt, Batty, Hieber, Neubrander / Arendt
+  et~al.).  
+  Used in Proposition~20.  
+  \emph{Source}: Arendt et~al., arXiv:1909.12194, Theorem~2.3.
+
+\item \textbf{Simplicity of the principal eigenvalue} (Theorem~14,
+  Krein--Rutman / Perron--Frobenius for compact positive operators).
+  Under compact resolvent and positivity improving, the bottom of the
+  spectrum is a simple eigenvalue with a strictly positive eigenfunction.
+  Used in Proposition~20.  
+  \emph{Source}: Same reference, Proposition~2.4.
+\end{enumerate}
+
+\subsection{Assessment}
+
+All six external results are \textbf{well-established and standard}.  Items
+(i)--(ii) are classical objects in analytic number theory.  Items (iii)--(vii)
+are core theorems in the theory of closed quadratic forms, Dirichlet forms, and
+positive semigroups, available in standard textbooks.  There are \textbf{no
+hidden or non-standard assumptions}; the paper is transparent about what is
+proved versus what is cited.
+
+%% ===================================================================
+\section{Overall assessment}
+%% ===================================================================
+
+The paper is \textbf{mathematically correct} throughout.  Every proof is
+complete and properly justified.  The logical structure is clean: the
+paper builds from concrete input formulas through a sequence of
+self-contained lemmas to the final spectral conclusion, with all
+external dependencies clearly flagged.
+
+The most notable features of the argument are:
+\begin{itemize}[nosep]
+\item The energy decomposition (Stage~1) is the paper's core original
+  contribution---it is a concrete, verifiable computation.
+\item Irreducibility (Stage~3) hinges on the \emph{archimedean continuum}
+  of shifts (as opposed to the discrete prime shifts alone), which is what
+  forces indicator functions with zero energy to be trivial.
+\item The compact-resolvent proof (Stage~4) via logarithmic coercivity of the
+  Fourier symbol $\psi_\lambda$ and the Kolmogorov--Riesz criterion is
+  self-contained and replaces what was previously an abstract assumption.
+\end{itemize}
+
+\end{document}
