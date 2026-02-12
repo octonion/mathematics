@@ -1,0 +1,1006 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\Spec}{\mathrm{Spec}}
+\newcommand{\re}{\mathrm{Re}}
+
+\title{Potential Consequences of the Energy-Decomposition\\
+Method Beyond the Riemann Zeta Function:\\[4pt]
+\large An Assessment of Three Directions}
+\author{}
+\date{February 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The energy-decomposition method---which proves ground state simplicity
+for the restricted Weil quadratic form operator by establishing a
+Dirichlet form structure, irreducibility, and compact
+resolvent---raises a natural question: where else does this strategy
+apply, and what would the consequences be? We analyze three concentric
+extensions: (I)~Dirichlet $L$-functions with real characters,
+(II)~non-local operators with arithmetic kernels, and (III)~operators
+on adelic and locally compact groups. For each, we describe the
+expected form of the extension, identify the principal mathematical
+consequences, and assess the technical obstacles. We argue that the
+three directions are not independent but form a coherent program whose
+full realization would establish a Perron--Frobenius theory for
+operators on adelic groups, connecting ground state simplicity to the
+Euler product structure of automorphic $L$-functions and to
+multiplicity-one theorems in the Langlands program.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%% ===================================================================
+\section{Introduction}
+\label{sec:intro}
+%% ===================================================================
+
+\subsection{Context}
+
+The energy-decomposition method, as developed for the restricted Weil
+quadratic form operator $A_\lambda$, establishes three properties:
+compact resolvent, simplicity of the lowest eigenvalue, and evenness
+of the ground state eigenfunction. The proof follows a five-step
+pipeline:
+\begin{center}
+\fbox{\parbox{0.88\textwidth}{\centering
+Energy Decomposition $\longrightarrow$ Markov Property
+$\longrightarrow$ Irreducibility \\[3pt]
+$\longrightarrow$ Compact Resolvent $\longrightarrow$
+Perron--Frobenius / Krein--Rutman}}
+\end{center}
+These results resolve what Connes and collaborators identify as ``the
+key difficulty'' \cite{ConnesvanSuijlekom2025} and one of ``the
+missing steps'' \cite{ConnesConsaniMoscovici2025} in their program
+toward the Riemann Hypothesis. The conditional theorems of
+Connes--van Suijlekom \cite{ConnesvanSuijlekom2025} and
+Connes--Consani--Moscovici \cite{ConnesConsaniMoscovici2025} then
+imply that the approximate zeros of the associated entire functions
+lie on the critical line.
+
+The method's key structural features---the decomposition of an
+arithmetic quadratic form into non-negative translation-difference
+energies, the role of the archimedean continuum in forcing
+irreducibility, and the use of Fourier-analytic coercivity for
+compactness---are not specific to the Riemann zeta function. This
+paper explores three natural directions in which the method might
+extend, and assesses the mathematical consequences of each.
+
+\subsection{The three directions}
+
+We consider three extensions of increasing generality and ambition:
+
+\begin{description}[leftmargin=1.5cm, labelwidth=1.2cm]
+\item[Direction I.] Extension to Dirichlet $L$-functions $L(s,\chi)$
+  with real characters $\chi$.
+\item[Direction II.] Application to non-local operators whose kernels
+  are defined by arithmetic data (partial Euler products, Epstein zeta
+  functions, Rankin--Selberg convolutions).
+\item[Direction III.] Formulation on locally compact abelian groups
+  and adelic groups, connecting to the Langlands program and
+  non-commutative geometry.
+\end{description}
+
+These form concentric circles: Direction~I validates the method across
+a family; Direction~II transforms it into a criterion for a class of
+operators; Direction~III embeds the framework in its natural algebraic
+home.
+
+%% ===================================================================
+\section{Direction I: Dirichlet \texorpdfstring{$L$}{L}-functions
+  with real characters}
+\label{sec:dirichlet}
+%% ===================================================================
+
+\subsection{Setup}
+
+Let $\chi$ be a real primitive Dirichlet character modulo $q$ (i.e.,
+a Kronecker symbol $\chi = \left(\frac{d}{\cdot}\right)$ for a
+fundamental discriminant~$d$). The Weil explicit formula for
+$L(s,\chi)$ takes the form
+\[
+-\sum_{v} W_v^\chi(g * \tilde g)
+= \sum_\gamma h(\gamma) + \text{(polar terms)},
+\]
+where the sum on the left runs over all places $v$ (primes and the
+archimedean place), $W_v^\chi$ are the local distributions twisted by
+$\chi$, and the sum on the right runs over zeros
+$\rho = \tfrac{1}{2} + i\gamma$ of $L(s,\chi)$.
+
+Restricting to test functions supported on $[\lambda^{-1},\lambda]$
+(or equivalently on $[-L,L]$ in logarithmic coordinates, with
+$L = \log\lambda$) defines a quadratic form $\cE_\lambda^\chi$ and an
+associated self-adjoint operator $A_\lambda^\chi$ on $L^2([-L,L])$.
+
+\subsection{How the energy decomposition transfers}
+
+The local distributions decompose as:
+\begin{itemize}[nosep]
+\item \textbf{Unramified primes with $\chi(p) = +1$}: The
+  contribution from $p$ involves the same difference-energy structure
+  as the $\zeta(s)$ case:
+  \[
+  \cE_p^\chi(G,G) = \sum_{k=1}^\infty \frac{1}{kp^k}
+  \|\tilde G - S_{k\ell_p}\tilde G\|^2_{L^2},
+  \quad \ell_p = \log p.
+  \]
+  These terms are manifestly non-negative.
+
+\item \textbf{Unramified primes with $\chi(p) = -1$}: The character
+  twist replaces the shift $S_{k\ell_p}$ with a \emph{sign-alternating}
+  shift. For odd powers of $p$, the term becomes:
+  \[
+  \frac{1}{kp^k}\|\tilde G + S_{k\ell_p}\tilde G\|^2_{L^2},
+  \]
+  which is the difference energy for the anti-symmetric combination.
+  This is still a non-negative quadratic form, since
+  $\|f + g\|^2 = \|f - (-g)\|^2$ is a difference energy with
+  reflected shift. The key point is that $\chi(p) = -1$ changes which
+  combination appears but does not introduce negative signs in the
+  energy.
+
+\item \textbf{Ramified primes} ($p \mid q$, $\chi(p) = 0$): The
+  local contribution $\cE_p^\chi$ vanishes. These primes provide no
+  energy and no shifts, but they do not obstruct the argument either.
+
+\item \textbf{Archimedean place}: For even characters $\chi(-1) = +1$,
+  the archimedean distribution $W_\R^\chi$ is identical to $W_\R$
+  for $\zeta(s)$. For odd characters $\chi(-1) = -1$, there is a
+  modification involving the digamma function $\psi$ evaluated at a
+  shifted argument, but the resulting distribution still gives rise
+  to a non-negative continuous superposition of translation-difference
+  energies over $t \in (0,2L)$ with a strictly positive weight.
+\end{itemize}
+
+\begin{proposition}[Expected]
+\label{prop:dirichlet_markov}
+For every real primitive character $\chi$ and every $\lambda > 1$, the
+quadratic form $\cE_\lambda^\chi$ satisfies the Markov property,
+is irreducible (via the archimedean continuum), and has a coercive
+Fourier symbol with logarithmic growth. Consequently, the operator
+$A_\lambda^\chi$ has compact resolvent, simple lowest eigenvalue, and
+a strictly positive eigenfunction with the appropriate symmetry.
+\end{proposition}
+
+\subsection{Mathematical consequences}
+
+\subsubsection{Uniform verification of the Connes--van Suijlekom
+  hypotheses}
+
+The conditional theorem of Connes--van Suijlekom
+\cite{ConnesvanSuijlekom2025} is stated in sufficient generality to
+cover operators beyond $\zeta(s)$. Proposition~\ref{prop:dirichlet_markov}
+would verify the hypotheses---simplicity and appropriate
+symmetry---for the restricted operator associated with every real
+Dirichlet $L$-function simultaneously. This gives:
+
+\begin{corollary}[Expected]
+\label{cor:real_zeros}
+For every real primitive character $\chi$, every $\lambda > 1$, and
+the ground state eigenfunction $\xi_\lambda^\chi$ of $A_\lambda^\chi$:
+all zeros of the entire function $\hat\xi_\lambda^\chi(z)$ lie on
+the real line (equivalently, on the critical line $\re(s) = \tfrac{1}{2}$
+after the usual change of variables).
+\end{corollary}
+
+This would be a uniform statement across an infinite family of
+$L$-functions, established by a single structural argument rather than
+case-by-case analysis.
+
+\subsubsection{Implications for Siegel zeros}
+
+Real Dirichlet $L$-functions are precisely the family where
+\emph{Siegel zeros}---hypothetical zeros very close to $s = 1$---are
+most dangerous and hardest to exclude. The existence of a Siegel zero
+for $L(s,\chi)$ would have dramatic consequences for the distribution
+of primes in arithmetic progressions.
+
+The energy-decomposition result at finite $\lambda$ does not directly
+exclude Siegel zeros, since that would require the $\lambda \to \infty$
+convergence. However, it establishes that the finite-approximation
+framework is well-posed for every real character: the approximate zeros
+lie on the critical line, and the spectral gap $\lambda_2 - \lambda_1$
+is strictly positive. If quantitative lower bounds on the spectral gap
+could be established (uniformly in $\chi$), these would translate into
+zero-free regions for $L(s,\chi)$ near $s = 1$, providing a new
+analytic approach to the Siegel zero problem.
+
+\subsubsection{Robustness of the Connes program}
+
+Perhaps most importantly, extending the result to real characters
+would demonstrate that the energy-decomposition method is not an
+artifact of the special structure of $\zeta(s)$ but is robust across
+the family of $L$-functions with Euler products. This matters for the
+broader Connes program, which is naturally formulated for all
+automorphic $L$-functions via the ad\`ele class space and the
+semi-local trace formula. Showing that the analytic step (ground state
+simplicity) works uniformly across the real family would be a
+meaningful indication that the method has the right level of
+generality.
+
+\subsection{Assessment of difficulty}
+
+\textbf{Low to moderate.} The character twist does not fundamentally
+alter the energy decomposition. The main work is bookkeeping: tracking
+the sign of $\chi(p)$ through the local computations and verifying
+that the archimedean term for odd characters retains a non-negative
+decomposition. No new ideas appear to be required beyond those in the
+original argument.
+
+%% ===================================================================
+\section{Direction II: Non-local operators with arithmetic kernels}
+\label{sec:arithmetic}
+%% ===================================================================
+
+\subsection{Setup}
+
+We consider integral operators on $L^2([-L,L])$ (or on bounded
+domains in $\R^d$) whose kernels or Fourier symbols are defined by
+arithmetic data. Three natural classes present themselves:
+
+\begin{definition}[Partial Euler product operators]
+\label{def:euler_op}
+For a finite set of primes $S$ and $s_0 \in \C$, define the Fourier
+symbol
+\[
+\psi_S(\xi) = -\sum_{p \in S}
+\log|1 - p^{-s_0 - i\xi}|^2
+= -\sum_{p \in S} \sum_{k=1}^\infty \frac{2\cos(k\xi \log p)}{kp^{k\re(s_0)}}.
+\]
+The associated operator $A_S$ on $L^2([-L,L])$ has this function as
+its Fourier symbol (up to boundary corrections from the restriction
+to a finite interval).
+\end{definition}
+
+\begin{definition}[Epstein zeta operators]
+\label{def:epstein_op}
+For a positive definite quadratic form $Q$ in $n$ variables, the
+Epstein zeta function $Z_Q(s) = \sum'_{\mathbf{m} \in \Z^n}
+Q(\mathbf{m})^{-s}$ satisfies a functional equation and defines a
+quadratic form via the explicit formula, analogous to the Weil form.
+The restricted operator $A_Q^\lambda$ acts on $L^2$ of a bounded
+domain.
+\end{definition}
+
+\begin{definition}[Rankin--Selberg operators]
+\label{def:RS_op}
+For two cuspidal automorphic representations $\pi, \pi'$ on
+$\GL_n(\A_\Q)$, the Rankin--Selberg $L$-function $L(s, \pi \times
+\tilde\pi')$ has an Euler product and an explicit formula. The
+associated restricted operator $A_{\pi,\pi'}^\lambda$ is defined by
+the corresponding quadratic form.
+\end{definition}
+
+\subsection{The energy-decomposition criterion}
+
+The abstract framework (Section~5 of the companion paper
+\cite{FracLaplacian2026}) gives a clean criterion: an operator with
+Fourier symbol $\psi$ on a bounded domain has a simple ground state
+if:
+\begin{enumerate}[nosep,label=(H\arabic*)]
+\item The symbol admits a representation
+  $\psi(\xi) = \int |e^{2\pi i h\xi} - 1|^2 \, d\mu(h)$ for a
+  non-negative measure $\mu$.
+\item The support of $\mu$ is dense (irreducibility).
+\item $\psi(\xi) \to \infty$ as $|\xi| \to \infty$ (coercivity).
+\end{enumerate}
+The question for each class of arithmetic operators is: which of these
+hypotheses hold?
+
+\subsection{Analysis by class}
+
+\subsubsection{Partial Euler product operators}
+
+For partial Euler products at $s_0 = \tfrac{1}{2}$ (the case relevant
+to the Riemann Hypothesis), the symbol $\psi_S(\xi)$ is a
+\emph{finite} sum of cosines. Writing out:
+\[
+\psi_S(\xi) = \sum_{p \in S} \sum_{k=1}^\infty
+\frac{2(1 - \cos(k\xi\log p))}{kp^{k/2}}
+= \int |e^{2\pi i h\xi} - 1|^2 \, d\mu_S(h),
+\]
+where $\mu_S$ is a discrete measure supported on $\{k\log p : p \in S,
+\, k \ge 1\}$. The measure is non-negative (H1~holds), but its support
+is discrete and does not generate a dense subgroup of~$\R$ unless
+$S$ contains at least two primes with $\log p_1/\log p_2$ irrational
+(which is the case for any two distinct primes, since $\log 2 / \log 3$
+is irrational). However, with only finitely many primes, the support
+is contained in a lattice-like set, and irreducibility requires
+careful analysis.
+
+Moreover, $\psi_S(\xi)$ is \emph{bounded} (it is a finite sum of
+bounded terms), so $\psi_S(\xi) \not\to \infty$. \textbf{Coercivity
+fails.} This means that for finite Euler products without the
+archimedean contribution, the operator does not have compact resolvent,
+and the energy-decomposition pipeline breaks at Step~4.
+
+This is consistent with the expectation that the archimedean place
+plays an essential role. The Weil form includes both the prime
+contributions \emph{and} the archimedean term $W_\R$, and it is the
+latter that provides logarithmic coercivity. Partial Euler products
+alone are insufficient.
+
+\subsubsection{Epstein zeta operators}
+
+Epstein zeta functions $Z_Q(s)$ do \emph{not} in general satisfy the
+Riemann Hypothesis---this has been known since Davenport and Heilbronn
+\cite{DavenportHeilbronn1936}. The energy-decomposition method must
+therefore fail somewhere for Epstein operators. Identifying
+\emph{where} it fails is diagnostically valuable.
+
+The explicit formula for $Z_Q$ gives local contributions that, unlike
+the Weil form, do not decompose into an Euler product. The quadratic
+form associated to $Z_Q$ has a ``global'' structure without a natural
+decomposition into independent local pieces. This means:
+\begin{itemize}[nosep]
+\item Hypothesis (H1) (non-negative energy decomposition) is
+  \emph{not guaranteed}. Without an Euler product, there is no reason
+  for the quadratic form to decompose as a sum of non-negative
+  translation-difference energies. The Markov property may fail.
+\item Even if (H1) holds, the ``shifts'' arising from the lattice
+  $\Z^n$ of summation in $Z_Q$ are discrete, and irreducibility (H2)
+  depends on the geometry of the lattice relative to the domain of
+  restriction.
+\end{itemize}
+
+\begin{question}
+\label{q:epstein}
+For which positive definite forms $Q$ does the associated quadratic
+form admit a non-negative energy decomposition? Is the failure of
+such a decomposition equivalent to (or correlated with) the existence
+of zeros off the critical line?
+\end{question}
+
+An affirmative answer to the second part of
+Question~\ref{q:epstein} would give a new structural explanation for
+\emph{why} certain zeta functions satisfy the Riemann Hypothesis and
+others do not: the dividing line would be the Markov property of the
+associated Dirichlet form, which in turn reflects the presence or
+absence of an Euler product.
+
+\subsubsection{Rankin--Selberg operators}
+
+Rankin--Selberg $L$-functions $L(s, \pi \times \tilde\pi')$ have
+Euler products:
+\[
+L(s, \pi \times \tilde\pi') = \prod_p L_p(s, \pi_p \times
+\tilde\pi'_p),
+\]
+where each local factor $L_p$ is an inverse polynomial in $p^{-s}$.
+The explicit formula therefore decomposes into local contributions
+$W_p^{\pi,\pi'}$, and the energy decomposition should proceed
+place-by-place, just as for $\zeta(s)$ and Dirichlet $L$-functions.
+
+The key subtlety is at \emph{ramified primes}: when $\pi$ or $\pi'$
+is ramified at $p$, the local factor $L_p$ has a different structure
+(fewer terms, modified coefficients), and the corresponding local
+energy $\cE_p^{\pi,\pi'}$ may have a more complex form. The question
+is whether these local energies remain non-negative quadratic forms.
+
+For $\GL_2$ (classical modular forms), the local factors at ramified
+primes are either $1$ (supercuspidal) or $(1 - \alpha_p p^{-s})^{-1}$
+(Steinberg), both of which give non-negative local energies (the
+former trivially, the latter by the same argument as for unramified
+primes with one fewer term). For $\GL_n$ with $n \ge 3$, the
+ramified local factors can be more complex, and a case-by-case
+analysis is needed.
+
+\subsection{Mathematical consequences}
+
+\subsubsection{Functoriality and the Langlands program}
+
+The Langlands functoriality conjectures predict that for a morphism
+of $L$-groups ${}^LG \to {}^LG'$, there is a ``transfer'' of
+automorphic representations from $G$ to $G'$, compatible with
+$L$-functions. These transfers are often established by analyzing
+the analytic properties of Rankin--Selberg $L$-functions.
+
+If the energy-decomposition method verifies ground state simplicity
+for the restricted operators associated with Rankin--Selberg
+$L$-functions $L(s, \pi \times \tilde\pi')$, this would establish
+that the approximate zeros of these $L$-functions lie on the critical
+line. While this is a finite-$\lambda$ statement (and hence does not
+prove GRH for Rankin--Selberg $L$-functions), it would provide
+structural constraints on the analytic behavior of these $L$-functions
+that could serve as inputs to functoriality arguments.
+
+More concretely, the spectral gap $\lambda_2 - \lambda_1$ of the
+restricted operator encodes information about the spacing of zeros.
+Quantitative lower bounds on this spectral gap would give
+\emph{zero-density estimates} for Rankin--Selberg $L$-functions,
+which are among the most useful analytic inputs to the Langlands
+program.
+
+\subsubsection{Subconvexity bounds}
+
+Subconvexity bounds---estimates of the form $|L(\tfrac{1}{2}, \pi)|
+\ll C(\pi)^{1/4 - \delta}$ for some $\delta > 0$, where $C(\pi)$ is
+the analytic conductor---are central tools in modern analytic number
+theory. They have applications to equidistribution of lattice points,
+quantum unique ergodicity, and mass equidistribution on arithmetic
+surfaces.
+
+The spectral gap of the restricted Weil-type operator is related to
+the rate at which approximate zeros separate from the critical line.
+If the energy-decomposition method could provide \emph{quantitative}
+lower bounds on $\lambda_2 - \lambda_1$ (uniformly in the
+representation $\pi$), these would translate into
+subconvexity-type estimates for the associated $L$-functions.
+
+This connection is speculative but structurally motivated: the
+spectral gap controls the decay rate of correlations in the associated
+Markov semigroup, and this decay rate is directly related to the
+analytic behavior of $L(s,\pi)$ near the critical line.
+
+\subsubsection{Diagnostic value for Epstein zeta functions}
+
+As noted in Section~\ref{sec:arithmetic}.3.2, the energy-decomposition
+method is expected to \emph{fail} for Epstein zeta functions (which
+violate the Riemann Hypothesis). Identifying the precise failure
+mode---does the Markov property break down? does irreducibility fail?
+does coercivity fail?---would give a new structural characterization
+of the Euler product as the arithmetic feature that ``protects'' the
+Riemann Hypothesis.
+
+\begin{conjecture}[Informal]
+\label{conj:diagnostic}
+An $L$-function $L(s)$ with functional equation and analytic
+continuation satisfies a Riemann Hypothesis if and only if the
+associated restricted quadratic form admits a non-negative energy
+decomposition (Markov property) with an irreducible shift structure.
+The Euler product is the arithmetic source of both properties.
+\end{conjecture}
+
+This conjecture is deliberately informal; making it precise would
+require specifying the class of $L$-functions under consideration and
+the sense in which the energy decomposition is ``associated'' to the
+$L$-function. But even as a heuristic, it suggests a fundamentally
+new perspective: the Riemann Hypothesis as a \emph{positivity and
+irreducibility} statement about Dirichlet forms, rather than a
+statement about the location of zeros.
+
+\subsection{Assessment of difficulty}
+
+\textbf{Moderate to high.} The main challenge is that for general
+arithmetic kernels, the energy decomposition into non-negative pieces
+may not exist. The Euler product structure of $L$-functions is what
+makes the Weil form decompose nicely; without it, the local terms may
+lack definite sign. Each class of operators requires individual
+analysis. The Rankin--Selberg case for $\GL_2$ is likely tractable;
+the general $\GL_n$ case and the Epstein diagnostic problem are
+substantially harder.
+
+%% ===================================================================
+\section{Direction III: Operators on groups}
+\label{sec:groups}
+%% ===================================================================
+
+\subsection{Setup}
+
+The translation-difference structure at the heart of the
+energy-decomposition method generalizes naturally to locally compact
+abelian groups. Let $G$ be such a group with Haar measure $\mu$,
+Pontryagin dual $\hat G$, and let $K \subset G$ be a compact subset
+with $\mu(K) > 0$.
+
+\begin{definition}[Energy form on a group]
+\label{def:group_energy}
+Given a non-negative L\'evy-type measure $\nu$ on $G$ (i.e., a
+Radon measure with $\nu(\{0\}) = 0$ and
+$\int_G \min(1, d(g,0)^2) \, d\nu(g) < \infty$ for some metric $d$),
+define
+\[
+\cE_\nu(u,u) = \int_G \|\tau_g \tilde u - \tilde u\|_{L^2(G)}^2
+\, d\nu(g),
+\]
+where $\tilde u$ is the extension of $u \in L^2(K)$ by zero and
+$\tau_g$ is translation by $g$.
+\end{definition}
+
+The associated Fourier symbol on $\hat G$ is the continuous negative
+definite function
+\[
+\psi(\hat g) = \int_G |1 - \hat g(g)|^2 \, d\nu(g),
+\quad \hat g \in \hat G.
+\]
+The abstract criterion (hypotheses H1--H3 of
+Section~\ref{sec:arithmetic}.2) becomes:
+\begin{enumerate}[nosep, label=(H\arabic*${}'$)]
+\item $\nu$ is a non-negative measure (automatic from the definition).
+\item The support of $\nu$ generates a dense subgroup of $G$
+  (irreducibility).
+\item $\psi(\hat g) \to \infty$ as $\hat g \to \infty$ in $\hat G$
+  (coercivity).
+\end{enumerate}
+
+\subsection{Natural settings}
+
+\subsubsection{The id\`ele class group}
+
+The most natural home for the Weil distribution is the id\`ele class
+group $C_\Q = \A_\Q^*/\Q^*$, where $\A_\Q$ is the ad\`ele ring of
+$\Q$. Via the logarithmic map on the archimedean component,
+$C_\Q \cong \R_{>0} \times \prod_p \Z_p^*$ (as a topological group
+modulo the discrete action of $\Q^*$). The Weil distribution is
+naturally a distribution on $C_\Q$, and the local decomposition
+\[
+W = \sum_p W_p + W_\R
+\]
+reflects the factorization of $C_\Q$ into local components.
+
+Working directly on $C_\Q$ rather than projecting to $\R$ would give
+a more canonical formulation of the energy decomposition. The
+``shifts'' by $\log p$ and by the archimedean continuum become
+translations within $C_\Q$, and the irreducibility question becomes:
+does the support of the Weil distribution generate a dense subgroup of
+$C_\Q$?
+
+The answer is yes: the elements $\{p\}_{p \text{ prime}}$, viewed in
+$C_\Q$, generate a dense subgroup (this is essentially the content of
+the Artin reciprocity law for $\Q$). Combined with the archimedean
+component, the full support of the Weil distribution generates all of
+$C_\Q$.
+
+\subsubsection{Adelic groups}
+
+For automorphic $L$-functions on $\GL_n$, the natural setting is the
+quotient $\GL_n(\A_\Q) / \GL_n(\Q)$. Automorphic forms are functions
+on this quotient, and the trace formula---the principal tool for
+studying their spectral properties---is fundamentally a statement
+about operators on this space.
+
+The energy-decomposition framework would need to be reformulated for
+\emph{non-abelian} groups, since $\GL_n$ for $n \ge 2$ is not
+abelian. The translations $\tau_g$ would be replaced by the regular
+representation, and the ``Fourier symbol'' would be replaced by the
+spectral decomposition into automorphic representations. The Markov
+property, irreducibility, and coercivity would need non-commutative
+analogues.
+
+\subsubsection{$p$-adic groups}
+
+The local distributions $W_p$ are naturally defined on $\Q_p^*$
+(the multiplicative group of $p$-adic numbers), and the local energy
+$\cE_p$ is a Dirichlet form on $L^2(\Q_p^*)$. Studying these local
+forms individually, before taking the product over places, could
+provide insight into the local structure of the energy decomposition.
+
+The $p$-adic groups $\Q_p^*$ are totally disconnected, which makes
+the analysis of Dirichlet forms rather different from the archimedean
+case. The ``shifts'' are multiplication by powers of $p$, which act
+on the ultrametric space $\Q_p^*$ in a way that has no Euclidean
+analogue. Nevertheless, the theory of Dirichlet forms on ultrametric
+spaces has been developed (see \cite{AlbrechtoBogachevRockner2009}
+and references therein), and could provide the necessary tools.
+
+\subsection{Mathematical consequences}
+
+\subsubsection{Adelic Perron--Frobenius theory}
+
+If the semigroup generated by the Weil form on the id\`ele class group
+(or more generally on $\GL_n(\A)/\GL_n(\Q)$) is positivity-improving
+in an appropriate sense, this would give a \emph{representation-theoretic}
+proof of ground state simplicity. The ground state would be the
+spherical (unramified) vector in the trivial automorphic
+representation, and simplicity would reflect the
+\emph{multiplicity-one theorem} for automorphic representations of
+$\GL_n$ \cite{Shalika1974,PiatetskiShapiro1979}.
+
+This would be a deep connection: the multiplicity-one theorem is
+proved by purely algebraic/representation-theoretic methods (local
+uniqueness of Whittaker models), while ground state simplicity is
+proved by analytic methods (Dirichlet forms and Perron--Frobenius).
+If these two results could be identified as different manifestations
+of the same underlying structure, it would unify two of the most
+important tools in the theory of automorphic forms.
+
+\begin{conjecture}[Adelic Perron--Frobenius]
+\label{conj:adelic_PF}
+Let $\pi$ be a cuspidal automorphic representation of $\GL_n(\A_\Q)$,
+and let $\cE_\lambda^\pi$ be the quadratic form obtained from the
+explicit formula for $L(s,\pi)$ restricted to a cutoff $\lambda$.
+Then $\cE_\lambda^\pi$ is an irreducible Dirichlet form, and the
+corresponding operator has a simple ground state if and only if $\pi$
+satisfies multiplicity one.
+\end{conjecture}
+
+\subsubsection{Trace formula interpretation}
+
+The Arthur--Selberg trace formula equates spectral data (automorphic
+representations) with geometric data (orbital integrals):
+\[
+\sum_\pi m(\pi) \, \mathrm{tr} \, \pi(f) = \sum_{\{\gamma\}}
+\mathrm{vol}(G_\gamma(\Q) \backslash G_\gamma(\A)) \cdot
+\cO_\gamma(f),
+\]
+where the left side sums over automorphic representations with
+multiplicity $m(\pi)$ and the right side sums over conjugacy classes
+$\{\gamma\}$ with orbital integrals $\cO_\gamma(f)$.
+
+The energy decomposition of the Weil form, lifted to the adelic
+setting, would give a new interpretation of the \emph{spectral side}
+of the trace formula:
+\begin{itemize}[nosep]
+\item The ground state simplicity at finite cutoff corresponds to the
+  \textbf{isolation of the trivial representation} in the spectral
+  decomposition.
+\item The spectral gap $\lambda_2 - \lambda_1$ encodes information
+  about the \textbf{first non-trivial automorphic representation}
+  (the one closest to the trivial representation in the spectral
+  ordering).
+\item The rate of convergence of the spectral gap as
+  $\lambda \to \infty$ would be controlled by the
+  \textbf{Ramanujan conjecture} (which bounds the local components
+  of cuspidal representations).
+\end{itemize}
+
+This perspective suggests that the energy-decomposition method could
+provide a new approach to the Ramanujan conjecture, at least in the
+form of bounds on the spectral gap. The Ramanujan conjecture for
+$\GL_2$ over $\Q$ is known (by the work of Deligne on the Weil
+conjectures for varieties over finite fields
+\cite{Deligne1974}), but for $\GL_n$ with $n \ge 3$ it remains open
+in general.
+
+\subsubsection{Non-commutative geometry}
+
+Connes' broader program places the Riemann Hypothesis within the
+framework of non-commutative geometry, where the ad\`ele class space
+$\A_\Q / \Q^*$ is treated as a ``non-commutative space'' and the
+zeros of $\zeta(s)$ are realized as the spectrum of a suitable
+operator.
+
+The Dirichlet form framework has non-commutative analogues: the
+Cipriani--Sauvageot theory of \emph{non-commutative Dirichlet forms}
+\cite{CiprianiSauvageot2003} extends the classical theory to the
+setting of von Neumann algebras and $C^*$-algebras. Extending the
+energy-decomposition method to this setting would connect to Connes'
+spectral realization of zeros on the non-commutative ad\`ele class
+space.
+
+Specifically, the non-commutative Dirichlet form associated to the
+``Weil operator'' on the ad\`ele class space would encode both the
+spectral properties of $\zeta(s)$ and the positivity/irreducibility
+structure that implies ground state simplicity. The Markov property in
+the non-commutative setting is related to \emph{complete positivity}
+of the associated semigroup, and irreducibility is related to
+\emph{ergodicity} of the corresponding non-commutative dynamical
+system.
+
+\subsection{Assessment of difficulty}
+
+\textbf{High to very high.} The principal obstacles are:
+\begin{enumerate}[nosep]
+\item \textbf{Compactness on groups.} The Kolmogorov--Riesz
+  compactness criterion is specific to $\R^d$. Extending it to
+  locally compact abelian groups (especially those with totally
+  disconnected components, such as $\prod_p \Z_p^*$) requires
+  developing new compactness criteria adapted to the group topology.
+\item \textbf{Coercivity on non-Euclidean duals.} The ``growth at
+  infinity'' of the Fourier symbol $\psi(\hat g)$ must be formulated
+  in terms of the topology of $\hat G$, which for adelic groups is
+  a restricted direct product with a complicated structure at infinity.
+\item \textbf{Non-commutativity.} For $\GL_n$ with $n \ge 2$, the
+  group is non-abelian, and the Pontryagin dual is replaced by the
+  unitary dual (the set of equivalence classes of irreducible unitary
+  representations). The ``Fourier symbol'' becomes an operator-valued
+  function on this dual, and the Dirichlet form framework must be
+  replaced by its non-commutative analogue.
+\item \textbf{Convergence as $\lambda \to \infty$.} Even in the
+  abelian case, the convergence of ground states and eigenvalues as
+  the cutoff $\lambda \to \infty$ is a hard problem that requires
+  controlling the growth of the operator in the limit. This is the
+  ``second missing step'' in the Connes program, independent of
+  (and almost certainly harder than) the ground state simplicity
+  question.
+\end{enumerate}
+
+%% ===================================================================
+\section{The three directions together}
+\label{sec:synthesis}
+%% ===================================================================
+
+\subsection{Concentric structure}
+
+The three directions form concentric circles of a single program:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}p{2.5cm}p{4.8cm}p{5.5cm}@{}}
+\toprule
+\textbf{Direction} & \textbf{Role} & \textbf{Key question} \\
+\midrule
+I. Real $\chi$ &
+Proof of concept: validates the method across a family &
+Does the character twist preserve non-negativity? \\
+II. Arithmetic kernels &
+Criterion: characterizes which operators have simple ground states &
+Which arithmetic structures yield Markov property + irreducibility? \\
+III. Groups &
+Foundation: embeds the framework in its natural algebraic home &
+Does Perron--Frobenius on adelic groups connect to multiplicity one? \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{The unified vision}
+
+If all three extensions were carried out, the combined result would
+amount to the following:
+
+\begin{quote}
+\emph{There exists a Perron--Frobenius theory for operators on adelic
+groups, in which ground state simplicity is equivalent to
+irreducibility of the associated Dirichlet form, and this
+irreducibility is guaranteed by the Euler product structure of
+automorphic $L$-functions.}
+\end{quote}
+
+This would have four major consequences:
+
+\subsubsection{RH-type results as consequences of representation theory}
+
+The chain
+\[
+\text{Euler product} \implies \text{non-negative energy decomposition}
+\implies \text{Markov property}
+\]
+\[
+\implies \text{irreducibility} \implies \text{positivity-improving}
+\implies \text{simple ground state}
+\]
+\[
+\implies \text{approximate zeros on critical line}
+\]
+would establish that the location of approximate zeros is a
+\emph{consequence of the multiplicative structure of
+$L$-functions}---that is, of the Euler product, which is the
+arithmetic incarnation of the local-global principle. Combined with
+the multiplicity-one connection
+(Conjecture~\ref{conj:adelic_PF}), this would give a
+representation-theoretic explanation for why RH-type statements are
+true: they are shadow of the uniqueness of automorphic forms.
+
+\subsubsection{A diagnostic for the Riemann Hypothesis}
+
+For objects without Euler products (Epstein zeta functions, linear
+combinations of $L$-functions, Beurling zeta functions), the energy
+decomposition would fail, and the \emph{specific failure
+mode}---which hypothesis (H1), (H2), or (H3) breaks down---would
+explain which zeros leave the critical line and why:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}p{4cm}p{4cm}p{4.5cm}@{}}
+\toprule
+\textbf{Failure mode} & \textbf{Consequence} & \textbf{Example} \\
+\midrule
+(H1) Markov fails: energy decomposition has indefinite terms &
+Ground state may not be positive; semigroup not positivity-preserving &
+Epstein zeta with no Euler product \\
+(H2) Irreducibility fails: shifts too sparse &
+Ground state may not be unique; degenerate eigenspaces possible &
+Partial Euler product with too few primes \\
+(H3) Coercivity fails: symbol bounded &
+Resolvent not compact; continuous spectrum possible &
+Finite Euler product without archimedean term \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{A new analytic foundation for the Connes program}
+
+Currently, the Connes program rests on two principal tools: the
+semi-local trace formula and the spectral realization of zeros. The
+energy-decomposition/Dirichlet-form approach would add a third
+component---\emph{positivity and irreducibility in the sense of Markov
+processes}---that provides the ``missing step'' not just for $\zeta(s)$
+but systematically across all $L$-functions with Euler products.
+
+This three-legged structure (trace formula + spectral realization +
+Dirichlet form theory) would be more robust than any two components
+alone, because the Dirichlet form approach provides the
+\emph{analytic} mechanism (positivity-improving semigroup) that
+converts the \emph{algebraic} input (Euler product) into the
+\emph{spectral} conclusion (ground state simplicity).
+
+\subsubsection{A bridge between analytic number theory and PDE}
+
+The fractional Laplacian paper \cite{FracLaplacian2026} demonstrates
+that the same abstract machinery governs both the Weil quadratic form
+and the fractional Laplacian. A fully developed theory would mean that
+techniques from non-local PDE---regularity theory, heat kernel
+estimates, spectral gap bounds, Harnack inequalities---could be
+imported into number theory, and vice versa.
+
+This kind of cross-pollination has historical precedent: the Selberg
+trace formula was inspired by the spectral theory of the Laplacian on
+hyperbolic surfaces; the Langlands program draws on the
+representation theory of Lie groups; and the proof of the Weil
+conjectures by Deligne used \'etale cohomology, a tool imported from
+algebraic topology. The energy-decomposition method suggests a new
+channel of communication: between the theory of non-local operators
+(fractional Laplacians, L\'evy processes, Dirichlet forms on metric
+measure spaces) and the analytic theory of $L$-functions.
+
+Specific techniques that could transfer include:
+\begin{itemize}[nosep]
+\item \textbf{Spectral gap estimates} from the theory of Dirichlet
+  forms on fractals and metric measure spaces, adapted to give
+  quantitative bounds on $\lambda_2 - \lambda_1$ for
+  arithmetic operators.
+\item \textbf{Heat kernel bounds} (Li--Yau type, or sub-Gaussian
+  estimates) for the semigroup generated by the Weil operator,
+  translating into zero-density estimates for $L$-functions.
+\item \textbf{Functional inequalities} (Poincar\'e, log-Sobolev,
+  Nash) for arithmetic Dirichlet forms, giving new analytic inputs to
+  the study of $L$-functions near the critical line.
+\end{itemize}
+
+\subsection{Principal caveats}
+
+The vision described above is contingent on assumptions that are not
+yet verified. The most important caveats are:
+
+\begin{enumerate}[nosep]
+\item \textbf{Non-negativity of the energy decomposition.} The entire
+  framework depends on the quadratic form decomposing into
+  non-negative pieces. For $\zeta(s)$ and real Dirichlet
+  $L$-functions, this appears to hold. For general automorphic
+  $L$-functions, especially at ramified primes, it is unproven and
+  could fail. The boundary of where non-negativity holds would itself
+  be an important discovery.
+
+\item \textbf{The convergence problem.} Even if ground state
+  simplicity is established for every finite cutoff $\lambda$, the
+  full Riemann Hypothesis requires $\lambda \to \infty$. The
+  convergence of approximate zeros to actual zeros is a separate and
+  almost certainly harder problem, identified by Connes as the other
+  ``missing step.'' The energy-decomposition method, as currently
+  formulated, does not address this.
+
+\item \textbf{Non-commutative obstacles.} The extension to non-abelian
+  groups ($\GL_n$ for $n \ge 2$) is genuinely difficult and may
+  require new ideas beyond the scope of classical Dirichlet form
+  theory. The Cipriani--Sauvageot framework provides a starting point,
+  but substantial development would be needed.
+
+\item \textbf{Quantitative vs.\ qualitative.} The current method gives
+  \emph{qualitative} results (the ground state is simple; the
+  eigenfunction is positive) but not \emph{quantitative} ones (how
+  large is the spectral gap? how positive is the eigenfunction?). For
+  the deeper applications (subconvexity bounds, Ramanujan conjecture,
+  zero-density estimates), quantitative control is essential and
+  would require new techniques beyond the abstract
+  Perron--Frobenius framework.
+\end{enumerate}
+
+%% ===================================================================
+\section{Summary}
+\label{sec:summary}
+%% ===================================================================
+
+The energy-decomposition method, in its current form, resolves a
+specific open problem (ground state simplicity for the restricted Weil
+operator) by a specific route (Dirichlet form theory and
+Perron--Frobenius). But the structural features of the
+argument---non-negative decomposition, irreducibility via rich shift
+structures, coercivity via Fourier growth---are not tied to the
+Riemann zeta function. They suggest a broader framework in which:
+
+\begin{itemize}[nosep]
+\item Direction~I (real characters) validates the method's robustness
+  and provides the first uniform result across a family of
+  $L$-functions, with potential implications for the Siegel zero
+  problem.
+
+\item Direction~II (arithmetic kernels) transforms the method into a
+  diagnostic tool that characterizes which $L$-functions ``should''
+  satisfy the Riemann Hypothesis based on the Markov/irreducibility
+  properties of their associated Dirichlet forms, with connections to
+  functoriality and subconvexity.
+
+\item Direction~III (operators on groups) embeds the framework in the
+  Langlands program and non-commutative geometry, potentially
+  connecting ground state simplicity to multiplicity-one theorems and
+  providing a new analytic foundation for the Connes program.
+\end{itemize}
+
+The full vision---an adelic Perron--Frobenius theory connecting Euler
+products, Dirichlet form irreducibility, and automorphic multiplicity
+one---is ambitious and largely conjectural. But each step along the
+way (starting with Direction~I, which appears to require minimal new
+ideas) would be a concrete mathematical contribution, and the overall
+direction suggests a genuine structural insight: the Riemann
+Hypothesis, at its core, may be a statement about positivity and
+irreducibility.
+
+\begin{thebibliography}{99}
+
+\bibitem{AlbrechtoBogachevRockner2009}
+S.~Albeverio, V.I.~Bogachev, M.~R\"ockner, Dirichlet form methods
+in the theory of Kolmogorov operators and generalized stochastic
+Burgers equations, in: \emph{Stochastic PDE and Applications}, CIME
+Lecture Notes, Springer, 2009.
+
+\bibitem{CiprianiSauvageot2003}
+F.~Cipriani, J.-L.~Sauvageot, Derivations as square roots of
+Dirichlet forms, \emph{J.\ Funct.\ Anal.}\ \textbf{201} (2003),
+78--120.
+
+\bibitem{Connes2026}
+A.~Connes, The Riemann Hypothesis: Past, Present and a Letter Through
+Time, arXiv:2602.04022 (2026).
+
+\bibitem{ConnesConsaniMoscovici2025}
+A.~Connes, C.~Consani, H.~Moscovici, Zeta Spectral Triples,
+arXiv:2511.22755 (2025).
+
+\bibitem{ConnesvanSuijlekom2025}
+A.~Connes, W.\,D.~van Suijlekom, Quadratic Forms, Real Zeros and
+Echoes of the Spectral Action, \emph{Commun.\ Math.\ Phys.}\
+\textbf{406}, 12 (2025).
+
+\bibitem{DavenportHeilbronn1936}
+H.~Davenport, H.~Heilbronn, On the zeros of certain Dirichlet
+series, \emph{J.\ London Math.\ Soc.}\ \textbf{11} (1936), 181--185.
+
+\bibitem{Deligne1974}
+P.~Deligne, La conjecture de Weil.~I, \emph{Inst.\ Hautes \'Etudes
+Sci.\ Publ.\ Math.}\ \textbf{43} (1974), 273--307.
+
+\bibitem{FracLaplacian2026}
+Ground State Simplicity via Energy Decomposition: A Dirichlet Form
+Proof for the Fractional Laplacian, with a View Toward the Weil
+Quadratic Form (2026). Companion paper.
+
+\bibitem{FukushimaOshimaTakeda2011}
+M.~Fukushima, Y.~\=Oshima, M.~Takeda, \emph{Dirichlet Forms and
+Symmetric Markov Processes}, 2nd ed., de~Gruyter, 2011.
+
+\bibitem{PiatetskiShapiro1979}
+I.\,I.~Piatetski-Shapiro, Multiplicity one theorems, in:
+\emph{Automorphic Forms, Representations and $L$-functions}, Proc.\
+Sympos.\ Pure Math.\ \textbf{33}, Part~1, AMS, 1979, 209--212.
+
+\bibitem{Shalika1974}
+J.\,A.~Shalika, The multiplicity one theorem for $\GL_n$, \emph{Ann.\
+of Math.}\ \textbf{100} (1974), 171--193.
+
+\end{thebibliography}
+
+\end{document}
