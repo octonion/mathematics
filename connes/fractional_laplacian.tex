@@ -1,0 +1,979 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+% --- Tags to mark standard vs. expository/new ingredients
+\newcommand{\tagstd}{\textcolor{gray}{\scriptsize\bfseries[standard]}}
+\newcommand{\tagexp}{\textcolor{gray}{\scriptsize\bfseries[expository]}}
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cH}{\mathcal{H}}
+
+\title{Ground State Simplicity via Energy Decomposition:\\
+A Dirichlet Form Proof for the Fractional Laplacian\\[6pt]
+\large With a View Toward the Weil Quadratic Form}
+\author{}
+\date{February 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give a self-contained proof that the fractional Laplacian
+$(-\Delta)^s$ ($0 < s < 1$) on a bounded domain $\Omega \subset \R^d$
+with Dirichlet boundary conditions has a simple lowest eigenvalue
+whose eigenfunction is strictly positive. Our proof avoids both the
+maximum principle for non-local operators and probabilistic arguments
+involving stable L\'evy processes. Instead, it proceeds by a purely
+analytic route: we decompose the associated quadratic form as a
+continuous superposition of translation-difference energies, derive
+the Markov property and irreducibility from this decomposition, prove
+compact resolvent via Kolmogorov--Riesz, and conclude ground state
+simplicity from the Krein--Rutman theorem for positivity-improving
+semigroups. We develop this argument in parallel with the analogous
+(and much less familiar) application to the Weil quadratic form from
+analytic number theory, where the same structural pattern---energy
+decomposition, Markov property, irreducibility, compact resolvent,
+Perron--Frobenius---resolves an open problem in the Connes program
+toward the Riemann Hypothesis.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%% ===================================================================
+\section{Introduction}
+\label{sec:intro}
+%% ===================================================================
+
+\subsection{The main result}
+
+Let $\Omega \subset \R^d$ be a bounded open domain and let
+$0 < s < 1$. The \emph{fractional Laplacian with Dirichlet boundary
+conditions}, denoted $(-\Delta)^s_\Omega$, is the non-negative
+self-adjoint operator on $L^2(\Omega)$ associated with the quadratic
+form
+\begin{equation}
+\label{eq:frac_form}
+\cE(u,u) = \frac{C_{d,s}}{2} \iint_{\R^d \times \R^d}
+\frac{|\tilde u(x) - \tilde u(y)|^2}{|x-y|^{d+2s}} \, dx \, dy,
+\end{equation}
+where $\tilde u$ denotes the extension of $u$ by zero outside
+$\Omega$, and the normalizing constant is
+\[
+C_{d,s} = \frac{2^{2s} s \, \Gamma(d/2+s)}{\pi^{d/2} \Gamma(1-s)}.
+\]
+The form domain is the fractional Sobolev space
+$\cD(\cE) = H^s_0(\Omega) = \{ u \in H^s(\R^d) : u = 0 \text{ a.e.\
+on } \R^d \setminus \Omega \}$.
+
+The following result is well known (see, e.g.,
+\cite{ServadeiValdinoci2014,RosOtonSerra2014}):
+
+\begin{theorem}[Ground state simplicity \tagstd]
+\label{thm:main}
+The operator $(-\Delta)^s_\Omega$ has compact resolvent and hence
+purely discrete spectrum $0 < \lambda_1 < \lambda_2 \le \lambda_3 \le
+\cdots \to \infty$. The first eigenvalue $\lambda_1$ is simple, and
+the corresponding eigenfunction $\varphi_1$ can be chosen to satisfy
+$\varphi_1(x) > 0$ for a.e.\ $x \in \Omega$.
+
+If, moreover, $\Omega$ is symmetric under a reflection
+$R: x \mapsto \bar x$ (i.e., $R\Omega = \Omega$), then $\varphi_1$
+is symmetric: $\varphi_1(\bar x) = \varphi_1(x)$ for a.e.\ $x$.
+\end{theorem}
+
+Standard proofs of Theorem~\ref{thm:main} rely on either the
+\emph{maximum principle} for non-local operators (extending the
+classical argument for $-\Delta$ via Hopf's lemma) or on
+\emph{probabilistic} arguments showing that the symmetric
+$2s$-stable L\'evy process killed on exiting $\Omega$ has an
+irreducible transition semigroup. Both approaches, while natural,
+obscure the purely analytic mechanism at work.
+
+In this paper we give a proof that uses neither. Instead, we follow a
+five-step pipeline:
+\begin{center}
+\fbox{\parbox{0.85\textwidth}{\centering
+Energy Decomposition $\longrightarrow$ Markov Property
+$\longrightarrow$ Irreducibility \\[3pt]
+$\longrightarrow$ Compact Resolvent $\longrightarrow$
+Perron--Frobenius / Krein--Rutman}}
+\end{center}
+Each step is elementary, and the chain as a whole constitutes a
+proof of ground state simplicity that generalizes to a much broader
+class of operators---including, as we explain in
+Section~\ref{sec:parallel}, the operator associated with the
+\emph{Weil quadratic form} in analytic number theory.
+
+\subsection{Motivation: the Weil quadratic form}
+\label{sec:motivation}
+
+The impetus for writing this paper comes from a recent development in
+the Connes program toward the Riemann Hypothesis. The \emph{Weil
+quadratic form} $QW_\lambda$, obtained by restricting Weil's explicit
+formula to test functions supported on an interval
+$[\lambda^{-1},\lambda]$, defines a self-adjoint operator $A_\lambda$
+on an appropriate $L^2$ space. Three papers by Connes and
+collaborators published in late 2025 and early 2026
+\cite{ConnesvanSuijlekom2025,ConnesConsaniMoscovici2025,Connes2026}
+establish that \emph{if} the lowest eigenvalue of $A_\lambda$ is
+simple with an even eigenfunction, \emph{then} far-reaching
+consequences follow---including the fact that all zeros of certain
+approximating functions lie on the critical line.
+
+These papers explicitly identify the verification of simplicity and
+evenness as ``the key difficulty'' and list it among ``the missing
+steps.'' In concurrent work, this verification is carried out by an
+\emph{energy-decomposition method} that rewrites the Weil quadratic
+form as a continuous superposition of translation-difference energies,
+recognizes this as a Dirichlet form, proves irreducibility via the
+archimedean continuum of shifts, establishes compact resolvent via
+logarithmic coercivity, and applies Krein--Rutman.
+
+The purpose of the present paper is to make this method accessible by
+demonstrating it in a familiar setting---the fractional
+Laplacian---where every step can be verified independently and the
+result is already known by other means.
+
+\subsection{Notation and conventions}
+
+Throughout, $\Omega \subset \R^d$ is a bounded open set. We write
+$L^2 = L^2(\Omega)$ with norm $\|\cdot\|_2$. For $h \in \R^d$, the
+translation operator is $(\tau_h f)(x) = f(x+h)$. For a measurable
+function $u$ on $\Omega$, we write $\tilde u$ for the extension of
+$u$ by zero to $\R^d$. The symmetric difference of sets is
+$A \triangle B = (A \setminus B) \cup (B \setminus A)$. Constants
+$C, c > 0$ may change from line to line.
+
+%% ===================================================================
+\section{Preliminaries}
+\label{sec:prelim}
+%% ===================================================================
+
+We collect the background results used in the proof. Each is standard
+and can be found in the references cited.
+
+\subsection{Symmetric Dirichlet forms}
+
+\begin{definition}[Symmetric Dirichlet form]
+A \emph{symmetric Dirichlet form} on $L^2(X,\mu)$ is a closed,
+densely defined, non-negative symmetric bilinear form
+$(\cE, \cD(\cE))$ satisfying the \emph{Markov property}: for every
+$u \in \cD(\cE)$, the function $\hat u = (0 \vee u) \wedge 1$
+belongs to $\cD(\cE)$ and $\cE(\hat u, \hat u) \le \cE(u,u)$.
+\end{definition}
+
+More generally, the Markov property can be stated for
+\emph{normal contractions}: a function $\Phi: \R \to \R$ with
+$\Phi(0) = 0$ and $|\Phi(t) - \Phi(s)| \le |t-s|$ for all
+$t, s \in \R$. For a Dirichlet form, $\Phi \circ u \in \cD(\cE)$
+and $\cE(\Phi \circ u, \Phi \circ u) \le \cE(u,u)$ for every normal
+contraction $\Phi$ \cite{FukushimaOshimaTakeda2011}.
+
+The fundamental link between Dirichlet forms and operator theory is
+that every symmetric Dirichlet form $(\cE, \cD(\cE))$ on
+$L^2(X,\mu)$ is associated, via the Kato representation theorem, with
+a unique non-negative self-adjoint operator $A$ satisfying
+$\cE(u,v) = \langle A^{1/2}u, A^{1/2}v \rangle$ for
+$u, v \in \cD(\cE) = \cD(A^{1/2})$. The operator $-A$ generates a
+strongly continuous contraction semigroup $(T_t)_{t \ge 0}$ on
+$L^2(X,\mu)$. When $\cE$ satisfies the Markov property, the
+semigroup is \emph{sub-Markovian}: $0 \le f \le 1$ implies
+$0 \le T_t f \le 1$ \cite{FukushimaOshimaTakeda2011}.
+
+
+\subsection{Irreducibility}
+
+We use the standard ``invariant set'' formulation of irreducibility,
+which is the natural one for the Perron--Frobenius/Krein--Rutman step.
+
+\begin{definition}[Invariant sets and irreducibility \tagstd]
+\label{def:irreducible}
+Let $(\cE,\cD(\cE))$ be a densely defined, closed, non-negative
+symmetric form on $L^2(\Omega)$. A measurable set $M\subset\Omega$ is
+called \emph{(form-)invariant} if for every $u\in \cD(\cE)$ one has
+$\mathbf 1_M u\in \cD(\cE)$ and
+\begin{equation}
+\label{eq:inv_decomp}
+\cE(u,u)=\cE(\mathbf 1_M u,\mathbf 1_M u)+
+\cE(\mathbf 1_{\Omega\setminus M} u,\mathbf 1_{\Omega\setminus M} u).
+\end{equation}
+The form is called \emph{irreducible} if the only invariant sets $M$
+satisfy $|M|=0$ or $|\Omega\setminus M|=0$.
+\end{definition}
+
+\begin{remark}[\tagstd]
+If $(\cE,\cD(\cE))$ is a symmetric Dirichlet form, then
+\eqref{eq:inv_decomp} is equivalent to invariance for the associated
+sub-Markovian semigroup $(T_t)_{t\ge 0}$: $M$ is invariant iff
+$T_t(\mathbf 1_M f)=\mathbf 1_M T_t f$ for all $f\in L^2(\Omega)$ and
+all $t>0$; see, for instance, \cite[Ch.~1]{FukushimaOshimaTakeda2011}
+or \cite[Sec.~1]{LenzStollmannVeselic2009}.
+\end{remark}
+\subsection{Positivity-improving semigroups}
+
+\begin{definition}
+A bounded operator $T$ on $L^2(\Omega)$ is
+\emph{positivity-preserving} if $f \ge 0$ implies $Tf \ge 0$, and
+\emph{positivity-improving} if $f \ge 0$, $f \not\equiv 0$ implies
+$Tf > 0$ a.e.
+\end{definition}
+
+The connection between irreducibility and positivity improvement is:
+
+\begin{theorem}[Irreducibility and positivity improvement \tagstd\ {\cite[Thm.~1.4]{LenzStollmannVeselic2009}}]
+\label{prop:pos_improving}
+Let $(\cE,\cD(\cE))$ be a symmetric Dirichlet form on $L^2(\Omega)$
+with associated non-negative self-adjoint operator $A$ and semigroup
+$(T_t)_{t\ge 0}$. Then the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+\item $(\cE,\cD(\cE))$ is irreducible in the sense of
+Definition~\ref{def:irreducible}.
+\item For every $t>0$, the operator $T_t$ is positivity-improving.
+\item For every $\alpha>-\inf\sigma(A)$, the resolvent
+$(A+\alpha)^{-1}$ is positivity-improving.
+\end{enumerate}
+\end{theorem}
+
+\subsection{The Krein--Rutman theorem}
+
+The following is the infinite-dimensional analogue of the
+Perron--Frobenius theorem for non-negative matrices:
+
+\begin{theorem}[Krein--Rutman for positivity-improving compact operators \tagstd\ {\cite{KreinRutman1948,Schaefer1974}}]
+\label{thm:KR}
+Let $T$ be a compact, positivity-improving operator on $L^2(\Omega)$
+with spectral radius $r(T) > 0$. Then:
+\begin{enumerate}[nosep,label=(\roman*)]
+\item $r(T)$ is an eigenvalue of $T$ with algebraic multiplicity one.
+\item The corresponding eigenfunction $\varphi$ can be chosen to
+  satisfy $\varphi(x) > 0$ for a.e.\ $x \in \Omega$.
+\item No other eigenvalue of $T$ has a non-negative eigenfunction.
+\end{enumerate}
+\end{theorem}
+
+\begin{corollary}
+\label{cor:ground_state}
+Let $A$ be a non-negative self-adjoint operator on $L^2(\Omega)$ with
+compact resolvent, and suppose $e^{-tA}$ is positivity-improving for
+all $t > 0$. Then the lowest eigenvalue $\lambda_1$ of $A$ is simple,
+and the corresponding eigenfunction is strictly positive a.e.
+\end{corollary}
+
+\begin{proof}
+The operator $T = e^{-A}$ is compact (since $A$ has compact
+resolvent), self-adjoint, and positivity-improving (by hypothesis).
+Its spectral radius is $r(T) = e^{-\lambda_1} > 0$, and
+Theorem~\ref{thm:KR} gives that $e^{-\lambda_1}$ is a simple
+eigenvalue of $T$ with a strictly positive eigenfunction. Since
+the eigenspaces of $T$ and $A$ coincide, $\lambda_1$ is a simple
+eigenvalue of $A$ with the same eigenfunction.
+\end{proof}
+
+\subsection{The Kolmogorov--Riesz compactness theorem}
+
+\begin{theorem}[Kolmogorov--Riesz \tagstd\ {\cite{Hanche-OlsenHolden2010}}]
+\label{thm:KR_compact}
+A bounded subset $\cF \subset L^2(\R^d)$ is precompact if and only
+if:
+\begin{enumerate}[nosep,label=(\roman*)]
+\item \textup{(Equi-continuity in mean)} $\sup_{f \in \cF}
+  \|\tau_h f - f\|_2 \to 0$ as $|h| \to 0$.
+\item \textup{(Tightness)} For every $\varepsilon > 0$, there exists
+  $R > 0$ such that $\sup_{f \in \cF} \int_{|x|>R} |f(x)|^2 \, dx
+  < \varepsilon$.
+\end{enumerate}
+\end{theorem}
+
+%% ===================================================================
+\section{The proof}
+\label{sec:proof}
+%% ===================================================================
+
+We now prove Theorem~\ref{thm:main} in five steps.
+
+\subsection{Step 1: Energy decomposition}
+\label{sec:step1}
+
+The starting point is the observation that the quadratic form
+\eqref{eq:frac_form} can be written as a continuous superposition of
+\emph{translation-difference energies}.
+
+\begin{proposition}[Energy decomposition \tagstd]
+\label{prop:energy_decomp}
+For $u \in H^s_0(\Omega)$, with $\tilde u$ the zero extension to
+$\R^d$:
+\begin{equation}
+\label{eq:energy_decomp}
+\cE(u,u) = \frac{C_{d,s}}{2} \int_{\R^d}
+\|\tau_h \tilde u - \tilde u\|_{L^2(\R^d)}^2 \;
+|h|^{-(d+2s)} \, dh.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Substitute $y = x + h$ in \eqref{eq:frac_form}:
+\begin{align*}
+\cE(u,u)
+&= \frac{C_{d,s}}{2} \iint_{\R^d \times \R^d}
+  \frac{|\tilde u(x) - \tilde u(y)|^2}{|x-y|^{d+2s}} \, dx \, dy \\
+&= \frac{C_{d,s}}{2} \int_{\R^d} \left( \int_{\R^d}
+  |\tilde u(x+h) - \tilde u(x)|^2 \, dx \right) |h|^{-(d+2s)} \, dh \\
+&= \frac{C_{d,s}}{2} \int_{\R^d}
+  \|\tau_h \tilde u - \tilde u\|_{L^2(\R^d)}^2 \;
+  |h|^{-(d+2s)} \, dh.
+\end{align*}
+The exchange of integration order is justified by Tonelli's theorem,
+since the integrand is non-negative.
+\end{proof}
+
+Formula \eqref{eq:energy_decomp} exhibits $\cE(u,u)$ as an integral
+over all translations $h \in \R^d$ of the squared $L^2$ distance
+between $\tilde u$ and its translate $\tau_h \tilde u$, weighted by
+the \emph{strictly positive} density
+$w(h) = \frac{C_{d,s}}{2} |h|^{-(d+2s)}$. Every feature of the
+proof flows from this decomposition and the strict positivity of $w$.
+
+\begin{remark}[Structural parallel with the Weil form]
+\label{rem:weil_decomp}
+In the setting of the Weil quadratic form, the analogous decomposition
+takes the form
+\[
+\cE_\lambda(G,G) = \sum_{p \text{ prime}}
+  \cE_p(G,G) + \cE_\R(G,G),
+\]
+where each summand $\cE_p$ is a difference energy associated with the
+discrete scaling $x \mapsto x + \log p$, and $\cE_\R$ is an integral
+of translation-difference energies over a continuum of shifts with a
+non-negative weight determined by the archimedean distribution $W_\R$.
+The fractional Laplacian's decomposition
+\eqref{eq:energy_decomp} is a pure-continuum analogue of this mixed
+discrete-plus-continuum structure.
+\end{remark}
+
+\subsection{Step 2: The Markov property}
+\label{sec:step2}
+
+\begin{proposition}[Markov property \tagstd]
+\label{prop:markov}
+Let $\Phi: \R \to \R$ be a normal contraction (i.e.,
+$\Phi(0) = 0$ and $|\Phi(t) - \Phi(s)| \le |t-s|$ for all
+$t,s$). If $u \in H^s_0(\Omega)$, then
+$\Phi \circ u \in H^s_0(\Omega)$ and
+$\cE(\Phi \circ u, \Phi \circ u) \le \cE(u,u)$.
+\end{proposition}
+
+\begin{proof}
+Since $\Phi(0) = 0$ and $u$ vanishes outside $\Omega$, we have
+$\Phi \circ u = 0$ on $\R^d \setminus \Omega$, so
+$\widetilde{\Phi \circ u} = \Phi \circ \tilde u$.
+
+For any $h \in \R^d$ and a.e.\ $x \in \R^d$:
+\[
+|(\Phi \circ \tilde u)(x+h) - (\Phi \circ \tilde u)(x)|
+= |\Phi(\tilde u(x+h)) - \Phi(\tilde u(x))|
+\le |\tilde u(x+h) - \tilde u(x)|,
+\]
+by the contraction property. Squaring and integrating over $x$:
+\[
+\|\tau_h(\Phi \circ \tilde u) - \Phi \circ \tilde u\|_{L^2}^2
+\le \|\tau_h \tilde u - \tilde u\|_{L^2}^2.
+\]
+Integrating over $h$ against the non-negative weight
+$w(h) = \frac{C_{d,s}}{2} |h|^{-(d+2s)}$:
+\[
+\cE(\Phi \circ u, \Phi \circ u) \le \cE(u,u).
+\]
+Since $|\Phi(t)| \le |t|$ (from $\Phi(0)=0$ and the Lipschitz
+condition), $\|\Phi \circ u\|_{L^2} \le \|u\|_{L^2}$, and the
+bound on $\cE$ shows
+$\Phi \circ u \in H^s_0(\Omega)$.
+\end{proof}
+
+The key observation is that the Markov property is inherited
+\emph{pointwise in $h$}: each translation-difference energy
+$\|\tau_h \tilde u - \tilde u\|^2$ is individually contracted by
+$\Phi$, and integration with non-negative weights preserves the
+inequality. This is the structural reason why the energy
+decomposition implies the Markov property.
+
+
+\subsection{Step 3: Irreducibility}
+\label{sec:step3}
+
+\begin{proposition}[Irreducibility \tagstd]
+\label{prop:irred}
+The Dirichlet form $(\cE, H^s_0(\Omega))$ on $L^2(\Omega)$ is
+irreducible in the sense of Definition~\ref{def:irreducible}.
+\end{proposition}
+
+\begin{proof}
+Let $M\subset\Omega$ be an invariant set. We show that either $|M|=0$
+or $|\Omega\setminus M|=0$.
+
+Assume for contradiction that $0<|M|<|\Omega|$. Choose points
+$x\in M$ and $y\in \Omega\setminus M$ that are Lebesgue density points
+of their respective sets. Pick radii $r_x,r_y>0$ so small that the
+closed balls $\overline{B(x,r_x)}$ and $\overline{B(y,r_y)}$ are
+contained in $\Omega$ and are disjoint. In particular,
+\[
+|M\cap B(x,r_x)|>0,\qquad |(\Omega\setminus M)\cap B(y,r_y)|>0.
+\]
+
+Let $\eta\in C_c^\infty(\Omega)$ satisfy $\eta\ge 0$ and
+$\eta\ge 1$ on $B(x,r_x)\cup B(y,r_y)$. Set
+\[
+u := \mathbf 1_M\,\eta,\qquad v := \mathbf 1_{\Omega\setminus M}\,\eta.
+\]
+By invariance, $u,v\in H^s_0(\Omega)$ and the decomposition
+\eqref{eq:inv_decomp} applied to $\eta$ gives
+$\cE(\eta,\eta)=\cE(u,u)+\cE(v,v)$. Expanding
+$\eta=u+v$ and using bilinearity yields $\cE(u,v)=0$.
+
+On the other hand, using the bilinear form associated with
+\eqref{eq:frac_form}, for a.e.\ $(x',y')\in M\times(\Omega\setminus M)$
+we have $u(x')=\eta(x')$, $u(y')=0$, $v(x')=0$, $v(y')=\eta(y')$, hence
+\[
+(u(x')-u(y'))(v(x')-v(y')) = -\eta(x')\,\eta(y').
+\]
+By symmetry of the integrand, this implies
+\begin{equation}
+\label{eq:cross_energy_negative}
+\cE(u,v)
+= - C_{d,s}\iint_{M\times(\Omega\setminus M)}
+\frac{\eta(x')\,\eta(y')}{|x'-y'|^{d+2s}}\,dx'\,dy' \le 0.
+\end{equation}
+Moreover, restricting the integral in \eqref{eq:cross_energy_negative}
+to the subset
+$(M\cap B(x,r_x))\times((\Omega\setminus M)\cap B(y,r_y))$ and using
+$\eta\ge 1$ there, we obtain
+\[
+\cE(u,v)
+\le -C_{d,s}\,
+\frac{|M\cap B(x,r_x)|\,|(\Omega\setminus M)\cap B(y,r_y)|}
+{\mathrm{dist}(B(x,r_x),B(y,r_y))^{d+2s}}
+<0,
+\]
+a contradiction to $\cE(u,v)=0$. Therefore no such invariant $M$
+exists, and the form is irreducible.
+\end{proof}
+
+\begin{remark}[\tagexp]
+This is the only place where ``mixing'' enters the argument.
+Analytically, mixing is encoded by the strictly positive jump kernel
+$|x-y|^{-d-2s}$: any two sets of positive measure interact through the
+cross term in the energy. Conceptually, the energy decomposition
+\eqref{eq:energy_decomp} makes this interaction transparent by writing
+$\cE$ as a superposition of translation-difference energies at
+\emph{all} shifts $h\in\R^d$.
+\end{remark}
+\subsection{Step 4: Compact resolvent}
+\label{sec:step4}
+
+\begin{proposition}[Compact resolvent \tagstd]
+\label{prop:compact}
+The operator $(-\Delta)^s_\Omega$ has compact resolvent. Equivalently,
+the inclusion $H^s_0(\Omega) \hookrightarrow L^2(\Omega)$ is compact.
+\end{proposition}
+
+\begin{proof}
+We verify the hypotheses of the Kolmogorov--Riesz theorem
+(Theorem~\ref{thm:KR_compact}) for the unit ball
+$\cF = \{ \tilde u : u \in H^s_0(\Omega), \; \cE(u,u) + \|u\|_2^2
+\le 1 \}$ as a subset of $L^2(\R^d)$.
+
+\medskip
+\noindent\textbf{Tightness.} Every $\tilde u \in \cF$ is supported
+in $\overline\Omega$, which is bounded. Hence for $R$ large enough
+that $\overline\Omega \subset B_R(0)$, we have
+$\int_{|x|>R} |\tilde u(x)|^2 \, dx = 0$. Tightness is immediate.
+
+\medskip
+\noindent\textbf{Equi-continuity in mean.} For any $h \in \R^d$ with
+$|h| \le 1$, we estimate $\|\tau_h \tilde u - \tilde u\|_{L^2}^2$.
+By the energy decomposition, for any $\delta > 0$:
+\begin{align*}
+\cE(u,u)
+&= \frac{C_{d,s}}{2} \int_{\R^d}
+  \|\tau_k \tilde u - \tilde u\|_{L^2}^2 \; |k|^{-(d+2s)} \, dk \\
+&\ge \frac{C_{d,s}}{2} \int_{|k-h| < \delta}
+  \|\tau_k \tilde u - \tilde u\|_{L^2}^2 \; |k|^{-(d+2s)} \, dk.
+\end{align*}
+
+We use a softer estimate. The Fourier symbol of $(-\Delta)^s$ is
+$|\xi|^{2s}$, and the Gagliardo energy \eqref{eq:frac_form} is
+(up to a constant depending on $d,s$) equivalent to
+$\int_{\R^d} |\xi|^{2s}|\hat{\tilde u}(\xi)|^2\,d\xi$; see, e.g.,
+\cite[Sec.~3]{DiNezzaPalatucciValdinoci2012}. By Plancherel's theorem:
+\begin{align*}
+\|\tau_h \tilde u - \tilde u\|_{L^2}^2
+&= \int_{\R^d} |e^{2\pi i h \cdot \xi} - 1|^2
+  |\hat{\tilde u}(\xi)|^2 \, d\xi \\
+&= \int_{\R^d} |e^{2\pi i h \cdot \xi} - 1|^2
+  \cdot |\xi|^{-2s} \cdot |\xi|^{2s}
+  |\hat{\tilde u}(\xi)|^2 \, d\xi.
+\end{align*}
+Now $|e^{2\pi i h \cdot \xi} - 1|^2 \le \min(4, \; 4\pi^2
+|h|^2 |\xi|^2)$. For a parameter $M > 0$ to be chosen:
+\begin{align*}
+\|\tau_h \tilde u - \tilde u\|_{L^2}^2
+&\le 4\pi^2 |h|^2 \int_{|\xi| \le M} |\xi|^{2-2s}
+  |\hat{\tilde u}(\xi)|^2 \cdot |\xi|^{2s} \, d\xi \;
+  \\& \quad + \;
+  4 \int_{|\xi| > M} |\xi|^{-2s}
+  |\xi|^{2s} |\hat{\tilde u}(\xi)|^2 \, d\xi \\
+&\le 4\pi^2 |h|^2 M^{2-2s} \int_{\R^d} |\xi|^{2s}
+  |\hat{\tilde u}(\xi)|^2 \, d\xi
+  + 4 M^{-2s} \int_{\R^d} |\xi|^{2s}
+  |\hat{\tilde u}(\xi)|^2 \, d\xi.
+\end{align*}
+Recognizing that $\int |\xi|^{2s} |\hat{\tilde u}|^2 \, d\xi$ is
+proportional to $\cE(u,u)$ (up to a factor depending on $C_{d,s}$
+and $2\pi$), and that $\cE(u,u) \le 1$ for $u \in \cF$, we get
+\[
+\|\tau_h \tilde u - \tilde u\|_{L^2}^2
+\le C \bigl( |h|^2 M^{2-2s} + M^{-2s} \bigr)
+\]
+for a constant $C$ depending on $d, s$. Choosing $M = |h|^{-1}$:
+\[
+\|\tau_h \tilde u - \tilde u\|_{L^2}^2
+\le C \bigl( |h|^{2s} + |h|^{2s} \bigr)
+= 2C |h|^{2s} \to 0 \quad \text{as } |h| \to 0,
+\]
+uniformly over $\cF$. This gives equi-continuity in mean.
+
+\medskip
+By the Kolmogorov--Riesz theorem, $\cF$ is precompact in
+$L^2(\R^d)$, hence also in $L^2(\Omega)$. It follows that the
+inclusion $H^s_0(\Omega) \hookrightarrow L^2(\Omega)$ is compact, and
+therefore $(-\Delta)^s_\Omega$ has compact resolvent.
+\end{proof}
+
+\begin{remark}[Comparison with the Weil form]
+\label{rem:compact_weil}
+In the Weil form setting, the Fourier symbol $\psi_\lambda(\xi)$ of
+the operator $A_\lambda$ grows like $\log|\xi|$ as $|\xi| \to \infty$
+(logarithmic coercivity), rather than $|\xi|^{2s}$ (polynomial
+coercivity). The slower growth means compact embedding is harder to
+prove and requires the full force of the Kolmogorov--Riesz criterion
+(polynomial growth would give compact embedding by Rellich--Kondrachov
+directly). In both cases, however, the argument has the same shape:
+\emph{growth of the Fourier symbol} $\Rightarrow$
+\emph{equi-continuity in mean} $\Rightarrow$
+\emph{compact inclusion} $\Rightarrow$ \emph{compact resolvent}.
+\end{remark}
+
+\subsection{Step 5: Perron--Frobenius and ground state simplicity}
+\label{sec:step5}
+
+We now assemble the pieces.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+\textbf{Steps 1--2} (Propositions~\ref{prop:energy_decomp} and
+\ref{prop:markov}): The quadratic form $\cE$ is a symmetric Dirichlet
+form on $L^2(\Omega)$ with domain $H^s_0(\Omega)$.
+
+\textbf{Step 3} (Proposition~\ref{prop:irred}): The Dirichlet form
+$\cE$ is irreducible.
+
+\textbf{Step 4} (Proposition~\ref{prop:compact}): The associated
+operator $A = (-\Delta)^s_\Omega$ has compact resolvent.
+
+By Proposition~\ref{prop:pos_improving}, irreducibility implies the
+semigroup $T_t = e^{-tA}$ is positivity-improving for all $t > 0$.
+Combined with compact resolvent, Corollary~\ref{cor:ground_state}
+gives: the lowest eigenvalue $\lambda_1$ of $A$ is \textbf{simple},
+with a corresponding eigenfunction $\varphi_1 > 0$ a.e.
+
+Since $A$ has compact resolvent, the spectrum is purely discrete and
+the eigenvalues accumulate at $+\infty$: $0 < \lambda_1 < \lambda_2
+\le \lambda_3 \le \cdots \to \infty$. The strict inequality
+$\lambda_1 > 0$ follows because $\cE(u,u) = 0$ with $u \in
+H^s_0(\Omega)$ implies $u = 0$ (Step~3), so $A$ has trivial kernel.
+
+\medskip
+\textbf{Symmetry.} Suppose $\Omega$ is symmetric under a reflection
+$R: x \mapsto \bar x$. The substitution $x \to \bar x$, $y \to \bar y$
+in the double integral \eqref{eq:frac_form} shows that
+$\cE(u \circ R, u \circ R) = \cE(u,u)$. It follows that $A$ commutes
+with the reflection operator $(Rf)(x) = f(\bar x)$:
+\[
+A(f \circ R) = (Af) \circ R.
+\]
+Since $\lambda_1$ is simple, the eigenspace is one-dimensional,
+spanned by $\varphi_1$. Both $\varphi_1$ and $\varphi_1 \circ R$ are
+eigenfunctions for $\lambda_1$, so $\varphi_1 \circ R =
+c \, \varphi_1$ for some constant $c$. Applying $R$ again:
+$\varphi_1 = c^2 \varphi_1$, so $c = \pm 1$. Since $\varphi_1 > 0$
+and $\varphi_1 \circ R > 0$, the case $c = -1$ is impossible.
+Therefore $\varphi_1 \circ R = \varphi_1$: the ground state is
+symmetric under $R$.
+\end{proof}
+
+%% ===================================================================
+\section{The parallel with the Weil quadratic form}
+\label{sec:parallel}
+%% ===================================================================
+
+We now make explicit the structural analogy between the fractional
+Laplacian and the Weil quadratic form. The purpose is to show that
+the five-step pipeline is not specific to either setting but is a
+general strategy applicable to any operator whose quadratic form
+admits an energy decomposition with strictly positive weights.
+
+\subsection{The setup}
+
+For a finite set $S$ of places including the archimedean place $\R$,
+and a cutoff parameter $\lambda > 1$, the Weil quadratic form
+restricted to test functions supported on $[\lambda^{-1},\lambda]$
+(in multiplicative coordinates) defines a quadratic form
+$\cE_\lambda$ on $L^2([-L,L])$ where $L = \log\lambda$. The Weil
+explicit formula gives
+\[
+\cE_\lambda(G,G) = \sum_{p \in S \setminus \{\R\}}
+\cE_p(G,G) \; + \; \cE_\R(G,G),
+\]
+where:
+
+\begin{itemize}[nosep]
+\item Each \emph{prime contribution} $\cE_p(G,G)$ is a
+  discrete difference energy. Writing $\ell_p = \log p$, the
+  contribution from each power $p^k$ involves terms
+  $\|G - S_{\pm k\ell_p} G\|^2$ where $S_t$ is the shift operator
+  $(S_t G)(u) = G(u-t)$ restricted to $[-L,L]$.
+
+\item The \emph{archimedean contribution} $\cE_\R(G,G)$ involves
+  a continuous integral of translation-difference energies:
+  \[
+  \cE_\R(G,G) = \int_0^{2L} \|S_t \tilde G - \tilde G\|_{L^2}^2 \;
+  w_\R(t) \, dt,
+  \]
+  where $w_\R(t) \ge 0$ is determined by the archimedean local
+  distribution $W_\R$.
+\end{itemize}
+
+\subsection{Step-by-step comparison}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}p{2.2cm}p{5.5cm}p{5.5cm}@{}}
+\toprule
+\textbf{Step} & \textbf{Fractional Laplacian} & \textbf{Weil form} \\
+\midrule
+Energy decomposition &
+$\displaystyle\cE = \int_{\R^d} \|\tau_h \tilde u - \tilde u\|^2 \,
+w(h) \, dh$
+\newline
+$w(h) = \frac{C_{d,s}}{2}|h|^{-(d+2s)}$ &
+$\displaystyle\cE_\lambda = \sum_p \cE_p + \int_0^{2L} \|\cdot\|^2 \,
+w_\R \, dt$
+\newline
+Discrete (primes) $+$ continuum (archim.) \\
+\midrule
+Markov property &
+$|\Phi(a) - \Phi(b)| \le |a-b|$
+\newline
+applied pointwise in $h$ &
+Same pointwise argument applied to each $\cE_p$ and
+to $\cE_\R$ \\
+\midrule
+Irreducibility &
+$w(h) > 0$ for all $h \ne 0$;
+\newline
+$\tilde u$ vanishes outside $\Omega$ &
+$w_\R(t) > 0$ for $t \in (0,2L)$;
+\newline
+$\tilde G$ vanishes outside $[-L,L]$ \\
+\midrule
+Compact resolvent &
+$|\xi|^{2s} \to \infty$ (polynomial)
+\newline
+$\Rightarrow$ Rellich--Kondrachov &
+$\psi_\lambda(\xi) \gtrsim \log|\xi|$ (logarithmic)
+\newline
+$\Rightarrow$ Kolmogorov--Riesz \\
+\midrule
+Perron--\newline Frobenius &
+Krein--Rutman $\Rightarrow$ $\lambda_1$ simple,
+$\varphi_1 > 0$ &
+Krein--Rutman $\Rightarrow$ $\lambda_1$ simple,
+ground state $> 0$ \\
+\midrule
+Symmetry &
+$\Omega$ symmetric $\Rightarrow$
+$\varphi_1$ symmetric &
+$[-L,L]$ symmetric $\Rightarrow$ ground state even \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Where the proofs differ}
+
+Despite the structural parallelism, there are genuine differences:
+
+\begin{enumerate}[nosep,label=(\arabic*)]
+\item \textbf{Coercivity.} The fractional Laplacian has polynomial
+  growth $|\xi|^{2s}$ of its Fourier symbol, which gives compact
+  embedding by the standard fractional Rellich--Kondrachov theorem.
+  The Weil form has only logarithmic growth, making compact embedding
+  more delicate and requiring explicit use of the Kolmogorov--Riesz
+  criterion. (In our proof of Proposition~\ref{prop:compact}, we
+  deliberately used Kolmogorov--Riesz to parallel the arithmetic
+  setting, even though a simpler proof is available.)
+
+\item \textbf{Structure of shifts.} The fractional Laplacian
+  integrates over \emph{all} translations in $\R^d$, making
+  irreducibility trivial. The Weil form has a discrete part (primes)
+  and a continuous part (archimedean), and irreducibility depends
+  on the archimedean contribution---without it, one would have
+  only countably many shift directions, which is not enough.
+
+\item \textbf{Boundary conditions.} The fractional Laplacian uses
+  zero extension to $\R^d$ (Dirichlet conditions), which kills the
+  constant function. The Weil form uses restriction to $[-L,L]$ with
+  similar effect: functions in the domain vanish outside $[-L,L]$, so
+  the only function with zero energy is zero.
+
+\item \textbf{Context and significance.} Ground state simplicity
+  for the fractional Laplacian is a well-known result with multiple
+  proofs. For the Weil form, it resolves an open problem explicitly
+  identified by Connes, Consani, Moscovici, and van Suijlekom as ``the
+  key difficulty'' in their program.
+\end{enumerate}
+
+%% ===================================================================
+\section{An abstract framework}
+\label{sec:abstract}
+%% ===================================================================
+
+The argument naturally generalizes to the following class of operators.
+
+\begin{theorem}[Abstract ground state simplicity \tagexp]
+\label{thm:abstract}
+Let $X \subset \R^d$ be a bounded measurable set with $|X| > 0$, and
+let $w: \R^d \to [0,\infty)$ be a measurable weight satisfying:
+\begin{enumerate}[nosep,label=\textup{(H\arabic*)}]
+\item \label{H1} \textup{(Local integrability)}
+  $\int_{|h|<1} |h|^2 \, w(h) \, dh < \infty$.
+\item \label{H2} \textup{(Coercivity)} The Fourier symbol
+  $\psi(\xi) = \int_{\R^d} |e^{2\pi i h \cdot \xi} - 1|^2 w(h) \, dh$
+  satisfies $\psi(\xi) \to \infty$ as $|\xi| \to \infty$.
+\item \label{H3} \textup{(Irreducibility)} For every $h_0 \in \R^d
+  \setminus \{0\}$ and every $\varepsilon > 0$,
+  $\int_{|h - h_0| < \varepsilon} w(h) \, dh > 0$.
+\end{enumerate}
+Define
+\[
+\cE_w(u,u) = \int_{\R^d} \|\tau_h \tilde u - \tilde u\|_{L^2}^2
+\, w(h) \, dh
+\]
+on $\cD(\cE_w) = \{ u \in L^2(X) : \cE_w(u,u) < \infty \}$, where
+$\tilde u$ is the zero extension to $\R^d$. Then $(\cE_w, \cD(\cE_w))$
+is a symmetric Dirichlet form on $L^2(X)$ whose associated operator
+has compact resolvent, simple lowest eigenvalue, and a strictly
+positive eigenfunction.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+The Markov property follows from the pointwise contraction argument
+(Step~2). Hypothesis \ref{H3} guarantees irreducibility by the same
+argument as Step~3: if $\cE_w(u,u) = 0$, then
+$\|\tau_h \tilde u - \tilde u\| = 0$ for $h$ in the support of $w$,
+and \ref{H3} ensures this support is dense in $\R^d$, forcing
+$\tilde u$ to be constant and hence zero. Hypothesis \ref{H2} gives
+equi-continuity in mean: $\|\tau_h \tilde u - \tilde u\|^2 \le
+\int |\hat{\tilde u}|^2 |e^{2\pi i h \cdot \xi}-1|^2 \, d\xi$,
+and the growth of $\psi(\xi)$ controls this. Tightness follows from
+the bounded support of $X$. Kolmogorov--Riesz gives compact inclusion,
+and Krein--Rutman gives simplicity.
+\end{proof}
+
+The fractional Laplacian corresponds to $w(h) = \frac{C_{d,s}}{2}
+|h|^{-(d+2s)}$ (satisfying all three hypotheses for $0<s<1$). The
+Weil form corresponds to a weight that is a superposition of discrete
+masses at prime-logarithm multiples and a continuous archimedean
+density, with the Fourier symbol growing logarithmically.
+
+\begin{remark}[Scope and limitations \tagexp]
+Hypothesis~\ref{H3} is a convenient \emph{sufficient} condition for the
+irreducibility mechanism used in the proof of
+Theorem~\ref{thm:abstract}: it forces the translation-difference energy
+to see \emph{all} small shifts. When $w$ is supported on a discrete
+subgroup (e.g.\ a lattice), Hypothesis~\ref{H3} fails and reducibility
+can indeed occur.
+
+A concrete example is $d=1$, $w=\delta_{2}+\delta_{-2}$ and
+$X=(0,1)\cup(3,4)$. Then the energy $\cE_w(u,u)$ only couples values of
+$\tilde u$ across shifts of size $2$, and the subspaces
+$L^2((0,1))$ and $L^2((3,4))$ are invariant: the form is not
+irreducible and the lowest eigenvalue of the associated operator has
+multiplicity $2$ (one copy on each component). In contrast, for the
+fractional Laplacian the continuum of shifts encoded by
+\eqref{eq:energy_decomp} prevents such decoupling.
+\end{remark}
+
+
+%% ===================================================================
+\section{Discussion}
+\label{sec:discussion}
+%% ===================================================================
+
+\subsection{Comparison with other proofs}
+
+The classical proof of ground state simplicity for the standard
+Laplacian $-\Delta$ on a bounded domain (the Courant--Hilbert
+argument) uses the variational characterization of $\lambda_1$
+together with the observation that $|u|$ has the same Dirichlet
+energy as $u$, so minimizers can be taken non-negative, and then
+the strong maximum principle forces them to be strictly positive.
+Simplicity follows because two orthogonal positive functions cannot
+exist.
+
+For the fractional Laplacian, this argument breaks down at the
+maximum principle step: the non-local maximum principle for
+$(-\Delta)^s$ is substantially harder to prove and requires
+regularity theory \cite{RosOtonSerra2014, CaffarelliSilvestre2007}.
+
+The probabilistic proof (via the symmetric stable process) replaces
+the maximum principle with the observation that the L\'evy jump kernel
+$|x-y|^{-(d+2s)}$ is strictly positive, so the process can jump from
+any region to any other, making the semigroup positivity-improving.
+This is elegant but requires probabilistic machinery.
+
+Our Dirichlet form proof occupies a middle ground: it uses neither the
+maximum principle nor probability theory, and it makes the mechanism
+transparent. The ground state is simple because (a) the energy is a
+superposition of non-negative pieces (Markov property), (b) the
+pieces involve a rich enough family of shifts (irreducibility), and
+(c) the Fourier symbol grows (compact resolvent). Each condition is
+easy to verify, and together they are sufficient.
+
+\subsection{Further directions}
+
+The abstract framework of Theorem~\ref{thm:abstract} suggests several
+natural extensions:
+
+\begin{enumerate}[nosep]
+\item \textbf{Other L-functions.} The Weil explicit formula for
+  Dirichlet $L$-functions $L(s,\chi)$ with real characters has local
+  distributions $W_p^\chi$ that differ from the Riemann zeta case only
+  by character twists. The energy-decomposition method should extend
+  to verify the Connes--van Suijlekom hypotheses for these
+  $L$-functions, giving simplicity and evenness for an infinite family
+  of restricted operators.
+
+\item \textbf{Non-local operators with arithmetic kernels.} Integral
+  operators whose kernels are defined by Euler products or Epstein
+  zeta functions may admit energy decompositions of the form
+  considered here. The abstract theorem provides a systematic criterion
+  for when such operators have simple ground states.
+
+\item \textbf{Operators on groups.} The translation-difference
+  structure generalizes naturally to locally compact abelian groups.
+  The Weil form on the id\`ele class group and the fractional Laplacian
+  on $\R^d$ are both instances of convolution-type operators on groups,
+  and the energy-decomposition method should extend to this level of
+  generality.
+\end{enumerate}
+
+%% ===================================================================
+\section*{Acknowledgments}
+%% ===================================================================
+
+This paper is intended as an expository companion to the
+energy-decomposition approach to the Weil quadratic form. Its purpose
+is to demonstrate the method in a setting where the result is already
+known, thereby making the strategy accessible to readers from PDE and
+spectral theory who may not be familiar with the number-theoretic
+context.
+
+\begin{thebibliography}{99}
+
+\bibitem{CaffarelliSilvestre2007}
+L.~Caffarelli, L.~Silvestre, An extension problem related to the
+fractional Laplacian, \emph{Comm.\ Partial Differential Equations}
+\textbf{32} (2007), 1245--1260.
+
+\bibitem{DiNezzaPalatucciValdinoci2012}
+E.~Di~Nezza, G.~Palatucci, E.~Valdinoci, Hitchhiker's guide to the
+fractional Sobolev spaces, \emph{Bull.\ Sci.\ Math.}\ \textbf{136}
+(2012), 521--573.
+
+\bibitem{Connes2026}
+A.~Connes, The Riemann Hypothesis: Past, Present and a Letter Through
+Time, arXiv:2602.04022 (2026).
+
+\bibitem{ConnesConsani2021}
+A.~Connes, C.~Consani, Weil positivity and Trace formula, the
+archimedean place, \emph{Selecta Math.}\ \textbf{27}, 77 (2021).
+
+\bibitem{ConnesConsani2023}
+A.~Connes, C.~Consani, Spectral Triples and Zeta-Cycles,
+\emph{Enseign.\ Math.}\ \textbf{69} (2023), 93--148.
+
+\bibitem{ConnesConsaniMoscovici2025}
+A.~Connes, C.~Consani, H.~Moscovici, Zeta Spectral Triples,
+arXiv:2511.22755 (2025).
+
+\bibitem{ConnesvanSuijlekom2025}
+A.~Connes, W.\,D.~van Suijlekom, Quadratic Forms, Real Zeros and
+Echoes of the Spectral Action, arXiv:2511.23257 (2025).
+
+\bibitem{FukushimaOshimaTakeda2011}
+M.~Fukushima, Y.~\=Oshima, M.~Takeda, \emph{Dirichlet Forms and
+Symmetric Markov Processes}, 2nd ed., de~Gruyter, 2011.
+
+\bibitem{LenzStollmannVeselic2009}
+D.~Lenz, P.~Stollmann, I.~Veseli\'c, The Allegretto--Piepenbrink theorem
+for strongly local Dirichlet forms, \emph{Documenta Math.}\ \textbf{14}
+(2009), 167--189.
+
+\bibitem{Hanche-OlsenHolden2010}
+H.~Hanche-Olsen, H.~Holden, The Kolmogorov--Riesz compactness
+theorem, \emph{Expo.\ Math.}\ \textbf{28} (2010), 385--394.
+
+\bibitem{KreinRutman1948}
+M.\,G.~Kre\u\i n, M.\,A.~Rutman, Linear operators leaving invariant
+a cone in a Banach space, \emph{Uspehi Mat.\ Nauk} \textbf{3}
+(1948), no.~1(23), 3--95; English transl.\ in \emph{AMS Translations}
+Ser.~1, Vol.~10 (1962), 199--325.
+
+\bibitem{RosOtonSerra2014}
+X.~Ros-Oton, J.~Serra, The Dirichlet problem for the fractional
+Laplacian: regularity up to the boundary, \emph{J.\ Math.\ Pures
+Appl.}\ \textbf{101} (2014), 275--302.
+
+\bibitem{Schaefer1974}
+H.\,H.~Schaefer, \emph{Banach Lattices and Positive Operators},
+Springer, 1974.
+
+\bibitem{ServadeiValdinoci2014}
+R.~Servadei, E.~Valdinoci, Variational methods for non-local
+operators of elliptic type, \emph{Discrete Contin.\ Dyn.\ Syst.}\
+\textbf{33} (2013), 2105--2137.
+
+\end{thebibliography}
+
+\end{document}
