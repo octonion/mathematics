@@ -1,0 +1,305 @@
+
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\supp}{supp}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Rplus}{\mathbb R_+^*}
+
+\begin{document}
+
+\section*{Energy decomposition (Step 1): a self-contained, rigorous formulation}
+
+\subsection*{1. Basic setup}
+
+Let $\Rplus=(0,\infty)$ with multiplicative Haar measure $d^*x:=dx/x$.
+Let $L^2(\Rplus):=L^2(\Rplus,d^*x)$ and $\langle\cdot,\cdot\rangle$ its inner product.
+For $a>0$ define the unitary dilation $(U_a g)(x):=g(x/a)$ on $L^2(\Rplus)$.
+
+When $g,h\in L^1(\Rplus,d^*x)$, the multiplicative convolution is
+\[
+(g*h)(a):=\int_{\Rplus} g(y)\,h(a/y)\,d^*y,
+\qquad a>0,
+\]
+and the involution is $g^*(x):=\overline{g(x^{-1})}$.
+
+\begin{definition}[Correlation function]
+\label{def:f}
+For $g\in L^2(\Rplus)$ define its correlation function $f:\Rplus\to\C$ by
+\[
+f(a):=\langle g,U_a g\rangle=\int_{\Rplus} g(x)\,\overline{g(x/a)}\,d^*x.
+\]
+If in addition $g\in L^1(\Rplus)$, then $f=g*g^*$ almost everywhere and the above
+integral coincides with the convolution formula.
+\end{definition}
+
+\begin{lemma}[Elementary properties of $f$]
+\label{lem:corr}
+Let $g\in L^2(\Rplus)$ and $f$ as in Definition~\ref{def:f}. Then for all $a>0$,
+\[
+f(a^{-1})=\overline{f(a)},\qquad f(1)=\|g\|_2^2,\qquad |f(a)|\le \|g\|_2^2.
+\]
+In particular $f(a)+f(a^{-1})=2\Re\langle g,U_a g\rangle$.
+\end{lemma}
+
+\begin{proof}
+The identity $f(a^{-1})=\overline{f(a)}$ follows by substituting $x\mapsto x/a$
+and taking complex conjugates. The bound $|f(a)|\le \|g\|_2\|U_ag\|_2=\|g\|_2^2$
+is Cauchy--Schwarz and unitarity of $U_a$. Finally $f(1)=\langle g,g\rangle$.
+\end{proof}
+
+\begin{lemma}[Completion of squares for unitaries]
+\label{lem:unitary}
+For any unitary $U$ on a Hilbert space and any vector $h$,
+\[
+2\Re\langle h,Uh\rangle = 2\|h\|^2-\|h-Uh\|^2.
+\]
+\end{lemma}
+
+\begin{proof}
+Expand $\|h-Uh\|^2=\|h\|^2+\|Uh\|^2-2\Re\langle h,Uh\rangle$ and use $\|Uh\|=\|h\|$.
+\end{proof}
+
+\begin{remark}[Support truncation]
+\label{rem:truncate}
+Fix $\lambda>1$ and assume $\supp(g)\subset[\lambda^{-1},\lambda]$.
+Then $f(a)=0$ whenever $a\notin[\lambda^{-2},\lambda^2]$.
+Indeed, $\supp(U_ag)=a\cdot\supp(g)\subset[a\lambda^{-1},a\lambda]$.
+If $a>\lambda^2$ then $a\lambda^{-1}>\lambda$, hence $\supp(g)\cap\supp(U_ag)=\varnothing$
+and $\langle g,U_ag\rangle=0$.
+If $0<a<\lambda^{-2}$ then $a\lambda<\lambda^{-1}$ and the supports are again disjoint.
+\end{remark}
+
+\subsection*{2. Logarithmic coordinates}
+
+Set $u=\log x$, so that $d^*x=du$.
+Write $L:=\log\lambda$ and $I:=(-L,L)$.
+Define $G(u):=g(e^u)\in L^2(I)$ and let $\widetilde G$ be its extension by $0$ to $\R$.
+Let $S_t$ be translation on $L^2(\R)$: $(S_t\phi)(u):=\phi(u-t)$.
+
+\begin{lemma}[Dilation becomes translation]
+\label{lem:diltrans}
+For all $t\in\R$,
+\[
+\|g-U_{e^t}g\|_{L^2(\Rplus)}=\|\widetilde G-S_t\widetilde G\|_{L^2(\R)}.
+\]
+\end{lemma}
+
+\begin{proof}
+By $x=e^u$ and $d^*x=du$,
+\[
+\|g-U_{e^t}g\|_2^2=\int_{\R} |G(u)-G(u-t)|^2\,du
+=\int_{\R} |\widetilde G(u)-(S_t\widetilde G)(u)|^2\,du.
+\]
+\end{proof}
+
+\subsection*{3. Local distributions}
+
+Assume $\supp(g)\subset[\lambda^{-1},\lambda]$ and let $f$ be as in Definition~\ref{def:f}.
+
+\paragraph{Prime terms.}
+For a prime $p$, define
+\begin{equation}
+\label{eq:Wp}
+W_p(f):=(\log p)\sum_{m\ge 1} p^{-m/2}\bigl(f(p^m)+f(p^{-m})\bigr).
+\end{equation}
+By Remark~\ref{rem:truncate}, the summand vanishes unless $p^m\le \lambda^2$,
+so \eqref{eq:Wp} is a finite sum for each fixed $(p,\lambda)$.
+
+\paragraph{Archimedean term.}
+Let $\gamma$ be Euler's constant and define the (a priori improper) integral
+\begin{equation}
+\label{eq:WR}
+W_{\R}(f):=(\log 4\pi+\gamma)\,f(1)+\int_1^\infty
+\Bigl(f(x)+f(x^{-1})-2x^{-1/2}f(1)\Bigr)\frac{x^{1/2}}{x-x^{-1}}\,d^*x.
+\end{equation}
+The integrand has a non-integrable weight at $x=1$ unless there is sufficient
+cancellation; we will guarantee convergence by an explicit ``energy'' hypothesis below.
+
+Define the strictly positive weight (for $t>0$)
+\begin{equation}
+\label{eq:w}
+w(t):=\frac{e^{t/2}}{e^t-e^{-t}}=\frac{e^{t/2}}{2\sinh t}.
+\end{equation}
+Note the asymptotics $w(t)\sim (2t)^{-1}$ as $t\downarrow 0$ and $w(t)\sim e^{-t/2}$ as $t\to\infty$.
+
+\subsection*{4. Archimedean energy and its natural form domain}
+
+\begin{definition}[Archimedean difference-energy at scale $\lambda$]
+\label{def:Einf}
+For $G\in L^2(I)$ (with zero extension $\widetilde G$) define
+\[
+\mathcal E_{\infty,\lambda}(G):=\int_{0}^{2L} w(t)\,\|\widetilde G-S_t\widetilde G\|_{L^2(\R)}^2\,dt
+\ \in [0,\infty].
+\]
+Let $\mathcal D_{\infty,\lambda}$ be the (maximal) form domain
+\[
+\mathcal D_{\infty,\lambda}:=\{\,G\in L^2(I):\ \mathcal E_{\infty,\lambda}(G)<\infty\,\}.
+\]
+Equivalently, $g\in L^2(\Rplus)$ with $\supp(g)\subset[\lambda^{-1},\lambda]$ belongs to the
+Archimedean form domain if and only if $\mathcal E_{\infty,\lambda}(G)<\infty$ for $G(u)=g(e^u)$.
+\end{definition}
+
+\begin{remark}[A closed form built from a smooth core]
+\label{rem:core}
+If one prefers a canonical Hilbert space structure, set $\mathcal C_\lambda:=C_c^\infty(I)$ and equip it with
+$\|G\|_{\mathcal D}^2:=\|G\|_{L^2(I)}^2+\mathcal E_{\infty,\lambda}(G)$.
+Let $\overline{\mathcal D}_{\infty,\lambda}$ be the completion of $\mathcal C_\lambda$ for this norm; then
+$\mathcal E_{\infty,\lambda}$ extends by continuity to $\overline{\mathcal D}_{\infty,\lambda}$.
+Everything below holds verbatim on $\mathcal D_{\infty,\lambda}$ (maximal domain) and in particular on
+$\overline{\mathcal D}_{\infty,\lambda}$.
+\end{remark}
+
+\begin{remark}[Concrete sufficient conditions]
+\label{rem:sufficient}
+If $G$ is, say, $C^1$ on $I$ (or $G\in H^1(I)$), then $\mathcal E_{\infty,\lambda}(G)<\infty$.
+Indeed, for small $t$ one has the standard estimate $\|\widetilde G-S_t\widetilde G\|_2\ll |t|^{1/2}(\|G'\|_2+\|G\|_2)$,
+and for large $t$ one has $\|\widetilde G-S_t\widetilde G\|_2\le 2\|G\|_2$ while $w(t)$ is integrable on $(1,2L)$.
+The point of Definition~\ref{def:Einf} is that no such auxiliary regularity is needed: the finiteness of the energy is the only hypothesis.
+\end{remark}
+
+\subsection*{5. Energy decomposition: primes and infinity}
+
+\begin{lemma}[Prime term = discrete difference-energy + constant]
+\label{lem:prime}
+With the above notation,
+\[
+-W_p(f)=\sum_{\substack{m\ge 1\\ p^m\le \lambda^2}}(\log p)p^{-m/2}\,
+\|\widetilde G-S_{m\log p}\widetilde G\|_{L^2(\R)}^2
+\;+\;c_p(\lambda)\,\|G\|_{L^2(I)}^2,
+\]
+where
+\[
+c_p(\lambda):=-2(\log p)\sum_{\substack{m\ge 1\\ p^m\le \lambda^2}}p^{-m/2}\in\R.
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:corr},
+\[
+f(p^m)+f(p^{-m})=2\Re\langle g, U_{p^m}g\rangle.
+\]
+Hence, by \eqref{eq:Wp},
+\[
+W_p(f)=(\log p)\sum_{m\ge 1} p^{-m/2}\,2\Re\langle g,U_{p^m}g\rangle.
+\]
+Apply Lemma~\ref{lem:unitary} with $U=U_{p^m}$:
+\[
+2\Re\langle g,U_{p^m}g\rangle=2\|g\|_2^2-\|g-U_{p^m}g\|_2^2.
+\]
+If $p^m>\lambda^2$ then $f(p^m)=0$ by Remark~\ref{rem:truncate}, hence those terms contribute $0$.
+Therefore
+\[
+W_p(f)=\sum_{\substack{m\ge 1\\ p^m\le \lambda^2}}(\log p)p^{-m/2}
+\Bigl(2\|g\|_2^2-\|g-U_{p^m}g\|_2^2\Bigr),
+\]
+which rearranges to the stated formula. Finally $\|g\|_2^2=\|G\|_{L^2(I)}^2$ and
+$\|g-U_{p^m}g\|_2=\|\widetilde G-S_{m\log p}\widetilde G\|_2$ by Lemma~\ref{lem:diltrans}.
+\end{proof}
+
+\begin{lemma}[Archimedean term = continuum of difference energies + constant]
+\label{lem:arch}
+Assume $G\in\mathcal D_{\infty,\lambda}$ (Definition~\ref{def:Einf}). Then the improper integral in \eqref{eq:WR} converges,
+and one has
+\[
+-W_{\R}(f)=\int_{0}^{2L} w(t)\,\|\widetilde G-S_t\widetilde G\|_{L^2(\R)}^2\,dt
+\;+\;c_\infty(\lambda)\,\|G\|_{L^2(I)}^2,
+\]
+where
+\[
+c_\infty(\lambda):=-(\log 4\pi+\gamma)
++\int_{0}^{2L} 2\bigl(e^{-t/2}-1\bigr)w(t)\,dt
++\int_{2L}^{\infty} 2e^{-t/2}w(t)\,dt\in\R.
+\]
+Both integrals defining $c_\infty(\lambda)$ converge absolutely.
+\end{lemma}
+
+\begin{proof}
+Start from \eqref{eq:WR} and substitute $x=e^t$ (so $d^*x=dt$). Using \eqref{eq:w},
+\[
+W_{\R}(f)=(\log 4\pi+\gamma)f(1)
++\int_0^\infty\Bigl(f(e^t)+f(e^{-t})-2e^{-t/2}f(1)\Bigr)w(t)\,dt.
+\]
+By Lemma~\ref{lem:corr}, $f(1)=\|g\|_2^2$ and
+$f(e^t)+f(e^{-t})=2\Re\langle g,U_{e^t}g\rangle$. Thus
+\[
+W_{\R}(f)=(\log 4\pi+\gamma)\|g\|_2^2
++\int_0^\infty\Bigl(2\Re\langle g,U_{e^t}g\rangle-2e^{-t/2}\|g\|_2^2\Bigr)w(t)\,dt.
+\]
+Apply Lemma~\ref{lem:unitary} with $U=U_{e^t}$ to rewrite
+\[
+2\Re\langle g,U_{e^t}g\rangle = 2\|g\|_2^2-\|g-U_{e^t}g\|_2^2.
+\]
+Hence the integrand becomes
+\[
+\Bigl(2(1-e^{-t/2})\|g\|_2^2-\|g-U_{e^t}g\|_2^2\Bigr)w(t).
+\]
+
+We now split at $t=2L$.
+If $t>2L$, then $e^t>\lambda^2$ and also $e^{-t}<\lambda^{-2}$, so by Remark~\ref{rem:truncate}
+\[
+f(e^t)=f(e^{-t})=0.
+\]
+Equivalently, $g$ and $U_{e^t}g$ have disjoint supports, hence
+\[
+\|g-U_{e^t}g\|_2^2=\|g\|_2^2+\|U_{e^t}g\|_2^2=2\|g\|_2^2.
+\]
+Therefore for $t>2L$ the contribution of the integrand is
+\[
+\Bigl(2(1-e^{-t/2})\|g\|_2^2-2\|g\|_2^2\Bigr)w(t)=-2e^{-t/2}w(t)\,\|g\|_2^2,
+\]
+which yields the tail constant $\int_{2L}^\infty 2e^{-t/2}w(t)\,dt$ after moving to $-W_{\R}(f)$.
+
+On $t\in[0,2L]$ we keep the difference-energy term and absorb the remaining
+$2(e^{-t/2}-1)w(t)\|g\|_2^2$ into the constant.
+
+Finally, by Lemma~\ref{lem:diltrans},
+$\|g-U_{e^t}g\|_2=\|\widetilde G-S_t\widetilde G\|_2$ and $\|g\|_2^2=\|G\|_{L^2(I)}^2$.
+
+Convergence: the tail constant converges since $e^{-t/2}w(t)\sim e^{-t}$ as $t\to\infty$.
+On $[0,2L]$, the function $t\mapsto 2(e^{-t/2}-1)w(t)$ is integrable at $0$ because
+$e^{-t/2}-1\sim -t/2$ and $w(t)\sim (2t)^{-1}$. The remaining term
+$\int_0^{2L} w(t)\|g-U_{e^t}g\|_2^2\,dt$ is finite by the assumption $G\in\mathcal D_{\infty,\lambda}$.
+Thus the improper integral in \eqref{eq:WR} converges and the stated identity holds.
+\end{proof}
+
+\begin{theorem}[Energy decomposition of the restricted Weil form]
+\label{thm:energy}
+Let $\lambda>1$ and let $g\in L^2(\Rplus)$ satisfy $\supp(g)\subset[\lambda^{-1},\lambda]$.
+Let $f(a)=\langle g,U_a g\rangle$ and define $G(u)=g(e^u)$ on $I=(-\log\lambda,\log\lambda)$, with extension $\widetilde G$ by $0$ to $\R$.
+Assume $G\in \mathcal D_{\infty,\lambda}$ (equivalently $\mathcal E_{\infty,\lambda}(G)<\infty$).
+Then $W_{\R}(f)$ is well-defined by \eqref{eq:WR} and
+\[
+-\Bigl(W_{\R}(f)+\sum_{p\ \mathrm{prime}} W_p(f)\Bigr)
+=\mathcal E_\lambda(G)+C(\lambda)\,\|G\|_{L^2(I)}^2,
+\]
+where the \emph{difference-energy form} is
+\[
+\mathcal E_\lambda(G):=
+\int_{0}^{2L} w(t)\,\|\widetilde G-S_t\widetilde G\|_{L^2(\R)}^2\,dt
++\sum_{\substack{p\ \mathrm{prime}\\ p\le \lambda^2}}\ \sum_{\substack{m\ge 1\\ p^m\le \lambda^2}}
+(\log p)p^{-m/2}\,\|\widetilde G-S_{m\log p}\widetilde G\|_{L^2(\R)}^2,
+\]
+and the constant is
+\[
+C(\lambda):=c_\infty(\lambda)+\sum_{\substack{p\ \mathrm{prime}\\ p\le \lambda^2}} c_p(\lambda)\in\R.
+\]
+All sums are finite for each fixed $\lambda$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:arch} gives $-W_{\R}(f)$ as an Archimedean difference-energy plus a constant multiple of $\|G\|_2^2$.
+Summing Lemma~\ref{lem:prime} over primes $p\le \lambda^2$ (finitely many) gives the prime contribution.
+Adding the identities yields the claim.
+\end{proof}
+
+\end{document}
