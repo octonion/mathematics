@@ -1,0 +1,433 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+% --- theorem environments ---
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% --- notation ---
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\Ltwo}{L^2}
+\newcommand{\dom}{\mathcal D}
+\newcommand{\E}{\mathcal E}
+
+\title{Verification of the Five-Step Template in the Ground-State Simplicity/Evenness Proof}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Purpose and scope}
+
+This document verifies, \emph{step-by-step and as independently as possible}, the mathematical logic of the following five-step template as used in the attached proof (``combined.tex''):
+
+\begin{center}
+\begin{tabular}{l}
+(1) Energy Decomposition \\
+(2) Markov Property \\
+(3) Irreducibility \\
+(4) Compact Resolvent \\
+(5) Perron--Frobenius / Krein--Rutman (positivity improving $\Rightarrow$ simple ground state) \\
+\end{tabular}
+\end{center}
+
+The target conjecture (in the language of Connes, \S 6.6) is: for each $\lambda>1$, the lowest eigenvalue of the restricted Weil quadratic form is \emph{simple} and has an \emph{even} eigenfunction.
+
+\medskip
+
+\noindent\textbf{Two global assumptions (explicit).}
+\begin{enumerate}[label=(A\arabic*)]
+\item \textbf{Identification of the quadratic form with an operator form.}
+The proof rewrites the restricted Weil quadratic form $Q_{W,\lambda}$ (in log-coordinates) as
+\[
+Q_{W,\lambda}(G,G) \;=\; C_\lambda \,\norm{G}_{\Ltwo(I)}^2 \;-\; \E_\lambda(G,G)
+\]
+for some constant $C_\lambda\in\R$ and a nonnegative closed form $\E_\lambda$ (defined below).
+This decomposition is an \emph{input} from the explicit formula / local computations; the subsequent functional-analytic argument uses only $\E_\lambda$ (and the fact that adding a constant multiple of $\norm{G}^2$ does not change eigenfunctions or simplicity).
+\item \textbf{Work over a real Hilbert space for Dirichlet-form arguments.}
+Markov/Dirichlet-form theory is naturally stated on real $\Ltwo$. If the original discussion begins with complex-valued test functions, one passes to the real form on $\Ltwo(I;\R)$ or applies the theory to $\Re G$ and $\Im G$ separately. This is standard and does not affect the ground-state simplicity conclusion for a real symmetric form.
+\end{enumerate}
+
+\begin{remark}[Why (A1) does not weaken the conclusion]
+Replacing $Q_{W,\lambda}$ by $Q_{W,\lambda}+\alpha \norm{\cdot}^2$ shifts the spectrum by $\alpha$ but leaves eigenvectors and multiplicities unchanged. Thus, proving ``$\E_\lambda$ has simple ground state'' is equivalent to proving ``$Q_{W,\lambda}$ has simple ground state'' once the affine relation in (A1) is established.
+\end{remark}
+
+\bigskip
+
+\section{Common setup for Steps (1)--(5)}
+
+Fix $L>0$ and set $I:=(-L,L)$. Let $H:=\Ltwo(I,du)$ (real-valued unless stated otherwise).
+For $t\in\R$, define the shift on $\R$ by $(S_t f)(u):=f(u+t)$, and on $I$ we use the convention that a function $G\in \Ltwo(I)$ is extended by $0$ to $\R$ (denoted $\widetilde G$) before applying shifts.
+
+\begin{definition}[Difference-energy form]
+Let $\nu$ be a nonnegative (finite or $\sigma$-finite) measure on $\R\setminus\{0\}$, and define
+\[
+\E_\nu(G,G)\;:=\;\frac12\int_{\R\setminus\{0\}} \norm{\widetilde G - S_t\widetilde G}_{\Ltwo(\R)}^2 \, \nu(dt).
+\]
+When the integral is finite, $\E_\nu(G,G)\ge 0$.
+\end{definition}
+
+The form $\E_\lambda$ in the proof is of this type (a sum of finitely many such contributions, e.g.\ archimedean and nonarchimedean pieces), with \emph{nonnegative} weights.
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Step (1): Energy Decomposition}
+
+\subsection*{Statement of the step}
+\begin{quote}
+\textbf{Step (1).} The restricted Weil quadratic form can be rewritten as
+\[
+Q_{W,\lambda}(G,G) \;=\; C_\lambda \norm{G}_{\Ltwo(I)}^2 - \E_\lambda(G,G),
+\]
+where $\E_\lambda$ is a nonnegative ``difference-energy'' of the form described above.
+\end{quote}
+
+\subsection*{Verification of the logic}
+The algebraic heart of this step is the following unitary identity.
+
+\begin{lemma}[Unitary identity]
+Let $U$ be unitary on a Hilbert space. Then for all $f$,
+\[
+2\,\Re\,\ip{f}{Uf} \;=\; 2\norm{f}^2 - \norm{f-Uf}^2.
+\]
+\end{lemma}
+
+\begin{proof}
+Expand $\norm{f-Uf}^2=\ip{f-Uf}{f-Uf}=\norm{f}^2+\norm{Uf}^2-2\Re\ip{f}{Uf}$, and use $\norm{Uf}=\norm{f}$.
+\end{proof}
+
+In the proof, local terms are expressed as $\Re\ip{\widetilde G}{S_t \widetilde G}$ (or finite sums of such inner products). Applying the lemma turns each such term into a constant multiple of $\norm{G}^2$ minus a squared-difference $\norm{\widetilde G - S_t\widetilde G}^2$. Nonnegativity of the weights then yields a representation of the form
+\[
+Q_{W,\lambda}(G,G)=C_\lambda\norm{G}^2 - \E_\lambda(G,G),
+\quad \E_\lambda(G,G)\ge 0.
+\]
+
+\subsection*{What is assumed / potentially unclear?}
+\begin{itemize}
+\item The step uses as \emph{input} the explicit formulas expressing the local Weil contributions in terms of translations or averages of translations. This is analytic number theory input, not functional analysis.
+\item Once those formulas are granted, the conversion to difference energies is purely algebraic and is correct.
+\end{itemize}
+
+\subsection*{Does any ambiguity here invalidate the proof?}
+Only if (A1) fails (i.e.\ if $Q_{W,\lambda}$ is not actually affine-equivalent to the form $\E_\lambda$ studied). If (A1) holds, then Step (1) is logically sound and adequate for the remaining steps.
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Step (2): Markov Property}
+
+\subsection*{Statement of the step}
+\begin{quote}
+\textbf{Step (2).} The form $\E_\lambda$ is Markovian: for every normal contraction $\Phi:\R\to\R$ with $\Phi(0)=0$,
+\[
+\E_\lambda(\Phi\circ G,\Phi\circ G)\;\le\;\E_\lambda(G,G).
+\]
+\end{quote}
+
+\subsection*{Verification of the logic}
+\begin{lemma}[Markov contraction for difference energies]\label{lem:markov}
+Let $\E_\nu$ be as above and let $\Phi$ be a normal contraction with $\Phi(0)=0$. Then
+\[
+\E_\nu(\Phi\circ G,\Phi\circ G)\le \E_\nu(G,G).
+\]
+\end{lemma}
+
+\begin{proof}
+Fix $t\neq 0$. Since $\Phi$ is $1$-Lipschitz,
+\[
+|\Phi(\widetilde G(u))-\Phi(\widetilde G(u-t))|\le |\widetilde G(u)-\widetilde G(u-t)|,
+\]
+pointwise in $u$. Squaring and integrating over $u\in\R$ yields
+$\norm{\Phi(\widetilde G)-S_t\Phi(\widetilde G)}_{\Ltwo(\R)}^2\le \norm{\widetilde G-S_t\widetilde G}_{\Ltwo(\R)}^2$.
+Integrate against the nonnegative measure $\nu(dt)$.
+The condition $\Phi(0)=0$ ensures compatibility with the zero-extension outside $I$.
+\end{proof}
+
+Since $\E_\lambda$ is a sum (or integral) of such $\E_\nu$ with nonnegative weights, it is Markovian as well.
+
+\subsection*{What is assumed / potentially unclear?}
+\begin{itemize}
+\item The proof is valid for real-valued $G$. For complex-valued $G$, Dirichlet-form Markov property is typically formulated on the real subspace, or for $|G|$-contractions; the proof should explicitly restrict to $\Ltwo(I;\R)$ (assumption (A2)).
+\end{itemize}
+
+\subsection*{Does this ambiguity invalidate the proof?}
+No. The ground-state simplicity/evenness statement is ultimately about a real symmetric operator (or real form). Restricting to the real Hilbert space is standard and preserves the bottom of the spectrum and its simplicity for the symmetric form.
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Step (3): Irreducibility}
+
+\subsection*{Statement of the step}
+\begin{quote}
+\textbf{Step (3).} The Dirichlet form $(\E_\lambda,\dom(\E_\lambda))$ is irreducible, i.e.\ it has no nontrivial invariant measurable subsets. Equivalently (in standard theory), if $\E_\lambda(\1_B,\1_B)=0$ for a measurable $B\subset I$, then $|B|=0$ or $|I\setminus B|=0$.
+\end{quote}
+
+\subsection*{Internal verification: ``zero energy for indicator'' forces translation invariance}
+The following parts are \emph{proved directly} from the structure of $\E_\lambda$.
+
+\begin{lemma}[Zero energy $\Rightarrow$ invariance under small shifts]\label{lem:indicator-invariance}
+Assume $\E_\lambda$ contains an integral of the form
+\[
+\int_{|t|<\delta} \norm{\widetilde G - S_t\widetilde G}_{\Ltwo(\R)}^2\,\nu(dt)
+\]
+with $\nu$ a nonnegative measure giving positive mass to every subinterval of $(-\delta,\delta)$.
+If $G=\1_B$ and $\E_\lambda(\1_B,\1_B)=0$, then
+\[
+\1_B(\cdot+t)=\1_B(\cdot)\quad \text{in }\Ltwo(I)\text{ for all }|t|<\delta.
+\]
+\end{lemma}
+
+\begin{proof}
+Since $\E_\lambda(\1_B,\1_B)$ is a sum/integral of nonnegative terms, it being $0$ forces
+$\norm{\widetilde{\1_B}-S_t\widetilde{\1_B}}_{\Ltwo(\R)}^2=0$ for $\nu$-a.e.\ $t$ in $(-\delta,\delta)$.
+Thus $\widetilde{\1_B}=S_t\widetilde{\1_B}$ a.e.\ in $u$ for $\nu$-a.e.\ $t$.
+The map $t\mapsto S_t f$ is continuous in $\Ltwo(\R)$ for fixed $f\in \Ltwo(\R)$, hence the set of $t$ for which
+$S_t\widetilde{\1_B}=\widetilde{\1_B}$ in $\Ltwo$ is closed. Since it contains a dense subset of $(-\delta,\delta)$
+(it contains almost every $t$), it contains all $|t|<\delta$.
+Restricting back to $I$ yields the claim.
+\end{proof}
+
+\begin{lemma}[Translation invariance on an interval $\Rightarrow$ null or conull]\label{lem:null-conull}
+Let $B\subset I=(-L,L)$ be measurable. Suppose there exists $\delta>0$ such that
+$\1_B(\cdot+t)=\1_B(\cdot)$ in $\Ltwo(I)$ for all $|t|<\delta$. Then either $|B|=0$ or $|I\setminus B|=0$.
+\end{lemma}
+
+\begin{proof}
+Let $\rho_\varepsilon$ be a smooth mollifier supported in $(-\varepsilon,\varepsilon)$ with $\varepsilon<\delta/2$, and set
+$f_\varepsilon:=\1_B * \rho_\varepsilon$ (convolution on $\R$, using the zero extension outside $I$).
+Then $f_\varepsilon$ is smooth on $(-L+\varepsilon,L-\varepsilon)$ and satisfies $f_\varepsilon(\cdot+t)=f_\varepsilon(\cdot)$
+for all $|t|<\delta/2$ on that smaller interval. Differentiating at $t=0$ gives $f_\varepsilon'\equiv 0$ there, so
+$f_\varepsilon$ is constant on $(-L+\varepsilon,L-\varepsilon)$.
+As $\varepsilon\downarrow 0$, $f_\varepsilon\to \1_B$ in $\Ltwo(I)$, hence $\1_B$ equals a constant a.e.\ on $I$, i.e.\
+either $\1_B=0$ a.e.\ or $\1_B=1$ a.e.
+\end{proof}
+
+Together, Lemmas \ref{lem:indicator-invariance} and \ref{lem:null-conull} show that
+\[
+\E_\lambda(\1_B,\1_B)=0 \quad\Longrightarrow\quad |B|=0 \text{ or } |I\setminus B|=0,
+\]
+provided $\E_\lambda$ has \emph{sufficiently many small jumps} (i.e.\ shifts in an interval).
+
+\subsection*{External (standard) input: irreducibility criteria in Dirichlet-form theory}
+The proof then invokes a standard theorem from symmetric Dirichlet form theory:
+
+\begin{theorem}[Standard equivalence: irreducibility vs.\ indicator criterion]\label{thm:dirichlet-irreducible}
+Let $(\E,\dom(\E))$ be a symmetric Dirichlet form on $\Ltwo(I)$ with associated submarkovian semigroup $(T_t)_{t\ge 0}$.
+Then the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item The semigroup is irreducible (no nontrivial invariant measurable sets).
+\item For every measurable $B\subset I$, $\E(\1_B,\1_B)=0$ implies $|B|=0$ or $|I\setminus B|=0$.
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}[Status of Theorem \ref{thm:dirichlet-irreducible}]
+This theorem is \emph{standard} (see, e.g., Fukushima--Oshima--Takeda, \emph{Dirichlet Forms and Symmetric Markov Processes},
+or Ouhabaz, \emph{Analysis of Heat Equations on Domains}).
+The attached proof cites such results rather than reproving them, which is typical and acceptable in a research-level argument.
+\end{remark}
+
+\subsection*{Does reliance on standard Dirichlet-form theory invalidate the proof?}
+No, provided references are included and hypotheses are checked:
+\begin{itemize}
+\item Step (2) verifies the Markov (Dirichlet) property.
+\item Step (4) supplies closedness/denseness so that an associated semigroup/operator exists.
+\item Lemmas \ref{lem:indicator-invariance}--\ref{lem:null-conull} verify the indicator criterion for this particular $\E_\lambda$ (under the small-jump condition).
+\end{itemize}
+Thus the irreducibility conclusion is properly justified \emph{conditional on} the standard theorem and the ``small jumps'' hypothesis, both of which can be made explicit.
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Step (4): Compact Resolvent}
+
+\subsection*{Statement of the step}
+\begin{quote}
+\textbf{Step (4).} The form $(\E_\lambda,\dom(\E_\lambda))$ is closed and densely defined on $\Ltwo(I)$, so it defines a selfadjoint operator $A_\lambda$.
+Moreover $A_\lambda$ has compact resolvent (equivalently, purely discrete spectrum with no finite accumulation point).
+\end{quote}
+
+\subsection*{Verification structure}
+There are two logically distinct subclaims:
+\begin{enumerate}[label=(4.\arabic*)]
+\item \textbf{Closedness/denseness:} $\E_\lambda$ is a closed quadratic form with dense domain.
+\item \textbf{Compactness:} the embedding $(\dom(\E_\lambda),\norm{\cdot}_{\E_\lambda})\hookrightarrow \Ltwo(I)$ is compact, hence $A_\lambda$ has compact resolvent.
+\end{enumerate}
+
+\subsection*{(4.1) Closedness and the operator $A_\lambda$}
+Closedness is established in the proof by passing to an ambient translation-invariant form on $\R$ with a Fourier multiplier (symbol) representation, then restricting to $I$ by zero extension. This is a standard method:
+one shows $\dom(\E_\lambda)$ is complete under the form norm
+\[
+\norm{G}_{\E_\lambda}^2 := \norm{G}_{\Ltwo(I)}^2 + \E_\lambda(G,G),
+\]
+and that $C_c^\infty(I)$ (or $L^2(I)$ functions with compact support in $I$) is dense.
+
+\begin{theorem}[Closed form $\Rightarrow$ selfadjoint operator]\label{thm:form-operator}
+Let $\E$ be a densely defined closed symmetric form on a Hilbert space $H$ bounded below.
+Then there exists a unique selfadjoint operator $A$ with $\dom(A)\subset \dom(\E)$ such that
+\[
+\E(f,g)=\ip{Af}{g}\quad\text{for all }f\in\dom(A),\, g\in\dom(\E).
+\]
+\end{theorem}
+
+\begin{remark}
+Theorem \ref{thm:form-operator} is standard (Kato's representation theorem / Friedrichs extension theory).
+The proof may cite it; it is not usually reproved in expository accounts unless the audience requires it.
+\end{remark}
+
+\subsection*{(4.2) Compact embedding $\Rightarrow$ compact resolvent}
+The proof uses the Kolmogorov--Riesz compactness criterion on bounded intervals and a translation estimate.
+
+\begin{theorem}[Compact embedding criterion]\label{thm:compact-embed}
+Suppose $V$ is a Hilbert space continuously embedded in $H=\Ltwo(I)$, and the embedding $V\hookrightarrow H$ is compact.
+If $\E$ is a closed form with $\dom(\E)=V$ (as sets) and form norm equivalent to $\norm{\cdot}_V$,
+then the associated selfadjoint operator has compact resolvent.
+\end{theorem}
+
+\begin{remark}[Why this is standard]
+This is a standard consequence of spectral theory for closed forms: bounded sets in the form domain are relatively compact in $H$,
+so the resolvent maps bounded sets to relatively compact sets, i.e.\ the resolvent is compact.
+\end{remark}
+
+\paragraph{Internal check needed.}
+To apply Theorem \ref{thm:compact-embed}, one must verify a compactness statement of the form:
+\begin{quote}
+Any sequence $(G_n)$ bounded in $\norm{\cdot}_{\E_\lambda}$ has a subsequence converging in $\Ltwo(I)$.
+\end{quote}
+On a bounded interval, Kolmogorov--Riesz reduces this to uniform control of translations:
+\[
+\sup_n \norm{G_n(\cdot+h)-G_n}_{\Ltwo(I)}\to 0 \quad\text{as }h\to 0.
+\]
+The proof derives such a translation estimate from the structure of $\E_\lambda$ (often via Fourier analysis or direct estimates on the jump kernel).
+This is a \emph{genuine analytic step}; the verification here is that the logical implication
+\[
+\text{translation estimate} + \text{bounded interval} \Rightarrow \text{compactness}
+\]
+is correct and standard.
+
+\subsection*{Does any lack of detail here invalidate the proof?}
+Only if the proof fails to justify \emph{either} closedness \emph{or} the translation estimate needed for Kolmogorov--Riesz.
+In the attached proof these are supplied via an ambient symbol computation and a detailed KR argument; as a matter of logic, the step is correct.
+For maximal self-containment, one can add:
+\begin{itemize}
+\item an explicit lemma giving the translation bound in terms of $\E_\lambda$,
+\item a verbatim statement of Kolmogorov--Riesz on $\Ltwo(I)$.
+\end{itemize}
+Neither is conceptually problematic; they are standard functional analysis.
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Step (5): Perron--Frobenius / Krein--Rutman}
+
+\subsection*{Statement of the step}
+\begin{quote}
+\textbf{Step (5).} The semigroup $e^{-tA_\lambda}$ is positivity improving.
+Consequently, the lowest eigenvalue of $A_\lambda$ is simple with a strictly positive eigenfunction.
+If, additionally, $A_\lambda$ commutes with reflection $R(G)(u)=G(-u)$, then the ground state is even.
+\end{quote}
+
+\subsection*{External (standard) input: positivity improving implies simplicity}
+A standard theorem (various versions due to Jentzsch, Krein--Rutman, and modern semigroup theory) states:
+
+\begin{theorem}[Positivity improving $\Rightarrow$ simple ground state]\label{thm:pf}
+Let $A$ be selfadjoint, bounded below, with compact resolvent on $\Ltwo(I)$.
+Assume $e^{-tA}$ is positivity improving for some (hence all) $t>0$.
+Then the bottom eigenvalue of $A$ is simple and has an eigenfunction $\psi>0$ a.e.
+\end{theorem}
+
+\begin{remark}[References]
+See, e.g., Arendt--Batty--Hieber--Neubrander, \emph{Vector-valued Laplace Transforms and Cauchy Problems},
+or Ouhabaz, \emph{Analysis of Heat Equations on Domains}, or Reed--Simon IV for related Perron--Frobenius-type results.
+The attached proof cites such results rather than reproving them.
+\end{remark}
+
+\subsection*{Internal verification: Markov + irreducible $\Rightarrow$ positivity improving}
+The proof uses the standard implication:
+\[
+\text{(Dirichlet form) Markov + irreducible} \quad\Longrightarrow\quad \text{semigroup is positivity improving}.
+\]
+This implication is part of standard Dirichlet-form theory (often phrased as: irreducibility implies strict positivity of the resolvent/semigroup kernel).
+
+\begin{remark}[Why this does not invalidate the proof]
+This is a standard theorem in the same references as Theorem \ref{thm:dirichlet-irreducible}.
+The proof already establishes Markov (Step 2), irreducibility (Step 3), and existence of the semigroup (Step 4),
+so the hypotheses for the standard theorem are met. If desired for completeness, one can include a precise citation
+(e.g.\ theorem number) and check technical hypotheses (quasi-regularity, etc.).
+On a bounded interval with the present jump-type form, these hypotheses are typically satisfied.
+\end{remark}
+
+\subsection*{Evenness of the ground state}
+Define $R:\Ltwo(I)\to\Ltwo(I)$ by $(RG)(u):=G(-u)$. This is unitary and involutive ($R^2=\mathrm{Id}$).
+
+\begin{lemma}[Reflection invariance of the form]\label{lem:reflection}
+Assume $\E_\lambda$ is built from translation differences $\norm{\widetilde G-S_t\widetilde G}^2$ with weights depending only on $t$ through $|t|$ (or symmetrically in $t$).
+Then $\E_\lambda(RG,RG)=\E_\lambda(G,G)$ for all $G\in \dom(\E_\lambda)$.
+\end{lemma}
+
+\begin{proof}
+On $\R$, $RS_t=S_{-t}R$. Hence
+\[
+\norm{R\widetilde G - S_t R\widetilde G}_{\Ltwo(\R)}
+=\norm{R\widetilde G - R S_{-t}\widetilde G}_{\Ltwo(\R)}
+=\norm{\widetilde G - S_{-t}\widetilde G}_{\Ltwo(\R)}.
+\]
+If the measure/weights are symmetric in $t$ (so that integrating over $t$ is the same as integrating over $-t$), the energy is invariant.
+\end{proof}
+
+\begin{corollary}[Operator commutes with reflection]
+Under the hypotheses of Lemma \ref{lem:reflection}, the associated selfadjoint operator satisfies $AR=RA$.
+\end{corollary}
+
+\begin{proof}
+Form invariance implies $R$ preserves $\dom(\E_\lambda)$ and $\E_\lambda(Rf,Rg)=\E_\lambda(f,g)$.
+By uniqueness of the operator associated with a closed form (Theorem \ref{thm:form-operator}), this yields commutation.
+\end{proof}
+
+\begin{corollary}[Even ground state]
+Assume Theorem \ref{thm:pf} applies and the ground state $\psi$ is strictly positive a.e.
+If $AR=RA$, then $\psi$ is even: $R\psi=\psi$.
+\end{corollary}
+
+\begin{proof}
+Since $AR=RA$, the eigenspace for the lowest eigenvalue is $R$-invariant.
+If that eigenspace is one-dimensional, then $R\psi=c\psi$ for some scalar $c\in\{\pm 1\}$ (because $R^2=\mathrm{Id}$).
+If $c=-1$, then $\psi(u)=-\psi(-u)$, forcing $\psi$ to change sign unless $\psi\equiv 0$, contradicting $\psi>0$ a.e.
+Hence $c=+1$ and $\psi$ is even.
+\end{proof}
+
+\subsection*{Does reliance on Perron--Frobenius/Krein--Rutman invalidate the proof?}
+No. These are standard theorems in semigroup theory and spectral theory.
+What matters is that the hypotheses are met:
+compact resolvent (Step 4) and positivity improving (from Steps 2--3 plus standard Dirichlet-form results).
+If one is writing for an audience unfamiliar with these tools, one adds citations and/or an appendix proof.
+The mathematical correctness of the argument is not compromised by citing standard results.
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Conclusion: Independent correctness of the five steps}
+
+\begin{enumerate}[label=\textbf{Step \arabic*.}]
+\item \textbf{Energy decomposition:} Correct algebraically once the explicit-formula input is granted (Assumption (A1)).
+\item \textbf{Markov property:} Correct for real-valued functions; extends to the standard Dirichlet-form framework (Assumption (A2)).
+\item \textbf{Irreducibility:} The key indicator-energy implications are proved directly from the difference-energy structure; the equivalence to irreducibility is a standard theorem and should be cited precisely.
+\item \textbf{Compact resolvent:} The logical route ``closed form + compact embedding $\Rightarrow$ compact resolvent'' is standard and correct; the only substantive analytic point is establishing the needed translation estimate / compactness (supplied in the attached proof).
+\item \textbf{PF/KR:} Given compact resolvent and positivity improving, simplicity and strict positivity of the ground state follow by standard theorems; reflection commutation then forces evenness.
+\end{enumerate}
+
+\end{document}

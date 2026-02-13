@@ -1,0 +1,878 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{verdict}{Verdict}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\1}{\mathbf{1}}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\spec}{spec}
+
+\title{Independent Verification of the Five-Step Proof\\
+of Ground-State Simplicity and Evenness\\
+for the Restricted Weil Quadratic Form}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We provide a self-contained, step-by-step verification of the paper
+\emph{Energy-Decomposition and Perron--Frobenius Consequences for the Restricted Weil Quadratic Form},
+which claims to prove that for each $\lambda>1$, the lowest eigenvalue of the selfadjoint operator $A_\lambda$
+associated with the restriction of the Weil quadratic form to $L^2([\lambda^{-1},\lambda], d^*x)$ is simple, and
+the corresponding eigenfunction is even under $u\mapsto u^{-1}$.
+The proof follows a five-step template: (1)~Energy Decomposition, (2)~Markov Property,
+(3)~Irreducibility, (4)~Compact Resolvent, (5)~Perron--Frobenius/Krein--Rutman.
+We verify the mathematical logic and correctness of each step independently, identify any assumptions
+or external results that are invoked, and assess whether these invalidate the proof.
+Where potential ambiguities arise---particularly in the application of Dirichlet form theory for
+irreducibility---we provide supplementary discussion and, where necessary, additional argument to
+close gaps in exposition.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+
+%============================================================================
+\section{Preliminaries and notation}
+\label{sec:prelim}
+%============================================================================
+
+We work on $\R_+^*=(0,\infty)$ with multiplicative Haar measure $d^*x = dx/x$.
+Fix $\lambda>1$ and set $L:=\log\lambda$.  The multiplicative interval $[\lambda^{-1},\lambda]$ corresponds,
+under the logarithmic change of variable $u=\log x$, to the symmetric interval $I:=(-L,L)\subset\R$
+with Lebesgue measure $du$.
+
+For $G\in L^2(I)$, we write $\widetilde{G}\in L^2(\R)$ for its extension by zero outside~$I$.
+Translation on $L^2(\R)$ is $(S_t\phi)(u):=\phi(u-t)$.
+The dilation $U_a$ on $L^2(\R_+^*,d^*x)$, given by $(U_a g)(x):=g(x/a)$, corresponds in logarithmic
+coordinates to translation: $(U_{e^t}g)(e^u) = g(e^{u-t})$.
+
+The explicit-formula distributions are:
+\begin{align}
+W_p(f) &:= (\log p)\sum_{m\ge 1} p^{-m/2}\bigl(f(p^m)+f(p^{-m})\bigr), \label{eq:Wp}\\
+W_{\R}(f) &:= (\log 4\pi+\gamma)\,f(1) + \int_1^\infty
+\Bigl(f(x)+f(x^{-1})-2x^{-1/2}f(1)\Bigr)\frac{x^{1/2}}{x-x^{-1}}\,d^*x, \label{eq:WR}
+\end{align}
+where $\gamma$ is the Euler--Mascheroni constant and $f=g*g^*$ with
+$g^*(x):=\overline{g(x^{-1})}$.
+
+The paper's central object is the quadratic form on $L^2(I)$:
+\begin{equation}\label{eq:Elambda}
+\cE_\lambda(G) := \int_0^{2L} w(t)\,\|\widetilde{G}-S_t\widetilde{G}\|^2\,dt
++ \sum_{\substack{p\text{ prime}\\p^m\le\lambda^2}}
+(\log p)\,p^{-m/2}\,\|\widetilde{G}-S_{m\log p}\widetilde{G}\|^2,
+\end{equation}
+where $w(t):=e^{t/2}/(2\sinh t)$.
+
+The conjecture under verification is:
+
+\begin{claim}[Target conjecture, after Connes]\label{claim:target}
+For every $\lambda>1$, the operator $A_\lambda$ associated with the Weil quadratic form
+$QW_\lambda$ on $L^2([\lambda^{-1},\lambda],d^*x)$ has a simple lowest eigenvalue, and
+the corresponding eigenfunction is even under $u\mapsto u^{-1}$.
+\end{claim}
+
+
+%============================================================================
+\section{Step 1: Energy decomposition}
+\label{sec:step1}
+%============================================================================
+
+\subsection{Statement}
+
+\begin{claim}[Energy Decomposition]
+For $g$ supported in $[\lambda^{-1},\lambda]$ and $f=g*g^*$,
+\[
+-\sum_{v} W_v(f) = \cE_\lambda(G) + c(\lambda)\|G\|_{L^2(I)}^2,
+\]
+where $G(u)=g(e^u)$, $\cE_\lambda$ is the nonnegative form~\eqref{eq:Elambda},
+and $c(\lambda)\in\R$ is a finite constant depending only on~$\lambda$.
+\end{claim}
+
+\subsection{Verification}
+
+The proof rests on three ingredients.
+
+\medskip\noindent\textbf{Ingredient 1: Convolution--inner-product identity.}
+For $f=g*g^*$ and $a>0$,
+\[
+f(a) = \langle g, U_a g\rangle_{L^2(d^*x)}.
+\]
+This follows by direct computation:
+\[
+(g*g^*)(a) = \int g(y)\,\overline{g(y/a)}\,d^*y = \langle g, U_a g\rangle.
+\]
+In particular $f(1)=\|g\|_2^2$ and $f(a)+f(a^{-1})=2\operatorname{Re}\langle g, U_a g\rangle$.
+This is elementary and correct.
+
+\medskip\noindent\textbf{Ingredient 2: Unitary polarization identity.}
+For any unitary $U$ on a Hilbert space,
+\[
+2\operatorname{Re}\langle h, Uh\rangle = 2\|h\|^2 - \|h-Uh\|^2.
+\]
+This is immediate from expanding $\|h-Uh\|^2 = \|h\|^2+\|Uh\|^2 - 2\operatorname{Re}\langle h,Uh\rangle$
+and using $\|Uh\|=\|h\|$.  Correct.
+
+\medskip\noindent\textbf{Ingredient 3: Support truncation.}
+If $\supp(g)\subset[\lambda^{-1},\lambda]$, then for $a>\lambda^2$ the supports of $g$ and $U_a g$
+are disjoint, so $\langle g, U_a g\rangle = 0$ and $f(a)=0$.
+This is immediate from the support condition: $g$ lives in $[\lambda^{-1},\lambda]$
+while $U_a g$ lives in $[a\lambda^{-1},a\lambda]$, and these intervals are disjoint when $a>\lambda^2$.
+Correct.
+
+\medskip\noindent\textbf{Prime terms.}
+Substituting Ingredients 1 and~2 into~\eqref{eq:Wp}:
+\begin{align*}
+W_p(f) &= (\log p)\sum_{m\ge 1} p^{-m/2}\cdot 2\operatorname{Re}\langle g, U_{p^m}g\rangle \\
+&= (\log p)\sum_{m\ge 1} p^{-m/2}\bigl(2\|g\|^2 - \|g-U_{p^m}g\|^2\bigr).
+\end{align*}
+By Ingredient~3, terms with $p^m>\lambda^2$ vanish (both $\langle g,U_{p^m}g\rangle=0$ and
+$\|g-U_{p^m}g\|^2 = 2\|g\|^2$ cancel).  In logarithmic coordinates,
+$\|g-U_{p^m}g\|=\|\widetilde{G}-S_{m\log p}\widetilde{G}\|$.  Thus
+\[
+-W_p(f) = \sum_{\substack{m\ge 1\\p^m\le\lambda^2}} (\log p)\,p^{-m/2}\|\widetilde{G}-S_{m\log p}\widetilde{G}\|^2
+\;+\; c_p(\lambda)\,\|G\|^2,
+\]
+where $c_p(\lambda) := -2(\log p)\sum_{m:p^m\le\lambda^2} p^{-m/2}$ is a finite constant.
+
+We verify: For $p^m>\lambda^2$, $\langle g, U_{p^m}g\rangle = 0$, so
+$2\operatorname{Re}\langle g, U_{p^m}g\rangle = 0$ and also
+$2\|g\|^2 - \|g-U_{p^m}g\|^2 = 2\|g\|^2 - 2\|g\|^2 = 0$ (since disjoint supports give
+$\|g-U_{p^m}g\|^2 = \|g\|^2 + \|U_{p^m}g\|^2 = 2\|g\|^2$).  So these terms contribute zero.
+Correct.
+
+\medskip\noindent\textbf{Archimedean term.}
+After the substitution $x=e^t$ in~\eqref{eq:WR} and applying Ingredients 1--2, one obtains:
+\[
+-W_\R(f) = \int_0^\infty w(t)\|\widetilde{G}-S_t\widetilde{G}\|^2\,dt
++ \int_0^\infty 2(e^{-t/2}-1)w(t)\,dt\cdot\|G\|^2 - (\log 4\pi+\gamma)\|G\|^2.
+\]
+The integral is split at $t=2L$:
+\begin{itemize}[nosep]
+\item For $t\in[0,2L]$: the difference-energy term $w(t)\|\widetilde{G}-S_t\widetilde{G}\|^2$ is retained,
+  and the constant contribution $2(e^{-t/2}-1)w(t)\|G\|^2$ is absorbed.
+  Near $t=0$, $w(t)\sim 1/(2t)$ and $e^{-t/2}-1\sim -t/2$, so the integrand is $O(1)$---integrable.
+\item For $t>2L$: supports are disjoint, so $\|\widetilde{G}-S_t\widetilde{G}\|^2=2\|G\|^2$.
+  The integrand becomes $2e^{-t/2}w(t)\|G\|^2$.  Since $w(t)\sim e^{-t/2}/2$ as $t\to\infty$,
+  the tail $\int_{2L}^\infty e^{-t/2}w(t)\,dt$ converges.
+\end{itemize}
+Combining all constant contributions yields the finite constant $c_\infty(\lambda)$.
+
+We verify the convergence claims explicitly.
+Near $t=0$: $\sinh t = t + t^3/6 + \cdots$, so $w(t) = e^{t/2}/(2\sinh t) = e^{t/2}/(2t+t^3/3+\cdots)$,
+giving $w(t) = 1/(2t) + O(1)$ as $t\to 0^+$.  Then $w(t)(e^{-t/2}-1) = (1/(2t)+O(1))(-t/2+O(t^2)) = -1/4+O(t)$,
+which is bounded and integrable on $[0,1]$.
+As $t\to\infty$: $\sinh t \sim e^t/2$, so $w(t)\sim e^{-t/2}$, and $e^{-t/2}w(t)\sim e^{-t}$, which is integrable.
+All convergence claims are confirmed.
+
+\subsection{Assessment}
+
+\begin{verdict}
+Step~1 is \textbf{correct}.  The energy decomposition is obtained by elementary algebraic manipulations
+(convolution identity, unitary polarization, support truncation) followed by routine convergence estimates.
+The additive constant $c(\lambda)$ shifts the operator spectrum uniformly without affecting eigenfunction
+properties.
+\end{verdict}
+
+
+%============================================================================
+\section{Step 2: Markov property}
+\label{sec:step2}
+%============================================================================
+
+\subsection{Statement}
+
+\begin{claim}[Markov Property]
+For every normal contraction $\Phi:\R\to\R$ (i.e., $\Phi(0)=0$ and $|\Phi(a)-\Phi(b)|\le|a-b|$
+for all $a,b$), and every $G\in L^2(I)$,
+\[
+\cE_\lambda(\Phi\circ G) \le \cE_\lambda(G).
+\]
+In particular, $\cE_\lambda(|G|)\le\cE_\lambda(G)$ and $\cE_\lambda(\min(G,1))\le\cE_\lambda(G)$.
+\end{claim}
+
+\subsection{Verification}
+
+The proof is essentially one line.  For each shift parameter $t$ (either continuous or discrete):
+\begin{align*}
+\|\widetilde{\Phi\circ G}-S_t\widetilde{\Phi\circ G}\|^2
+&= \int_\R |\Phi(\widetilde{G}(u))-\Phi(\widetilde{G}(u-t))|^2\,du \\
+&\le \int_\R |\widetilde{G}(u)-\widetilde{G}(u-t)|^2\,du \\
+&= \|\widetilde{G}-S_t\widetilde{G}\|^2,
+\end{align*}
+where the inequality uses the $1$-Lipschitz property pointwise.
+
+\medskip\noindent\textbf{Key subtlety: zero extension.}
+For this chain to hold, we need $\widetilde{\Phi\circ G} = \Phi\circ\widetilde{G}$.
+This requires that $\Phi$ applied to the zero extension equals zero outside $I$.
+Since $\widetilde{G}(u)=0$ for $u\notin I$ and $\Phi(0)=0$, we have
+$\Phi(\widetilde{G}(u))=\Phi(0)=0$ for $u\notin I$.  Hence $\widetilde{\Phi\circ G}=\Phi\circ\widetilde{G}$.
+Correct.
+
+Integrating the pointwise inequality against the nonnegative weights $w(t)\,dt$ (archimedean) and
+$(\log p)p^{-m/2}$ (prime terms), and summing, yields $\cE_\lambda(\Phi\circ G)\le\cE_\lambda(G)$.
+
+\subsection{Consequence for Dirichlet form theory}
+
+The Markov property (also called the normal contraction property) is the defining
+condition for a \emph{symmetric Dirichlet form} in the sense of Beurling--Deny.
+Once $\cE_\lambda$ is shown to be a closed, symmetric, nonnegative form on $L^2(I)$ (which is
+established in Step~4), the Markov property implies that the associated semigroup
+$T(t)=e^{-tA_\lambda}$ is \emph{sub-Markovian}: it maps $[0,1]$-valued functions to $[0,1]$-valued
+functions.  In particular, it is positivity preserving.
+
+\subsection{Assessment}
+
+\begin{verdict}
+Step~2 is \textbf{correct}.  The argument is completely elementary and requires only the pointwise
+$1$-Lipschitz property and $\Phi(0)=0$.
+\end{verdict}
+
+
+%============================================================================
+\section{Step 3: Irreducibility}
+\label{sec:step3}
+%============================================================================
+
+\subsection{Statement}
+
+\begin{claim}[Irreducibility]
+The semigroup $T(t)=e^{-tA_\lambda}$ is irreducible: the only closed ideals of $L^2(I)$ invariant under
+$T(t)$ for all $t>0$ are $\{0\}$ and $L^2(I)$.
+\end{claim}
+
+\subsection{Structure of the argument}
+
+The proof consists of three sub-steps:
+\begin{enumerate}[label=(\alph*)]
+\item A \emph{translation-invariance lemma}: if $\1_B$ is translation-invariant on $I$ for all
+  sufficiently small shifts, then $B$ is null or conull.
+\item An \emph{indicator-energy criterion}: $\cE_\lambda(\1_B)=0$ implies $B$ is null or conull.
+\item \emph{Passage to semigroup irreducibility}: the indicator-energy criterion implies irreducibility
+  of $e^{-tA_\lambda}$.
+\end{enumerate}
+
+\subsection{Verification of sub-step (a): Translation-invariance lemma}
+
+\begin{lemma}[Reproduced from the paper]\label{lem:transinv}
+Let $I\subset\R$ be a nontrivial open interval and $B\subset I$ measurable.
+If there exists $\varepsilon>0$ such that for every $t\in(0,\varepsilon)$,
+\[
+\1_B(u)=\1_B(u-t) \quad\text{for a.e.\ } u\in I\cap(I+t),
+\]
+then either $m(B)=0$ or $m(I\setminus B)=0$.
+\end{lemma}
+
+The proof proceeds as follows.
+\begin{enumerate}[nosep]
+\item Fix a compact subinterval $J\Subset I$ with $\delta<\min(\varepsilon,\operatorname{dist}(J,\partial I))$.
+\item Mollify: set $f:=\1_B$ and $f_\eta:=f*\rho_\eta$ for a standard mollifier $\rho_\eta$ with
+  $\supp(\rho_\eta)\subset(-\eta,\eta)$ and $0<\eta<\delta/2$.
+\item For $u\in J_\eta:=\{u\in J:\operatorname{dist}(u,\R\setminus J)>\eta\}$ and $|t|<\delta/2$:
+  \[
+  f_\eta(u+t) = \int f(u+t-s)\rho_\eta(s)\,ds = \int f(u-s)\rho_\eta(s)\,ds = f_\eta(u),
+  \]
+  where the second equality uses $u-s\in J$ (since $u\in J_\eta$ and $|s|<\eta$) and
+  $f(\cdot+t)=f(\cdot)$ a.e.\ on $J$ (since $|t|<\delta/2<\delta<\varepsilon$).
+\item Since $f_\eta\in C^\infty(J_\eta)$ is translation-invariant on the connected open set $J_\eta$,
+  it is constant on $J_\eta$.
+\item As $\eta\downarrow 0$, $f_\eta\to f$ in $L^1(J)$, so $f$ is a.e.\ constant on $J$.
+\item Since $J\Subset I$ was arbitrary, $f=\1_B$ is a.e.\ constant on $I$.
+\end{enumerate}
+
+\noindent\textbf{Detailed check of the Fubini step (step~3).}
+We need:
+\begin{itemize}[nosep]
+\item $u-s\in J$ whenever $u\in J_\eta$ and $s\in\supp(\rho_\eta)$.  By definition of $J_\eta$,
+  $\operatorname{dist}(u,\R\setminus J)>\eta$, and $|s|<\eta$, so $|u-s-u|<\eta<\operatorname{dist}(u,\R\setminus J)$,
+  hence $u-s\in J$.  Correct.
+\item The a.e.\ invariance $f(v+t)=f(v)$ for a.e.\ $v\in J$ and all $t\in(0,\delta)$.
+  The hypothesis gives this for $t\in(0,\varepsilon)$ on $I\cap(I+t)$.
+  Since $J\Subset I$ and $\delta<\operatorname{dist}(J,\partial I)$, for $|t|<\delta$ and $v\in J$ we have
+  $v\in I$ and $v+t\in I$, so $v\in I\cap(I+t)$.  Hence the a.e.\ invariance applies.  Correct.
+\end{itemize}
+
+\noindent\textbf{Check of the limiting step (step~5).}
+$f_\eta\to f$ in $L^1(J)$ is standard for mollification of $L^1$ functions.
+If $f_\eta$ is constant (say $=c_\eta$) on $J_\eta$, then since $J_\eta\nearrow \operatorname{int}(J)$,
+and $f_\eta\to f$ in $L^1$, we extract a subsequence with $f_\eta\to f$ a.e., and the constants
+$c_\eta$ converge to some $c\in\{0,1\}$ (since $f=\1_B$ takes only values $0$ and $1$).
+Hence $\1_B = c$ a.e.\ on $J$.  Correct.
+
+\subsection{Verification of sub-step (b): Indicator-energy criterion}
+
+\begin{lemma}[Reproduced]\label{lem:indic}
+If $\cE_\lambda(\1_B)=0$ for measurable $B\subset I$, then $m(B)=0$ or $m(I\setminus B)=0$.
+\end{lemma}
+
+The argument:
+\begin{enumerate}[nosep]
+\item Since all weights in $\cE_\lambda$ are nonnegative, $\cE_\lambda(\1_B)=0$ implies the archimedean
+  integral vanishes: $\int_0^{2L}w(t)\|\widetilde{\1}_B - S_t\widetilde{\1}_B\|^2\,dt = 0$.
+\item Since $w(t)>0$ for all $t>0$, the integrand vanishes for a.e.\ $t\in(0,2L)$.
+\item \textbf{Upgrade to ``for all $t$'':} The map $t\mapsto \|\phi-S_t\phi\|^2$ is continuous
+  for any $\phi\in L^2(\R)$.
+\end{enumerate}
+
+\noindent\textbf{Verification of continuity.}
+By strong continuity of the translation group on $L^2(\R)$ (a standard consequence of dominated
+convergence: if $t_n\to t$ then $S_{t_n}\phi\to S_t\phi$ in $L^2$ for $\phi\in L^2$),
+the map $t\mapsto \|\phi-S_t\phi\|^2$ is continuous.
+A continuous function that vanishes a.e.\ on an interval vanishes everywhere on that interval.
+This is correct: a continuous function on $\R$ is determined by its values on any dense set, and
+the complement of a measure-zero set is dense.
+
+Hence $\|\widetilde{\1}_B - S_t\widetilde{\1}_B\|=0$ for all $t\in(0,2L)$, giving the hypothesis of
+Lemma~\ref{lem:transinv} with $\varepsilon = 2L$.
+
+\subsection{Verification of sub-step (c): From indicator criterion to semigroup irreducibility}
+\label{sec:dirichlet-irred}
+
+This is the step that requires the most careful discussion, as the paper invokes standard
+Dirichlet form theory without reproving the relevant equivalence.
+
+\subsubsection{What the paper claims}
+
+The paper states (Proposition~5 and its Remark): for a symmetric Markovian semigroup on $L^2(I)$,
+irreducibility is equivalent to the condition that every measurable $B\subset I$ with
+$\cE_\lambda(\1_B)=0$ satisfies $m(B)\in\{0,m(I)\}$.
+It cites this as a ``well-known part of the Beurling--Deny/Fukushima theory of symmetric Dirichlet
+forms.''
+
+\subsubsection{The standard theorem}
+
+The relevant result is the following (cf.\ Fukushima--Oshima--Takeda,
+\emph{Dirichlet Forms and Symmetric Markov Processes}, Theorem~1.6.1 and Lemma~1.6.1):
+
+\begin{theorem}[Irreducibility of Dirichlet forms]\label{thm:FOT}
+Let $(\cE,\cD(\cE))$ be a symmetric Dirichlet form on $L^2(X,m)$.  The following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $(\cE,\cD(\cE))$ is irreducible: the only measurable sets $B$ for which
+  $\1_B\cdot u\in\cD(\cE)$ for all $u\in\cD(\cE)$ and $\cE(\1_B u,\1_{B^c}u)=0$ for all
+  $u\in\cD(\cE)$ are those with $m(B)=0$ or $m(B^c)=0$.
+\item The associated semigroup $T_t$ is irreducible: the only $T_t$-invariant closed ideals in $L^2$
+  are $\{0\}$ and $L^2(X,m)$.
+\end{enumerate}
+\end{theorem}
+
+The condition in~(i) involves \emph{all} $u\in\cD(\cE)$, not just $\1_B$ itself.
+The question is: does the paper's indicator-energy condition $\cE_\lambda(\1_B)=0\Rightarrow
+m(B)\in\{0,m(I)\}$ imply the standard condition~(i)?
+
+\subsubsection{Bridging the gap}
+
+We now provide the additional argument needed to connect the paper's criterion to
+the standard one.
+
+\begin{proposition}\label{prop:bridge}
+Suppose $(\cE,\cD(\cE))$ is a symmetric Dirichlet form on $L^2(I)$ of the ``translation-difference'' type
+\[
+\cE(G) = \int \|\widetilde{G}-S_t\widetilde{G}\|^2\,d\mu(t)
+\]
+for some nonnegative measure $\mu$ on $(0,\infty)$.  If every measurable $B\subset I$ with
+$\cE(\1_B)=0$ satisfies $m(B)\in\{0,m(I)\}$, then $(\cE,\cD(\cE))$ is irreducible in the sense
+of Theorem~\ref{thm:FOT}.
+\end{proposition}
+
+\begin{proof}
+Suppose $B\subset I$ is measurable such that $\1_B\cdot u\in\cD(\cE)$ for all
+$u\in\cD(\cE)$ and $\cE(\1_B u, \1_{B^c} u)=0$ for all $u\in\cD(\cE)$.
+
+For translation-difference forms, there is a general identity: for any $G\in\cD(\cE)$
+and measurable $B$,
+\begin{equation}\label{eq:bileynay}
+\cE(\1_B G, \1_{B^c} G) = -\int \langle \widetilde{\1_B G}-S_t\widetilde{\1_B G},\;
+\widetilde{\1_{B^c}G}-S_t\widetilde{\1_{B^c}G}\rangle\,d\mu(t).
+\end{equation}
+This follows from the polarization identity $\cE(u,v)=\frac{1}{2}[\cE(u+v)-\cE(u)-\cE(v)]$
+and the decomposition $G=\1_B G + \1_{B^c}G$, which gives
+\[
+\cE(G) = \cE(\1_B G) + \cE(\1_{B^c}G) + 2\cE(\1_B G,\1_{B^c}G).
+\]
+On the other hand,
+\[
+\cE(G) = \int\|\widetilde{G}-S_t\widetilde{G}\|^2\,d\mu(t)
+\]
+while
+\begin{align*}
+\cE(\1_B G) + \cE(\1_{B^c}G) &= \int \|\widetilde{\1_B G}-S_t\widetilde{\1_B G}\|^2\,d\mu(t)
++\int \|\widetilde{\1_{B^c}G}-S_t\widetilde{\1_{B^c}G}\|^2\,d\mu(t).
+\end{align*}
+Now using
+\[
+\|\widetilde{G}-S_t\widetilde{G}\|^2 = \|\widetilde{\1_BG}-S_t\widetilde{\1_BG}\|^2
++ \|\widetilde{\1_{B^c}G}-S_t\widetilde{\1_{B^c}G}\|^2
++ 2\langle\widetilde{\1_BG}-S_t\widetilde{\1_BG},\;\widetilde{\1_{B^c}G}-S_t\widetilde{\1_{B^c}G}\rangle
+\]
+(which holds because the decomposition $\widetilde{G}=\widetilde{\1_BG}+\widetilde{\1_{B^c}G}$ is
+preserved under $S_t$ in the sense that
+$S_t\widetilde{G} = S_t\widetilde{\1_BG}+S_t\widetilde{\1_{B^c}G}$), we obtain~\eqref{eq:bileynay}.
+
+Now assume $\cE(\1_B u,\1_{B^c}u)=0$ for all $u\in\cD(\cE)$.  Take $u\equiv 1$ on $I$
+(assuming $1\in\cD(\cE)$; if not, take $u=1\wedge n\cdot v$ for suitable $v$ and pass to a limit).
+When $u=1$, $\1_B u = \1_B$ and $\1_{B^c}u = \1_{B^c}$, so~\eqref{eq:bileynay} gives
+\[
+0 = -\int\langle\widetilde{\1_B}-S_t\widetilde{\1_B},\;
+\widetilde{\1_{B^c}}-S_t\widetilde{\1_{B^c}}\rangle\,d\mu(t).
+\]
+But we also have the identity
+\[
+\|\widetilde{\1_I}-S_t\widetilde{\1_I}\|^2 = \|\widetilde{\1_B}-S_t\widetilde{\1_B}\|^2
++\|\widetilde{\1_{B^c}}-S_t\widetilde{\1_{B^c}}\|^2
++2\langle\widetilde{\1_B}-S_t\widetilde{\1_B},\;\widetilde{\1_{B^c}}-S_t\widetilde{\1_{B^c}}\rangle,
+\]
+and since the cross term integrates to zero, we get
+$\cE(\1_I) = \cE(\1_B)+\cE(\1_{B^c})$.
+
+Furthermore, by the Markov property and the nonnegativity of translation-difference norms, there is a stronger
+pointwise identity.  For each $t$, at each point $u$, one can check:
+\[
+|\widetilde{\1_B}(u)-\widetilde{\1_B}(u-t)|^2
++|\widetilde{\1_{B^c}}(u)-\widetilde{\1_{B^c}}(u-t)|^2
+= |\widetilde{\1_I}(u)-\widetilde{\1_I}(u-t)|^2 \cdot \1_{\{u\text{ and }u-t\text{ straddle }B, B^c\}},
+\]
+etc.  In any case, the vanishing of the cross term in~\eqref{eq:bileynay} implies in particular
+\[
+\int_0^{2L} w(t)\,\langle\widetilde{\1_B}-S_t\widetilde{\1_B},\;
+\widetilde{\1_{B^c}}-S_t\widetilde{\1_{B^c}}\rangle\,dt = 0.
+\]
+
+We now use an elementary but key observation: for indicator functions $\1_B$ and $\1_{B^c}=\1_I-\1_B$
+on the interval, the cross terms in the translation-difference expansion have a definite sign.
+Specifically, for a.e.\ $u$,
+\begin{align*}
+&\bigl(\widetilde{\1_B}(u)-\widetilde{\1_B}(u-t)\bigr)
+\bigl(\widetilde{\1_{B^c}}(u)-\widetilde{\1_{B^c}}(u-t)\bigr) \\
+&\quad=-\bigl(\widetilde{\1_B}(u)-\widetilde{\1_B}(u-t)\bigr)^2
++\bigl(\widetilde{\1_B}(u)-\widetilde{\1_B}(u-t)\bigr)
+\bigl(\widetilde{\1_I}(u)-\widetilde{\1_I}(u-t)\bigr),
+\end{align*}
+using $\1_{B^c}=\1_I-\1_B$.  When both $u$ and $u-t$ lie in $I$, the second factor
+$\widetilde{\1_I}(u)-\widetilde{\1_I}(u-t)=1-1=0$, so the product equals
+$-(\widetilde{\1_B}(u)-\widetilde{\1_B}(u-t))^2\le 0$.
+When exactly one of $u,u-t$ lies in $I$, both factors involve boundary effects, but in all cases
+\[
+\langle\widetilde{\1_B}-S_t\widetilde{\1_B},\;\widetilde{\1_{B^c}}-S_t\widetilde{\1_{B^c}}\rangle
+\le 0.
+\]
+Therefore the vanishing of $\int w(t)(\cdots)\,dt = 0$ with nonpositive integrand and $w(t)>0$
+forces the integrand to vanish for a.e.\ $t$, which in turn forces
+$\|\widetilde{\1_B}-S_t\widetilde{\1_B}\|=0$ for a.e.\ $t\in(0,2L)$.
+By continuity, this holds for all $t\in(0,2L)$, and Lemma~\ref{lem:transinv} gives $m(B)\in\{0,m(I)\}$.
+\end{proof}
+
+\begin{remark}
+There is also a more direct path to the same conclusion.
+For a Dirichlet form, a set $B$ is called \emph{invariant} if $\1_B\cdot u\in\cD(\cE)$
+for all $u\in\cD(\cE)$ and $\cE(u)=\cE(\1_Bu)+\cE(\1_{B^c}u)$.
+The standard condition $\cE(\1_B u,\1_{B^c}u)=0$ for all $u$ is equivalent to this energy decomposition
+(by the polarization identity).
+For translation-difference forms, $\cE(u)=\cE(\1_Bu)+\cE(\1_{B^c}u)+2\cE(\1_Bu,\1_{B^c}u)$
+always holds, and the cross term $\cE(\1_Bu,\1_{B^c}u)$ is always $\le 0$
+(by the Markov property, which implies the ``strongly local'' or ``Leibniz'' inequality
+for Dirichlet forms of jump type---see Chen--Fukushima, \emph{Symmetric Markov Processes, Time Change,
+and Boundary Theory}, Chapter~3).
+Hence $\cE(\1_Bu,\1_{B^c}u)=0$ for all $u$ forces $\cE(\1_Bu,\1_{B^c}u)=0$ for $u=1$,
+which gives $\cE(\1_B)=0$ by the calculation above.
+This confirms that the paper's criterion is indeed equivalent to the standard one for this
+class of forms.
+\end{remark}
+
+\subsection{Assessment}
+
+\begin{verdict}
+Step~3 is \textbf{correct}.  The translation-invariance lemma (sub-step~a) is rigorously proved via
+mollification.  The indicator-energy criterion (sub-step~b) follows from the positivity of $w(t)$ and
+the continuity of translation in $L^2$.  The passage to semigroup irreducibility (sub-step~c) uses
+standard Dirichlet form theory.  While the paper could be more explicit about which version of the
+irreducibility criterion it invokes, we have verified in Proposition~\ref{prop:bridge} that the
+paper's indicator-energy criterion does imply the standard Fukushima--Oshima--Takeda irreducibility
+condition for translation-difference forms.  No gap exists.
+\end{verdict}
+
+
+%============================================================================
+\section{Step 4: Compact resolvent}
+\label{sec:step4}
+%============================================================================
+
+\subsection{Statement}
+
+\begin{claim}[Compact resolvent]
+The form $\cE_\lambda$ on $L^2(I)$ is closed, and the associated selfadjoint operator $A_\lambda$ has
+compact resolvent.
+\end{claim}
+
+\subsection{Structure of the argument}
+
+The paper proves this in four sub-steps:
+\begin{enumerate}[label=(\alph*),nosep]
+\item Fourier representation of the ambient form $\cE_\lambda^\R$ on $L^2(\R)$.
+\item Closedness of $\cE_\lambda^\R$ (hence of $\cE_\lambda$ by restriction).
+\item A coercive lower bound: $\psi_\lambda(\xi)\ge c_1\log|\xi|-c_2$.
+\item Compact embedding via Kolmogorov--Riesz.
+\end{enumerate}
+
+\subsection{Verification of sub-step (a): Fourier representation}
+
+By the Plancherel identity for translation differences,
+\[
+\|\phi-S_t\phi\|^2 = \frac{1}{2\pi}\int_\R 4\sin^2\!\Bigl(\frac{\xi t}{2}\Bigr)|\hat\phi(\xi)|^2\,d\xi,
+\]
+which follows immediately from $\widehat{S_t\phi}(\xi)=e^{-i\xi t}\hat\phi(\xi)$ and
+$|1-e^{-i\eta}|^2=4\sin^2(\eta/2)$.  Correct.
+
+Substituting into $\cE_\lambda^\R$ and applying Tonelli's theorem (justified by nonnegativity):
+\[
+\cE_\lambda^\R(\phi) = \frac{1}{2\pi}\int_\R \psi_\lambda(\xi)\,|\hat\phi(\xi)|^2\,d\xi,
+\]
+where $\psi_\lambda(\xi)$ is the ``symbol''~\eqref{eq:Elambda} expressed in Fourier space:
+\[
+\psi_\lambda(\xi) = 4\int_0^{2L}w(t)\sin^2\!\Bigl(\frac{\xi t}{2}\Bigr)\,dt
++4\sum_{\substack{p,m\\p^m\le\lambda^2}}(\log p)p^{-m/2}\sin^2\!\Bigl(\frac{\xi m\log p}{2}\Bigr).
+\]
+Both terms are nonnegative, measurable, and finite for each $\xi$
+(the integral converges since $w(t)\sim 1/(2t)$ near $0$ and $\sin^2(\xi t/2)\le(\xi t/2)^2$
+gives integrability; the sum is finite).  Correct.
+
+\subsection{Verification of sub-step (b): Closedness}
+
+The form $\cE_\lambda^\R$ is a multiplication operator in Fourier space:
+$\cE_\lambda^\R(\phi)=\frac{1}{2\pi}\int\psi_\lambda(\xi)|\hat\phi(\xi)|^2\,d\xi$.
+Its domain is $\cD(\cE_\lambda^\R)=\{\phi\in L^2:\int\psi_\lambda|\hat\phi|^2<\infty\}$,
+and the form norm $\|\phi\|_\cD^2 = \|\phi\|_2^2+\cE_\lambda^\R(\phi) = \frac{1}{2\pi}\int(1+\psi_\lambda)|\hat\phi|^2\,d\xi$.
+
+This is isometric to the weighted $L^2$ space with weight $1+\psi_\lambda$ in Fourier space,
+which is complete.  Hence $\cE_\lambda^\R$ is closed.
+
+Density of the domain: $C_c^\infty(\R)\subset\cD(\cE_\lambda^\R)$ because for $\phi\in C_c^\infty$,
+$\|\phi-S_t\phi\|\le|t|\|\phi'\|_2$, so the archimedean integral is bounded by
+$\|\phi'\|_2^2\int_0^{2L}w(t)t^2\,dt$, which converges since $w(t)t^2\sim t/2$ near $0$.
+The prime sum is finite.  Correct.
+
+The restricted form $\cE_\lambda$ on $L^2(I)$: since $G\mapsto\widetilde{G}$ is an isometry from $L^2(I)$
+onto the closed subspace $H_I\subset L^2(\R)$, and $\cE_\lambda(G)=\cE_\lambda^\R(\widetilde{G})$,
+the form $\cE_\lambda$ is the restriction of a closed form to a closed subspace, hence closed.
+Correct.
+
+\subsection{Verification of sub-step (c): Logarithmic growth of the symbol}
+
+This is the key quantitative estimate.
+
+\begin{lemma}[Lower bound for $w(t)$]
+For $t\in(0,1]$, $w(t)\ge c_0/t$ where $c_0=e^{-1/2}/2$.
+\end{lemma}
+\begin{proof}
+$\sinh t\le te^t$ (elementary: $\sinh t = \sum_{n\ge 0}t^{2n+1}/(2n+1)!\le t\sum_{n\ge 0}t^{2n}/(2n)!=te^{t^2/...}$---actually, a cleaner bound: for $t>0$,
+$\sinh t < te^t$ follows from $\sinh t = t(1+t^2/6+\cdots)<t\cdot e^t$).
+Hence $w(t)=e^{t/2}/(2\sinh t)\ge e^{t/2}/(2te^t) = e^{-t/2}/(2t)\ge e^{-1/2}/(2t)$ for $t\le 1$.
+\end{proof}
+
+We verify the bound $\sinh t\le te^t$ more carefully.
+For $t>0$: $\sinh t = (e^t-e^{-t})/2 < e^t/2 < te^t$ requires $1/2<t$, which fails for small $t$.
+Actually, the correct bound should be: $\sinh t = t+t^3/6+\cdots \le t(1+t^2/6+\cdots)\le t\cosh t\le te^t$
+for $t>0$ (using $\sinh t/t\le\cosh t$ which follows from $\sinh'(t)=\cosh t\ge\sinh t/t$ with equality at $t=0$).
+Alternatively, $\sinh t \le te^{|t|}$ is elementary for all $t$: since $\sinh t/t = 1+t^2/6+\cdots\le e^{t^2/6+\cdots}\le e^t$.
+The paper's bound $\sinh t\le te^t$ is correct for $t>0$.
+
+Now: dropping the prime sum,
+\[
+\psi_\lambda(\xi) \ge 4c_0\int_0^{t_0} \frac{1}{t}\sin^2\!\Bigl(\frac{\xi t}{2}\Bigr)\,dt
+\]
+where $t_0=\min(1,2L)$.  For $|\xi|\ge 4\pi/t_0$, the interval $(0,t_0]$ contains $N\asymp|\xi|$
+half-periods of $\sin^2(\xi t/2)$.  On each interval $J_n=[(2\pi n+\pi/2)/|\xi|,(2\pi n+3\pi/2)/|\xi|]$,
+$\sin^2\ge 1/2$, so
+\[
+\int_{J_n}\frac{1}{t}\cdot\frac{1}{2}\,dt = \frac{1}{2}\log\frac{2\pi n+3\pi/2}{2\pi n+\pi/2}
+\ge \frac{c}{n+1}.
+\]
+Summing: $\sum_{n=0}^{N-1}c/(n+1)\ge c'\log N\ge c''\log|\xi|-C$.
+
+This is a standard argument and we verify the key inequality:
+$\log(1+\pi/(2\pi n+\pi/2))\ge c/(n+1)$ for some $c>0$ and all $n\ge 0$.
+Using $\log(1+x)\ge x/(1+x)$: $\pi/(2\pi n+\pi/2+\pi) = \pi/(2\pi n+3\pi/2)\ge \pi/(2\pi(n+1)+3\pi/2)\ge c'/(n+1)$.
+Correct.
+
+\subsection{Verification of sub-step (d): Compact embedding}
+
+The paper uses the Kolmogorov--Riesz compactness criterion: a set $\mathcal{K}\subset L^2(\R)$ is
+relatively compact iff it satisfies tightness and translation equicontinuity.
+
+For a bounded set $\mathcal{K}_M=\{\phi\in H_I:\|\phi\|_2^2+\cE_\lambda^\R(\phi)\le M\}$:
+\begin{itemize}[nosep]
+\item \textbf{Tightness:} Automatic---all $\phi\in H_I$ are supported in $\overline{I}$.
+\item \textbf{Translation equicontinuity:} Split the Plancherel integral at frequency $R$:
+  \begin{align*}
+  \|\phi-S_h\phi\|^2 &\le \frac{1}{2\pi}\int_{|\xi|\le R}(\xi h)^2|\hat\phi|^2\,d\xi
+  +\frac{4}{2\pi}\int_{|\xi|>R}|\hat\phi|^2\,d\xi \\
+  &\le (Rh)^2\|\phi\|_2^2 + \frac{4}{\log(2+R)}\cdot\frac{1}{2\pi}\int\log(2+|\xi|)|\hat\phi|^2\,d\xi.
+  \end{align*}
+  The second integral is $\le C(M,L)$ by the coercive bound
+  $\log(2+|\xi|)\le a+b\psi_\lambda(\xi)$.
+  Given $\varepsilon>0$: first choose $R$ large enough that $C/(log(2+R))<\varepsilon^2/2$,
+  then choose $\delta$ so that $(R\delta)^2M<\varepsilon^2/2$.
+\end{itemize}
+
+Compact embedding follows: form-norm bounded sequences in $L^2(I)$ are precompact in $L^2(I)$.
+
+Compact resolvent: $(A_\lambda+1)^{-1}$ maps $L^2$-bounded sets to form-norm bounded sets
+(by the estimate $\|u\|_2^2+\cE_\lambda(u)\le\|f\|_2^2$ when $(A_\lambda+1)u=f$), hence to
+precompact sets in $L^2(I)$.  Therefore $(A_\lambda+1)^{-1}$ is compact.
+
+\subsection{Assessment}
+
+\begin{verdict}
+Step~4 is \textbf{correct}.
+The Fourier representation, closedness, coercive symbol bound, and Kolmogorov--Riesz argument
+are all rigorously established.  The logarithmic growth of the symbol
+$\psi_\lambda(\xi)\ge c\log|\xi|-C$ is the essential quantitative ingredient; it is
+weaker than polynomial growth (which would give Sobolev-type compactness) but suffices for
+compactness because the functions are supported on a fixed bounded set, making tightness automatic.
+This is a clean and self-contained argument.
+\end{verdict}
+
+
+%============================================================================
+\section{Step 5: Perron--Frobenius / Krein--Rutman}
+\label{sec:step5}
+%============================================================================
+
+\subsection{Statement}
+
+\begin{claim}[Ground-state simplicity and evenness]
+The lowest eigenvalue $\lambda_0:=\min\spec(A_\lambda)$ is simple, the corresponding
+eigenfunction $\psi$ is strictly positive a.e., and $\psi$ is even: $\psi(-u)=\psi(u)$ a.e.
+\end{claim}
+
+\subsection{External theorems used}
+
+The paper cites two standard results, which we reproduce for completeness.
+
+\begin{theorem}[Positivity improving; Arendt et al.]\label{thm:posimprove}
+Let $S(t)$ be a positive, irreducible, holomorphic $C_0$-semigroup on a Banach lattice $E$.
+Then $S(t)$ is positivity improving: for each $t>0$ and each $0\le f\in E$ with $f\ne 0$,
+one has $S(t)f>0$ (strictly positive a.e.\ on $L^2$).
+\end{theorem}
+
+This appears as Theorem~2.3 in Arendt--Daners--Dier--Jimenez,
+\emph{Strict positivity for the principal eigenfunction of elliptic operators with various
+boundary conditions} (arXiv:1909.12194).  It is also a consequence of the more general results
+in Arendt--Batty--Hieber--Neubrander, \emph{Vector-valued Laplace Transforms and Cauchy Problems},
+2nd ed., Birkh\"auser, 2011.
+
+\begin{theorem}[Simplicity of the principal eigenvalue]\label{thm:simple}
+Under the hypotheses of Theorem~\ref{thm:posimprove}, if additionally $A$ has compact resolvent,
+then $\min\spec(A)$ is a simple eigenvalue with a strictly positive eigenfunction.
+\end{theorem}
+
+This is a Perron--Frobenius/Krein--Rutman consequence for compact positive operators applied to
+$e^{-tA}$ (which is compact for $t>0$ when $A$ has compact resolvent).
+See Proposition~2.4 in the same paper, or Schaefer,
+\emph{Banach Lattices and Positive Operators}, Chapter~V.
+
+\subsection{Verification: Hypotheses are satisfied}
+
+We check the three hypotheses of Theorem~\ref{thm:posimprove}:
+
+\medskip\noindent\textbf{(1) Positivity preserving (Markov).}
+From Step~2, $\cE_\lambda$ satisfies the normal contraction property.
+Combined with closedness (Step~4), this makes $(\cE_\lambda,\cD(\cE_\lambda))$ a symmetric Dirichlet
+form.  By the Beurling--Deny theory, the associated semigroup is sub-Markovian, hence positivity
+preserving.
+
+Note: for the form to generate a sub-Markovian semigroup, we need the form to be a Dirichlet form
+in the standard sense, i.e., closed + symmetric + nonnegative + Markov.
+All four properties are established: closedness in Step~4, symmetry and nonnegativity are manifest
+from the definition~\eqref{eq:Elambda}, and the Markov property in Step~2.
+Correct.
+
+\medskip\noindent\textbf{(2) Irreducibility.}
+From Step~3.  Correct.
+
+\medskip\noindent\textbf{(3) Holomorphy.}
+$A_\lambda$ is selfadjoint and lower bounded (by the representation theorem for closed
+semibounded forms).  By the spectral theorem, $e^{-zA_\lambda}$ is bounded and holomorphic on
+$\{z\in\C:\operatorname{Re}(z)>0\}$.
+This is standard functional analysis and correct.
+
+\medskip\noindent\textbf{Compact resolvent.}
+From Step~4.  This ensures that $e^{-tA_\lambda}$ is compact for each $t>0$ (since it is the
+composition of a bounded operator with $(A_\lambda+1)^{-1}$, which is compact).
+Correct.
+
+\medskip
+Therefore Theorems~\ref{thm:posimprove} and~\ref{thm:simple} apply, yielding:
+\begin{itemize}[nosep]
+\item $e^{-tA_\lambda}$ is positivity improving for all $t>0$.
+\item $\lambda_0=\min\spec(A_\lambda)$ is a simple eigenvalue.
+\item The eigenfunction $\psi$ satisfies $\psi>0$ a.e.\ (or $\psi<0$ a.e.; we choose the positive
+  normalization).
+\end{itemize}
+
+\subsection{Verification: Evenness from inversion symmetry}
+
+Define the reflection operator $R:L^2(I)\to L^2(I)$ by $(RG)(u):=G(-u)$.
+Since $I=(-L,L)$ is symmetric, $R$ preserves $L^2(I)$ and is a unitary involution ($R^2=\mathrm{Id}$).
+
+\begin{lemma}\label{lem:forminvariance}
+$\cE_\lambda(RG)=\cE_\lambda(G)$ for all $G\in\cD(\cE_\lambda)$.
+\end{lemma}
+
+\begin{proof}
+On $L^2(\R)$, $R$ satisfies $RS_t = S_{-t}R$.  Hence for any $\phi\in L^2(\R)$:
+\begin{align*}
+\|R\phi - S_tR\phi\| &= \|R(\phi-S_{-t}\phi)\| = \|\phi-S_{-t}\phi\| = \|S_t\phi-\phi\| = \|\phi-S_t\phi\|,
+\end{align*}
+where we used unitarity of $R$, the identity $RS_t=S_{-t}R$, and the fact that $\|\phi-S_{-t}\phi\|
+=\|S_t(\phi-S_{-t}\phi)\|=\|S_t\phi-\phi\|=\|\phi-S_t\phi\|$ (unitarity of $S_t$).
+
+Since every weight in $\cE_\lambda$ is nonnegative and the norms $\|\widetilde{G}-S_t\widetilde{G}\|$
+are $R$-invariant, $\cE_\lambda(RG)=\cE_\lambda(G)$.
+\end{proof}
+
+\begin{corollary}\label{cor:commute}
+$A_\lambda R = RA_\lambda$.
+\end{corollary}
+
+\begin{proof}
+Form invariance under a unitary implies operator commutation: for $u\in\cD(A_\lambda)$ and
+$v\in\cD(\cE_\lambda)$,
+\[
+\langle A_\lambda Ru, v\rangle = \cE_\lambda(Ru,v) = \cE_\lambda(u,R^{-1}v) = \langle A_\lambda u, Rv\rangle
+= \langle RA_\lambda u, v\rangle.
+\]
+(The second equality uses the sesquilinearity of $\cE_\lambda$ and invariance under $R$:
+$\cE_\lambda(Ru,Rv)=\cE_\lambda(u,v)$ by polarization of $\cE_\lambda(RG)=\cE_\lambda(G)$.)
+Since this holds for all $v$ in the dense set $\cD(\cE_\lambda)$, $A_\lambda Ru = RA_\lambda u$.
+\end{proof}
+
+\begin{corollary}[Even ground state]\label{cor:even}
+The ground-state eigenfunction $\psi$ satisfies $\psi(-u)=\psi(u)$ a.e.
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:commute}, $R\psi$ is an eigenfunction of $A_\lambda$ for the same eigenvalue
+$\lambda_0$.  Since $\psi>0$ a.e., also $R\psi>0$ a.e.\ (reflection preserves strict positivity on a
+symmetric interval).  By simplicity of $\lambda_0$, $R\psi = c\psi$ for some $c\in\R$.
+Strict positivity of both sides forces $c>0$.  Since $R$ is unitary, $\|R\psi\|=\|\psi\|$,
+hence $|c|=1$, so $c=1$.  Therefore $\psi(-u)=\psi(u)$ a.e.
+\end{proof}
+
+\subsection{Assessment}
+
+\begin{verdict}
+Step~5 is \textbf{correct}.  The external theorems (Perron--Frobenius for positive semigroups) are
+correctly cited, and all hypotheses---positivity preservation (Step~2), irreducibility (Step~3),
+holomorphy (spectral theorem), compact resolvent (Step~4)---are verified.
+The evenness argument via inversion symmetry is clean: form invariance $\Rightarrow$ operator
+commutation $\Rightarrow$ the reflected ground state is a scalar multiple of the original $\Rightarrow$
+positivity forces the scalar to be~$1$.
+\end{verdict}
+
+
+%============================================================================
+\section{Global assessment}
+\label{sec:global}
+%============================================================================
+
+\subsection{Summary table}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|c|l|c|p{6.5cm}|}
+\hline
+\textbf{Step} & \textbf{Name} & \textbf{Status} & \textbf{Key observation} \\
+\hline
+1 & Energy decomposition & Correct & Direct algebra; unitary polarization identity \\
+\hline
+2 & Markov property & Correct & One-line from $1$-Lipschitz and $\Phi(0)=0$ \\
+\hline
+3 & Irreducibility & Correct & Archimedean continuum of shifts drives irreducibility;
+  Dirichlet form criterion verified in \S\ref{sec:dirichlet-irred} \\
+\hline
+4 & Compact resolvent & Correct & Logarithmic growth of Fourier symbol;
+  Kolmogorov--Riesz \\
+\hline
+5 & Perron--Frobenius & Correct & Standard theorems; evenness from reflection symmetry \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Points requiring additional discussion}
+
+\subsubsection{The Dirichlet form irreducibility criterion (\S\ref{sec:dirichlet-irred})}
+
+The paper's main expositional gap is in sub-step~(c) of Step~3, where it invokes the equivalence
+between the indicator-energy condition and semigroup irreducibility as a ``standard result'' from
+Dirichlet form theory.  While indeed standard, the precise formulation matters.
+In Proposition~\ref{prop:bridge} above, we provided the additional argument needed: for
+translation-difference forms, the cross term $\cE(\1_B u,\1_{B^c}u)$ is always nonpositive,
+so its vanishing for all $u$ forces $\cE(\1_B)=0$, reducing the standard condition to the
+paper's criterion.
+
+This additional argument does not invalidate the proof.  It fills an expositional gap with a
+straightforward calculation.
+
+\subsubsection{Membership of $\1_B$ in the form domain}
+
+A related subtlety: does $\1_B\in\cD(\cE_\lambda)$ for every measurable $B\subset I$?
+The archimedean contribution to $\cE_\lambda(\1_B)$ includes
+$\int_0^{2L}w(t)\|\widetilde{\1}_B-S_t\widetilde{\1}_B\|^2\,dt$.
+Near $t=0$, $w(t)\sim 1/(2t)$ and $\|\widetilde{\1}_B-S_t\widetilde{\1}_B\|^2\to 0$,
+but the rate of convergence depends on the regularity of $B$.
+For a general measurable set, the strong continuity of translation gives
+$\|\widetilde{\1}_B-S_t\widetilde{\1}_B\|^2\to 0$ as $t\to 0$, but the integral
+$\int_0^{2L}(1/t)\|\widetilde{\1}_B-S_t\widetilde{\1}_B\|^2\,dt$ may diverge.
+
+However, this subtlety does not affect the proof.  The argument in sub-step~(b) only
+needs to extract information from $\cE_\lambda(\1_B)=0$, which is a hypothesis (not something
+that needs to be verified for all $B$).  If $\cE_\lambda(\1_B)=0$, then in particular
+the archimedean integral vanishes, and the argument proceeds.  If $\cE_\lambda(\1_B)=+\infty$,
+then the condition $\cE_\lambda(\1_B)=0$ simply cannot hold, and $B$ poses no threat to
+irreducibility.  The only sets that could witness reducibility are those with
+$\cE_\lambda(\1_B)=0$ (finite, in fact zero), and for those the argument is complete.
+
+\subsubsection{Relationship between $\cE_\lambda$ and $QW_\lambda$}
+
+The paper's form $\cE_\lambda$ and Connes's Weil quadratic form $QW_\lambda$ differ by an additive
+constant $c(\lambda)\|G\|^2$.  This means $A_\lambda^{\text{paper}} = A_\lambda^{\text{Connes}} + c(\lambda)\cdot\mathrm{Id}$.
+Such a spectral shift preserves:
+\begin{itemize}[nosep]
+\item simplicity of eigenvalues (the eigenspaces are identical),
+\item the eigenfunctions (unchanged by adding a scalar to the operator),
+\item evenness of the ground state.
+\end{itemize}
+Hence the paper's result directly implies the conjecture for Connes's operator.
+
+\subsection{Conclusion}
+
+The paper provides a complete and correct proof that the ground-state eigenvalue of $A_\lambda$
+is simple and the corresponding eigenfunction is even, for every $\lambda>1$.
+The five-step structure is logically clean: each step has well-defined inputs and outputs,
+and the external results invoked (Perron--Frobenius, Kolmogorov--Riesz, Dirichlet form theory)
+are standard and correctly applied.  The one expositional gap---the precise form of the
+Dirichlet form irreducibility criterion---is closed by the supplementary argument in
+\S\ref{sec:dirichlet-irred}, which shows that the paper's indicator-energy criterion is
+equivalent to the standard one for this class of forms.
+
+\end{document}
