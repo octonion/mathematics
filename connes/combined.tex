@@ -549,7 +549,7 @@ $\|\phi-S_h\phi\|_{2}<\varepsilon$ for all $\phi\in\mathcal K$ and all $|h|<\del
 \end{theorem}
 
 \begin{remark}
-See, e.g., Lieb--Loss, \emph{Analysis}, for a proof of Theorem~\ref{thm:KR}.
+See, e.g., Lieb--Loss~\cite{LiebLossAnalysis} for a proof of Theorem~\ref{thm:KR} (often called the Fr\'echet--Kolmogorov--Riesz compactness criterion).
 \end{remark}
 
 \begin{lemma}[Uniform translation control from the form norm]\label{lem:trans}
@@ -612,7 +612,8 @@ Moreover, $A_\lambda$ has compact resolvent; equivalently, $(A_\lambda+1)^{-1}$ 
 
 \begin{proof}
 Existence and uniqueness of $A_\lambda$ follow from the representation theorem for densely defined, closed,
-lower-bounded symmetric forms (see, e.g., Kato, \emph{Perturbation Theory for Linear Operators}).
+lower-bounded symmetric forms (see, e.g., Kato~\cite[Thm.~VI.2.1]{KatoPerturbation};
+in the Dirichlet-form setting one may also cite Fukushima--Oshima--Takeda~\cite[Thm.~1.3.1]{FOT}).
 To prove compact resolvent, let $\{f_n\}$ be bounded in $L^2(I)$ and set $u_n:=(A_\lambda+1)^{-1}f_n$.
 Then $u_n\in\mathcal D(A_\lambda)\subset\mathcal D(\mathcal E_\lambda)$ and $(A_\lambda+1)u_n=f_n$.
 Taking the $L^2$ inner product with $u_n$ and using the form identity gives
@@ -639,7 +640,8 @@ Then for every $G\in\mathcal D(\mathcal E_\lambda)$ one has $\1_B G,\1_{I\setmin
 \[
 \mathcal E_\lambda(G)=\mathcal E_\lambda(\1_B G)+\mathcal E_\lambda(\1_{I\setminus B}G).
 \]
-This is standard for symmetric Dirichlet forms; see, e.g., Fukushima--Oshima--Takeda~\cite[Thm.~1.6.1]{FOT}.
+This is standard for symmetric Dirichlet forms; see, e.g., Fukushima--Oshima--Takeda~\cite[Thm.~1.6.1]{FOT};
+see also Ouhabaz~\cite{OuhabazConvex1996}.
 We include a short proof for completeness.
 \end{lemma}
 
@@ -751,9 +753,7 @@ one has $S(t)f>0$ (in the lattice sense; on $L^2$ this means $>0$ a.e.).
 \end{theorem}
 
 \begin{remark}[Source]
-This statement appears, for example, as Theorem~2.3 in Arendt et al.,
-\emph{Strict positivity for the principal eigenfunction of elliptic operators with various boundary conditions}
-(see \S\ref{sec:bib}).
+This is stated (for general Banach lattices) as Theorem~2.3 in Arendt--ter~Elst--Gl\\"uck~\cite{ATGStrictPos2020}.
 \end{remark}
 
 \begin{theorem}[Simplicity of the principal eigenvalue under compact resolvent]
@@ -784,7 +784,8 @@ strictly positive a.e.\ eigenfunction.
 \end{proposition}
 
 \begin{proof}
-(1) Markov/positivity preservation follows from Lemma~\ref{lem:markov} and standard closed-form theory.
+(1) Markov/positivity preservation follows from Lemma~\ref{lem:markov} and the general form--semigroup correspondence for Dirichlet forms; see Fukushima--Oshima--Takeda~\cite[Thm.~1.4.1]{FOT},
+or Ouhabaz~\cite[Ch.~1, \S\S1.4--1.5]{OuhabazHeatEq}.
 (2) is Corollary~\ref{cor:irreducible}.
 (3) Since $A_\lambda$ is selfadjoint and lower bounded, $e^{-zA_\lambda}$ is bounded and holomorphic on
 $\{z\in\C:\Re z>0\}$ by the spectral theorem.
@@ -862,25 +863,48 @@ hence simplicity and strict positivity of the ground state (Proposition~\ref{pro
 \section{Bibliographic pointers}
 \label{sec:bib}
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 
-\bibitem{ArendtStrictPos}
+\bibitem{ATGStrictPos2020}
 W.~Arendt, A.~F.~M.~ter~Elst, and J.~Gl\"uck.
-\newblock \emph{Strict positivity for the principal eigenfunction of elliptic operators with various boundary conditions}.
-\newblock \emph{Advanced Nonlinear Studies} \textbf{20} (2020), no.~3, 633--650.
-\newblock arXiv:1909.12194; DOI:10.1515/ans-2020-2091. See Theorem~2.3 and Proposition~2.4 for the positivity improving and simplicity results used in \S\ref{sec:PF}.
-
-\bibitem{ABHN}
-W.~Arendt, C.~J.~K.~Batty, M.~Hieber, and F.~Neubrander.
-\newblock \emph{Vector-valued Laplace Transforms and Cauchy Problems}.
-\newblock 2nd ed., Monographs in Mathematics~96, Birkh\"auser/Springer Basel, 2011.
-\newblock DOI:10.1007/978-3-0348-0087-7.
+\newblock Strict positivity for the principal eigenfunction of elliptic operators with various boundary conditions.
+\newblock \emph{Adv.\ Nonlinear Stud.} \textbf{20} (2020), no.~3, 633--650.
+\newblock DOI:~10.1515/ans-2020-2091.
+\newblock Also available as arXiv:1909.12194.
 
 \bibitem{FOT}
 M.~Fukushima, Y.~Oshima, and M.~Takeda.
 \newblock \emph{Dirichlet Forms and Symmetric Markov Processes}.
-\newblock 2nd revised and extended ed., De Gruyter Studies in Mathematics~19, Walter de Gruyter, 2011.
-\newblock DOI:10.1515/9783110889741. See Theorem~1.6.1 for the invariant set/ideal characterization used in the irreducibility argument.
+\newblock 2nd revised and extended ed., De~Gruyter Studies in Mathematics, vol.~19,
+Walter de~Gruyter, Berlin, 2010.
+\newblock DOI:~10.1515/9783110218091.
+
+\bibitem{OuhabazConvex1996}
+E.-M.~Ouhabaz.
+\newblock Invariance of closed convex sets and domination criteria for semigroups.
+\newblock \emph{Potential Anal.} \textbf{5} (1996), no.~6, 611--625.
+\newblock DOI:~10.1007/BF00275797.
+
+\bibitem{OuhabazHeatEq}
+E.-M.~Ouhabaz.
+\newblock \emph{Analysis of Heat Equations on Domains}.
+\newblock London Mathematical Society Monographs Series, vol.~31, Princeton University Press,
+Princeton, NJ, 2005.
+\newblock DOI:~10.1515/9781400826483.
+
+\bibitem{KatoPerturbation}
+T.~Kato.
+\newblock \emph{Perturbation Theory for Linear Operators}.
+\newblock Classics in Mathematics, Springer, Berlin, 1995.
+\newblock DOI:~10.1007/978-3-642-66282-9.
+
+\bibitem{LiebLossAnalysis}
+E.~H.~Lieb and M.~Loss.
+\newblock \emph{Analysis}.
+\newblock 2nd ed., Graduate Studies in Mathematics, vol.~14,
+American Mathematical Society, Providence, RI, 2001.
+\newblock MR1817225.
+\newblock DOI:~10.1090/gsm/014.
 
 \end{thebibliography}
 
