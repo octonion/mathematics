@@ -631,30 +631,114 @@ A closed ideal in $L^2(I)$ has the form $L^2(B)$ for some measurable $B\subset I
 We call $T$ \emph{irreducible} if the only invariant closed ideals are $\{0\}$ and $L^2(I)$.
 \end{definition}
 
-\begin{proposition}[Irreducibility from indicator-energy criterion]
-\label{prop:irreducible}
-Under Theorem~\ref{thm:operator}, if $\mathcal E_\lambda(\1_B)=0$ implies $m(B)\in\{0,m(I)\}$,
-then the semigroup $T(t)=e^{-tA_\lambda}$ is irreducible.
+
+\begin{lemma}[Invariant ideals and splitting of the form]\label{lem:invariance_split}
+Assume Theorem~\ref{thm:operator}. Let $B\subset I$ be measurable and suppose the closed ideal
+$L^2(B)\subset L^2(I)$ is invariant under the semigroup $T(t)=e^{-tA_\lambda}$.
+Then for every $G\in\mathcal D(\mathcal E_\lambda)$ one has $\1_B G,\1_{I\setminus B}G\in\mathcal D(\mathcal E_\lambda)$ and
+\[
+\mathcal E_\lambda(G)=\mathcal E_\lambda(\1_B G)+\mathcal E_\lambda(\1_{I\setminus B}G).
+\]
+This is standard for symmetric Dirichlet forms; see, e.g., Fukushima--Oshima--Takeda~\cite[Thm.~1.6.1]{FOT}.
+We include a short proof for completeness.
+\end{lemma}
+
+\begin{proof}
+Let $P:L^2(I)\to L^2(I)$ be the orthogonal projection $PG=\1_B G$, and set $Q=I-P$.
+Invariance of $L^2(B)=\mathrm{Ran}(P)$ implies $PT(t)P=T(t)P$ for all $t\ge 0$.
+Taking adjoints and using that $T(t)$ and $P$ are selfadjoint gives $T(t)P=PT(t)$ for all $t\ge 0$.
+Hence $P$ commutes with the functional calculus of $A_\lambda$, in particular with $A_\lambda^{1/2}$.
+Since $\mathcal D(\mathcal E_\lambda)=\mathcal D(A_\lambda^{1/2})$, it follows that
+$P\mathcal D(\mathcal E_\lambda)\subset\mathcal D(\mathcal E_\lambda)$ and likewise for $Q$.
+
+For $u\in\mathcal D(\mathcal E_\lambda)$,
+\[
+\mathcal E_\lambda(u)=\|A_\lambda^{1/2}u\|_2^2
+=\|A_\lambda^{1/2}Pu\|_2^2+\|A_\lambda^{1/2}Qu\|_2^2
+=\mathcal E_\lambda(Pu)+\mathcal E_\lambda(Qu),
+\]
+because $A_\lambda^{1/2}Pu=P(A_\lambda^{1/2}u)$ and $A_\lambda^{1/2}Qu=Q(A_\lambda^{1/2}u)$ are orthogonal in $L^2(I)$.
+Taking $u=G$ gives the claimed splitting.
+\end{proof}
+
+\begin{proposition}[Triviality of invariant ideals for $\mathcal E_\lambda$]\label{prop:irreducible}
+Assume Theorem~\ref{thm:operator}. Let $B\subset I$ be measurable and assume that the closed ideal
+$L^2(B)\subset L^2(I)$ is invariant under the semigroup $T(t)=e^{-tA_\lambda}$.
+Then $m(B)=0$ or $m(I\setminus B)=0$.
 \end{proposition}
 
-\begin{remark}[What is used here]
-This proposition is a standard equivalence in Dirichlet form theory: for symmetric Markovian semigroups,
-invariant ideals correspond to measurable invariant sets, and invariant sets correspond to sets with zero
-energy for their indicators. We do not reprove the general equivalence here; it is a well-known part of the
-Beurling--Deny/Fukushima theory of symmetric Dirichlet forms.
+\begin{proof}
+By Lemma~\ref{lem:invariance_split} (cf.\ \cite[Thm.~1.6.1]{FOT}), invariance of the ideal $L^2(B)$ implies that
+for every $G\in\mathcal D(\mathcal E_\lambda)$ one has $\1_B G,\1_{I\setminus B}G\in\mathcal D(\mathcal E_\lambda)$ and
+\begin{equation}\label{eq:Einvariance}
+\mathcal E_\lambda(G)=\mathcal E_\lambda(\1_B G)+\mathcal E_\lambda(\1_{I\setminus B}G).
+\end{equation}
+
+We apply \eqref{eq:Einvariance} with $G\equiv 1$ on $I$. Note that $1\in\mathcal D(\mathcal E_\lambda)$:
+indeed, for each shift size $s>0$ one has $\|\widetilde 1-S_s\widetilde 1\|_2^2=m(I\Delta(I+s))=2s$,
+so the archimedean integral $\int_0^{2L} w(t)\,2t\,dt$ is finite (cf.\ the discussion after
+Lemma~\ref{lem:arch-energy}), and the prime sum in Definition~\ref{def:E} is finite because it contains only
+finitely many shift sizes.
+
+Write $B^c:=I\setminus B$ and set $f:=\widetilde{\1_B}$ and $g:=\widetilde{\1_{B^c}}$ in $L^2(\R)$, so that
+$\widetilde 1=f+g$ and $fg=0$ a.e.  For each shift size $s>0$,
+\[
+\| (f+g)-S_s(f+g)\|_2^2=\|f-S_s f\|_2^2+\|g-S_s g\|_2^2+2\langle f-S_s f,\; g-S_s g\rangle.
+\]
+Using this identity in Definition~\ref{def:E} and \eqref{eq:Einvariance} (with $G\equiv 1$) gives
+\[
+\int_0^{2L} w(t)\,\langle f-S_t f,\; g-S_t g\rangle\,dt
++\sum_{\substack{p\ \mathrm{prime}\\ p\le \lambda^2}}\ \sum_{\substack{m\ge 1\\ p^m\le \lambda^2}}
+(\log p)p^{-m/2}\,\langle f-S_{m\log p} f,\; g-S_{m\log p} g\rangle
+=0.
+\]
+For any $s>0$, since $fg=0$ a.e.\ and translations are unitary on $L^2(\R)$,
+\begin{align*}
+\langle f-S_s f,\; g-S_s g\rangle
+&=\langle f,g\rangle-\langle f,S_s g\rangle-\langle S_s f,g\rangle+\langle S_s f,S_s g\rangle\\
+&=-\langle f,S_s g\rangle-\langle g,S_s f\rangle\ \le\ 0,
+\end{align*}
+because the inner products are nonnegative.  Since all weights in the preceding display are nonnegative and
+$w(t)>0$ for all $t>0$, it follows that
+\[
+\langle f,S_t g\rangle=\langle g,S_t f\rangle=0 \quad \text{for a.e.\ }t\in(0,2L).
+\]
+For fixed $f,g\in L^2(\R)$, the map $t\mapsto \langle f,S_t g\rangle$ is continuous (strong continuity of
+translations), hence the equalities hold for \emph{all} $t\in(0,2L)$.
+
+Unwinding the definitions, for each $t\in(0,2L)$,
+\[
+0=\langle f,S_t g\rangle=\int_{\R} \widetilde{\1_B}(u)\,\widetilde{\1_{B^c}}(u-t)\,du
+=\int_{I\cap(I+t)} \1_B(u)\,\1_{B^c}(u-t)\,du,
+\]
+so $\1_B(u)\le \1_B(u-t)$ for a.e.\ $u\in I\cap(I+t)$. The same argument with $\langle g,S_t f\rangle=0$
+gives the reverse inequality, hence
+\[
+\1_B(u)=\1_B(u-t)\quad\text{for a.e.\ }u\in I\cap(I+t)\ \ \text{and every }t\in(0,2L).
+\]
+Lemma~\ref{lem:trans-inv} now applies and yields $m(B)=0$ or $m(I\setminus B)=0$.
+\end{proof}
+
+\begin{remark}[Why we do not use $\mathcal E_\lambda(\1_B)=0$]\label{rem:killing}
+Because $\mathcal E_\lambda$ is defined using zero-extension to $\R$ (Definition~\ref{def:E}), the form is
+typically non-conservative: in general $\mathcal E_\lambda(1)>0$.
+In the conservative case ($\mathcal E(1)=0$) one often has an equivalence between invariance and the condition
+$\mathcal E(\1_B)=0$.  Here, the presence of killing means $\mathcal E_\lambda(\1_B)=0$ is a \emph{stronger}
+condition than invariance, so we instead argue directly from the correct invariance identity
+\eqref{eq:Einvariance}, which depends only on the interaction/jump part.
 \end{remark}
 
-\begin{corollary}[Irreducibility for $\mathcal E_\lambda$]
-\label{cor:irreducible}
+\begin{corollary}[Irreducibility for $\mathcal E_\lambda$]\label{cor:irreducible}
 Assume Theorem~\ref{thm:operator}. Then $T(t)=e^{-tA_\lambda}$ is irreducible.
 \end{corollary}
 
 \begin{proof}
-Lemma~\ref{lem:indicator-energy} provides the indicator-energy criterion, so Proposition~\ref{prop:irreducible}
-applies.
+If $J\subset L^2(I)$ is a closed $T(t)$-invariant ideal, then $J=L^2(B)$ for some measurable $B\subset I$.
+Proposition~\ref{prop:irreducible} forces $m(B)=0$ or $m(I\setminus B)=0$, hence $J=\{0\}$ or $J=L^2(I)$.
 \end{proof}
 
 \section{Positivity improving and the ground state}
+
 \label{sec:PF}
 
 \subsection{External theorems used}
@@ -781,15 +865,22 @@ hence simplicity and strict positivity of the ground state (Proposition~\ref{pro
 \begin{thebibliography}{9}
 
 \bibitem{ArendtStrictPos}
-W.~Arendt, D.~Daners, M.~Dier, and P.~K.~Jimenez.
+W.~Arendt, A.~F.~M.~ter~Elst, and J.~Gl\"uck.
 \newblock \emph{Strict positivity for the principal eigenfunction of elliptic operators with various boundary conditions}.
-\newblock Available as arXiv:1909.12194 and published versions; see Theorem~2.3 and Proposition~2.4 therein for
-positivity improving and simplicity consequences used in \S\ref{sec:PF}.
+\newblock \emph{Advanced Nonlinear Studies} \textbf{20} (2020), no.~3, 633--650.
+\newblock arXiv:1909.12194; DOI:10.1515/ans-2020-2091. See Theorem~2.3 and Proposition~2.4 for the positivity improving and simplicity results used in \S\ref{sec:PF}.
 
 \bibitem{ABHN}
 W.~Arendt, C.~J.~K.~Batty, M.~Hieber, and F.~Neubrander.
 \newblock \emph{Vector-valued Laplace Transforms and Cauchy Problems}.
-\newblock 2nd ed., Birkh\"auser, 2011.
+\newblock 2nd ed., Monographs in Mathematics~96, Birkh\"auser/Springer Basel, 2011.
+\newblock DOI:10.1007/978-3-0348-0087-7.
+
+\bibitem{FOT}
+M.~Fukushima, Y.~Oshima, and M.~Takeda.
+\newblock \emph{Dirichlet Forms and Symmetric Markov Processes}.
+\newblock 2nd revised and extended ed., De Gruyter Studies in Mathematics~19, Walter de Gruyter, 2011.
+\newblock DOI:10.1515/9783110889741. See Theorem~1.6.1 for the invariant set/ideal characterization used in the irreducibility argument.
 
 \end{thebibliography}
 
