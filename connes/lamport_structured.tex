@@ -190,7 +190,12 @@ $\|h-Uh\|^2=\langle h-Uh,h-Uh\rangle
 \section{Local explicit-formula terms}
 %% =================================================================
 
-Fix $\lambda>1$ and consider $g$ supported in $[\lambda^{-1},\lambda]$.
+Fix $\lambda>1$ and consider $g\in C_c^\infty([\lambda^{-1},\lambda])$.
+(This regularity ensures that $f=g*g^*$ is smooth and compactly supported in
+$[\lambda^{-2},\lambda^2]$, so all integrals below converge absolutely.
+The quadratic form $\mathcal E_\lambda$ defined in Section~\ref{sec:globalform}
+makes sense for arbitrary $G\in L^2(I)$ as an extended-real-valued form,
+and the subsequent functional-analytic results depend only on that abstract definition.)
 
 We record the two local distributions we use; these are the only ``input formulas''.
 
@@ -405,6 +410,7 @@ of variables.}
 \end{structuredproof}
 
 \subsection{Global quadratic form on the interval}
+\label{sec:globalform}
 
 \begin{definition}[Difference-energy form]
 \label{def:E}
@@ -419,11 +425,14 @@ Fix $\lambda>1$ and $L=\log\lambda$. For $G\in L^2(I)$ define
 
 \begin{remark}[What we have proved so far]
 Lemmas~\ref{lem:prime-energy} and \ref{lem:arch-energy} show that for $f=g*g^*$ with
-$\operatorname{supp}(g)\subset[\lambda^{-1},\lambda]$, the quantity
+$g\in C_c^\infty([\lambda^{-1},\lambda])$, the quantity
 \[
 -\sum_{v\in\{\infty\}\cup\{p\}} W_v(f)
 \]
 equals $\mathcal E_\lambda(G)$ plus an additive constant multiple of $\|G\|_2^2$.
+The form $\mathcal E_\lambda$ (Definition~\ref{def:E}) is then defined for all $G\in L^2(I)$
+as an extended-real-valued quadratic form; from this point onward, all arguments use only the
+abstract properties of $\mathcal E_\lambda$ and do not depend on the explicit-formula derivation.
 Since adding a constant multiple of $\|G\|_2^2$ only shifts the spectrum of the associated
 operator, it does not affect positivity/irreducibility properties of the semigroup and does not
 affect eigenfunction parity considerations.
@@ -722,15 +731,19 @@ The resulting multiplier of $|\widehat\phi(\xi)|^2$ is precisely $\psi_\lambda(\
 
 \Substep{Measurability: $\psi_\lambda$ is a sum of continuous functions of~$\xi$.}
 \Substepjust{Each $\sin^2(\xi t/2)$ is continuous in $\xi$.  The integral $\int_0^{2L}w(t)\sin^2(\xi t/2)\,dt$
-is continuous in $\xi$ by dominated convergence (the integrand is bounded by $w(t)$, which is integrable).
+is continuous in $\xi$ by dominated convergence: for $|\xi|\le M$, the integrand is bounded by
+$w(t)\min\bigl(1,(Mt/2)^2\bigr)$, which is integrable on $(0,2L)$
+(near $t=0$: $w(t)(Mt/2)^2\sim M^2t/8$; away from $0$: $w$ is bounded).
 The prime sum is a finite sum of continuous functions.}
 
 \Substep{Evenness: $\psi_\lambda(-\xi)=\psi_\lambda(\xi)$.}
 \Substepjust{$\sin^2((-\xi)t/2)=\sin^2(\xi t/2)$.}
 
 \Substep{Finiteness: for each fixed $\xi$, $\psi_\lambda(\xi)<\infty$.}
-\Substepjust{The integral $\int_0^{2L}w(t)\sin^2(\xi t/2)\,dt\le\int_0^{2L}w(t)\,dt<\infty$
-(since $w(t)\sim (2t)^{-1}$ near $0$ and the domain is bounded).
+\Substepjust{Split $(0,2L)=(0,1)\cup[1,2L)$.
+On $[1,2L)$, $w$ is bounded and $\sin^2\le 1$, so the integral over $[1,2L)$ is finite.
+On $(0,1)$, use $\sin^2(\xi t/2)\le(\xi t/2)^2$, giving
+$w(t)\sin^2(\xi t/2)\le\xi^2 t^2 w(t)/4\sim\xi^2 t/8$, which is integrable near $0$.
 The prime sum is finite (finitely many terms, each finite).}
 
 \Substep{Nonnegativity: $\psi_\lambda(\xi)\ge 0$.}
