@@ -57,9 +57,8 @@
 
 %%% ----------------------------------------------------------------
 
-\title{Energy-Decomposition and Perron--Frobenius Consequences\\
-for the Restricted Weil Quadratic Form\\[6pt]
-{\large (Lamport Structured-Proof Edition)}}
+\title{Energy Decomposition, Compact Resolvent, and Perron--Frobenius Properties\\
+of the Restricted Weil Quadratic Form}
 \author{}
 \date{}
 
@@ -73,9 +72,14 @@ a compact multiplicative interval $[\lambda^{-1},\lambda]\subset \R_+^*$.
 Starting from the explicit local distributions at the primes and at $\infty$, we
 derive an ``energy decomposition'' expressing the quadratic form (up to an additive
 constant multiple of $\|g\|_2^2$) as a positive combination of translation-difference
-energies $\|G-\tau_tG\|_2^2$ in logarithmic coordinates.
-We then prove the Markov (normal contraction) property and a translation-invariance lemma which yields irreducibility from the archimedean continuum of shifts.
-Finally, we show that the quadratic form is closed and that its associated selfadjoint operator has compact resolvent, using a logarithmic lower bound on the Fourier symbol together with the Kolmogorov-Riesz compactness criterion. From this we deduce that the ground-state eigenvalue is simple and its eigenfunction can be chosen strictly positive and, by inversion symmetry, even.
+energies $\|G-S_tG\|_2^2$ in logarithmic coordinates.
+We then prove the Markov (normal contraction) property and a translation-invariance
+lemma which yields irreducibility from the archimedean continuum of shifts.
+Finally, we show that the quadratic form is closed and that its associated
+selfadjoint operator has compact resolvent, using a logarithmic lower bound on the
+Fourier symbol together with the Kolmogorov--Riesz compactness criterion.
+From this we deduce that the ground-state eigenvalue is simple and its
+eigenfunction can be chosen strictly positive and, by inversion symmetry, even.
 
 \medskip\noindent
 \emph{Note on proof style.}  Every proof in this document is presented in
@@ -813,11 +817,11 @@ Surjectivity: any $\phi\in H_I$ is the zero-extension of $G:=\phi|_I$.}
 corresponds (via the isometry) to $\mathcal E_\lambda^\R$ restricted to~$H_I$.}
 
 \Step{$\mathcal E_\lambda$ is closed.}
-\Stepjust{The restriction of a closed form to a closed subspace is closed.  More explicitly:
-if $G_n\to G$ in $L^2(I)$ and $\mathcal E_\lambda(G_n-G_m)\to 0$, then $\widetilde G_n\to\widetilde G$
+\Stepjust{Suppose $G_n\to G$ in $L^2(I)$ and $\mathcal E_\lambda(G_n-G_m)\to 0$.  Then $\widetilde G_n\to\widetilde G$
 in $L^2(\R)$ (Step~1) and $\mathcal E_\lambda^\R(\widetilde G_n-\widetilde G_m)\to 0$ (Step~2),
 so closedness of $\mathcal E_\lambda^\R$ (Prop.~\ref{prop:closedR}) gives
-$\widetilde G\in\mathcal D(\mathcal E_\lambda^\R)$ and $\mathcal E_\lambda^\R(\widetilde G_n-\widetilde G)\to 0$,
+$\widetilde G\in\mathcal D(\mathcal E_\lambda^\R)$ and $\mathcal E_\lambda^\R(\widetilde G_n-\widetilde G)\to 0$.
+Since $H_I$ is closed in $L^2(\R)$ and each $\widetilde G_n\in H_I$, the limit $\widetilde G\in H_I$,
 whence $G\in\mathcal D(\mathcal E_\lambda)$ and $\mathcal E_\lambda(G_n-G)\to 0$.}
 
 \Step{$\mathcal E_\lambda$ is densely defined.}
@@ -996,7 +1000,9 @@ $\int_{|\xi|>R}|\widehat\phi|^2\le\frac{1}{\log(2+R)}\int_{|\xi|>R}\log(2+|\xi|)
 \Step{By Corollary~\ref{cor:tail}, $\int_\R\log(2+|\xi|)|\widehat\phi|^2\le C(M,L)$ uniformly
 over $\phi\in\mathcal K_M$.}
 \Stepjust{$\|\phi\|_2^2+\mathcal E_\lambda^\R(\phi)\le M$ by definition of $\mathcal K_M$.
-Corollary~\ref{cor:tail} bounds $\int\log(2+|\xi|)|\widehat\phi|^2$ by $aM+bM=C(M,L)$.}
+Corollary~\ref{cor:tail} bounds $\int\log(2+|\xi|)|\widehat\phi|^2$ by
+$a\|\phi\|_2^2+b\int\psi_\lambda|\widehat\phi|^2\,d\xi
+=a\|\phi\|_2^2+2\pi b\,\mathcal E_\lambda^\R(\phi)\le(a+2\pi b)M=:C(M,L)$.}
 
 \Step{Combine: $\|\phi-S_h\phi\|_2^2\le(Rh)^2M+\frac{C'(M,L)}{\log(2+R)}$.}
 \Stepjust{Add the bounds from Steps~2.1 and 2.2, using Step~3 to bound the high-frequency term.
@@ -1437,12 +1443,9 @@ In particular, $RG\in\mathcal D(\mathcal E_\lambda)$ iff $G\in\mathcal D(\mathca
 \Step{$A_\lambda$ commutes with $R$.}
 
 \Substep{For $u\in\mathcal D(A_\lambda)$ and $v\in\mathcal D(\mathcal E_\lambda)$:
-$\langle A_\lambda Ru,v\rangle=\mathcal E_\lambda(Ru,v)$.}
-\Substepjust{$Ru\in\mathcal D(A_\lambda)$ (since $R$ preserves $\mathcal D(\mathcal E_\lambda)\supset\mathcal D(A_\lambda)$, and the form identity extends).  The form identity
-$\langle A_\lambda w,v\rangle=\mathcal E_\lambda(w,v)$ for $w\in\mathcal D(A_\lambda)$, $v\in\mathcal D(\mathcal E_\lambda)$.  Set $w=Ru$.}
-
-\Substep{$\mathcal E_\lambda(Ru,v)=\mathcal E_\lambda(u,R^{-1}v)=\mathcal E_\lambda(u,Rv)$.}
-\Substepjust{Invariance of $\mathcal E_\lambda$ under $R$ (Step~4) implies, by polarization,
+$\mathcal E_\lambda(Ru,v)=\mathcal E_\lambda(u,Rv)$.}
+\Substepjust{$Ru\in\mathcal D(\mathcal E_\lambda)$ (since $R$ preserves $\mathcal D(\mathcal E_\lambda)$ by Step~4).
+Invariance of $\mathcal E_\lambda$ under $R$ (Step~4) implies, by polarization,
 $\mathcal E_\lambda(Ru,Rv)=\mathcal E_\lambda(u,v)$ for all $u,v\in\mathcal D(\mathcal E_\lambda)$.
 Set $v\mapsto Rv$: $\mathcal E_\lambda(Ru,R(Rv))=\mathcal E_\lambda(Ru,v)=\mathcal E_\lambda(u,Rv)$
 (using $R^2=\mathrm{Id}$).}
@@ -1453,13 +1456,15 @@ and $Rv\in\mathcal D(\mathcal E_\lambda)$).
 Then $\langle A_\lambda u,Rv\rangle=\langle R^*A_\lambda u,v\rangle=\langle RA_\lambda u,v\rangle$
 since $R^*=R$ ($R$ is selfadjoint: $R=R^{-1}=R^*$).}
 
-\Substep{Combining: $\langle A_\lambda Ru,v\rangle=\langle RA_\lambda u,v\rangle$ for all $v\in\mathcal D(\mathcal E_\lambda)$.}
-\Substepjust{Steps~5.1, 5.2, 5.3.}
+\Substep{Combining: $\mathcal E_\lambda(Ru,v)=\langle RA_\lambda u,v\rangle$ for all $v\in\mathcal D(\mathcal E_\lambda)$.}
+\Substepjust{Steps~5.1 and 5.2.}
 
-\Substep{$A_\lambda Ru=RA_\lambda u$.}
-\Substepjust{$\mathcal D(\mathcal E_\lambda)$ is dense in $L^2(I)$
-(Proposition~\ref{prop:closedI}).
-Step~5.4 says $A_\lambda Ru-RA_\lambda u$ is orthogonal to a dense subspace, hence $=0$.}
+\Substep{$Ru\in\mathcal D(A_\lambda)$ and $A_\lambda Ru=RA_\lambda u$.}
+\Substepjust{By the representation theorem (Kato~\cite[Thm.~VI.2.1]{KatoPerturbation}),
+$w\in\mathcal D(A_\lambda)$ if and only if there exists $h\in L^2(I)$ such that
+$\mathcal E_\lambda(w,v)=\langle h,v\rangle$ for all $v\in\mathcal D(\mathcal E_\lambda)$,
+in which case $A_\lambda w=h$.
+Step~5.3 provides exactly this with $w=Ru$ and $h=RA_\lambda u\in L^2(I)$.}
 
 \QEDstep
 \end{structuredproof}
@@ -1515,8 +1520,12 @@ positive combination of translation-difference energies in log-coordinates
 translations forces a measurable subset of an interval to be null or conull (Lemma~\ref{lem:trans-inv}),
 and we used it to show that $\mathcal E_\lambda(\1_B)=0$ implies $B$ is null or conull
 (Lemma~\ref{lem:indicator-energy}).
-\item Assuming the standard operator setup (closed form, selfadjoint operator, compact resolvent),
-we obtained irreducibility and then (by a standard external theorem) positivity improving of the semigroup,
+\item We proved that the quadratic form is closed (Propositions~\ref{prop:closedR}--\ref{prop:closedI}),
+established a logarithmic lower bound on its Fourier symbol (Lemma~\ref{lem:psilog}), and used
+the Kolmogorov--Riesz compactness criterion to show that the associated selfadjoint operator
+has compact resolvent (Theorem~\ref{thm:operator}).
+\item From this operator setup we obtained irreducibility and then (by a standard external theorem)
+positivity improving of the semigroup,
 hence simplicity and strict positivity of the ground state (Proposition~\ref{prop:groundstate}).
 \item Finally, inversion symmetry forces that strictly positive simple ground state to be even
 (Corollary~\ref{cor:even}).
