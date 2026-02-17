@@ -1,0 +1,1584 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\1}{\mathbf 1}
+\DeclareMathOperator{\supp}{supp}
+
+%%% ----------------------------------------------------------------
+%%% Lamport structured-proof environment
+%%% ----------------------------------------------------------------
+\newcounter{proofstep}
+\newcounter{proofsubstep}[proofstep]
+\newcounter{proofsubsubstep}[proofsubstep]
+
+\newcommand{\Step}[1]{%
+  \refstepcounter{proofstep}%
+  \medskip\noindent\textbf{Step~\theproofstep.}\quad #1%
+}
+\newcommand{\Substep}[1]{%
+  \refstepcounter{proofsubstep}%
+  \smallskip\noindent\hspace{1em}\textbf{Step~\theproofstep.\theproofsubstep.}\quad #1%
+}
+\newcommand{\Subsubstep}[1]{%
+  \refstepcounter{proofsubsubstep}%
+  \smallskip\noindent\hspace{2em}\textbf{Step~\theproofstep.\theproofsubstep.\theproofsubsubstep.}\quad #1%
+}
+\newcommand{\Stepjust}[1]{%
+  \par\noindent\hspace{2em}\emph{Justification:}\ #1%
+}
+\newcommand{\Substepjust}[1]{%
+  \par\noindent\hspace{3em}\emph{Justification:}\ #1%
+}
+\newcommand{\Subsubstepjust}[1]{%
+  \par\noindent\hspace{4em}\emph{Justification:}\ #1%
+}
+\newcommand{\QEDstep}{%
+  \medskip\noindent\textbf{Q.E.D.}%
+}
+
+\newenvironment{structuredproof}{%
+  \begin{proof}[Structured Proof]%
+  \setcounter{proofstep}{0}%
+}{%
+  \end{proof}%
+}
+
+%%% ----------------------------------------------------------------
+
+\title{Energy-Decomposition and Perron--Frobenius Consequences\\
+for the Restricted Weil Quadratic Form\\[6pt]
+{\large (Lamport Structured-Proof Edition)}}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We record a completely concrete and rigorous functional-analytic step that arises
+in the spectral approach to Weil's criterion when one restricts test functions to
+a compact multiplicative interval $[\lambda^{-1},\lambda]\subset \R_+^*$.
+Starting from the explicit local distributions at the primes and at $\infty$, we
+derive an ``energy decomposition'' expressing the quadratic form (up to an additive
+constant multiple of $\|g\|_2^2$) as a positive combination of translation-difference
+energies $\|G-\tau_tG\|_2^2$ in logarithmic coordinates.
+We then prove the Markov (normal contraction) property and a translation-invariance
+lemma which yields irreducibility from the archimedean continuum of shifts.
+Assuming (as in the standard setup) that the associated selfadjoint operator has
+compact resolvent, we deduce that the ground-state eigenvalue is simple and its
+eigenfunction can be chosen strictly positive and, by inversion symmetry, even.
+
+\medskip\noindent
+\emph{Note on proof style.}  Every proof in this document is presented in
+L.~Lamport's hierarchical structured-proof format~\cite{LamportHowToWrite}.
+Each step states a claim and its justification, and sub-steps may be expanded
+for further detail.  The intent is that any single step can be verified
+independently.
+\end{abstract}
+
+\tableofcontents
+
+%% =================================================================
+\section{Setup on $\R_+^*$}
+%% =================================================================
+
+Let $\R_+^*=(0,\infty)$ with multiplicative Haar measure
+\[
+d^*x:=\frac{dx}{x}.
+\]
+For measurable $g,h$ define multiplicative convolution
+\[
+(g*h)(x):=\int_{\R_+^*} g(y)\,h(x/y)\,d^*y,
+\]
+and involution
+\[
+g^*(x):=\overline{g(x^{-1})}.
+\]
+If $g\in L^2(\R_+^*,d^*x)$, define the unitary dilation operator
+\begin{equation}
+\label{eq:Ua}
+(U_ag)(x):=g(x/a)\qquad(a>0).
+\end{equation}
+Then $\|U_ag\|_2=\|g\|_2$ and $\langle g,U_ag\rangle$ is well-defined.
+
+%% -----------------------------------------------------------------
+\begin{lemma}[Convolution inner-product identity]
+\label{lem:f-inner}
+Let $f=g*g^*$. Then for all $a>0$,
+\[
+f(a)=\langle g,U_ag\rangle_{L^2(d^*x)}=\int_{\R_+^*} g(x)\,\overline{g(x/a)}\,d^*x,
+\qquad
+f(a^{-1})=\overline{f(a)}.
+\]
+In particular $f(a)+f(a^{-1})=2\Re\langle g,U_ag\rangle$ and $f(1)=\|g\|_2^2$.
+\end{lemma}
+
+\begin{structuredproof}
+\Step{$f(a)=\langle g,U_ag\rangle$.}
+
+\Substep{Expand the definition of multiplicative convolution applied to $g*g^*$ at the point~$a$.}
+\Substepjust{By definition, $(g*g^*)(a)=\int_{\R_+^*} g(y)\,g^*(a/y)\,d^*y$.}
+
+\Substep{Apply the definition of involution: $g^*(a/y)=\overline{g((a/y)^{-1})}=\overline{g(y/a)}$.}
+\Substepjust{The involution is defined as $g^*(x)=\overline{g(x^{-1})}$.  Set $x=a/y$ to get $g^*(a/y)=\overline{g(y/a)}$.}
+
+\Substep{Substitute into the integral: $(g*g^*)(a)=\int_{\R_+^*}g(y)\,\overline{g(y/a)}\,d^*y$.}
+\Substepjust{Combine Steps~1.1 and 1.2.}
+
+\Substep{Recognize this as $\langle g,U_ag\rangle_{L^2(d^*x)}$.}
+\Substepjust{By definition of the dilation operator~\eqref{eq:Ua}, $(U_ag)(y)=g(y/a)$, and the $L^2(d^*x)$
+inner product is $\langle g,h\rangle=\int g(y)\overline{h(y)}\,d^*y$.  Thus
+$\int g(y)\,\overline{g(y/a)}\,d^*y=\langle g,U_ag\rangle$.}
+
+\Step{$f(a^{-1})=\overline{f(a)}$.}
+\Stepjust{Replace $a$ by $a^{-1}$ in the result of Step~1:
+$f(a^{-1})=\langle g,U_{a^{-1}}g\rangle
+=\int g(y)\,\overline{g(ya)}\,d^*y$.
+Substituting $y\mapsto y/a$ (with $d^*(y/a)=d^*y$) gives
+$\int g(y/a)\,\overline{g(y)}\,d^*y = \overline{\int g(y)\,\overline{g(y/a)}\,d^*y}
+=\overline{f(a)}$.}
+
+\Step{$f(a)+f(a^{-1})=2\Re\langle g,U_ag\rangle$ and $f(1)=\|g\|_2^2$.}
+\Stepjust{From Steps~1 and 2, $f(a)+f(a^{-1})=\langle g,U_ag\rangle+\overline{\langle g,U_ag\rangle}=2\Re\langle g,U_ag\rangle$.
+Setting $a=1$: $U_1=\mathrm{Id}$, so $f(1)=\langle g,g\rangle=\|g\|_2^2$.}
+
+\QEDstep
+\end{structuredproof}
+
+%% -----------------------------------------------------------------
+\begin{lemma}[A basic unitary identity]
+\label{lem:unitary}
+For any unitary $U$ on a Hilbert space and any vector $h$,
+\[
+2\Re\langle h,Uh\rangle = 2\|h\|^2-\|h-Uh\|^2.
+\]
+\end{lemma}
+
+\begin{structuredproof}
+\Step{$\|h-Uh\|^2=\|h\|^2+\|Uh\|^2-2\Re\langle h,Uh\rangle$.}
+\Stepjust{Expand the inner product:
+$\|h-Uh\|^2=\langle h-Uh,h-Uh\rangle
+=\langle h,h\rangle-\langle h,Uh\rangle-\langle Uh,h\rangle+\langle Uh,Uh\rangle
+=\|h\|^2+\|Uh\|^2-2\Re\langle h,Uh\rangle$.}
+
+\Step{$\|Uh\|^2=\|h\|^2$.}
+\Stepjust{$U$ is unitary, hence isometric.}
+
+\Step{Substituting Step~2 into Step~1: $\|h-Uh\|^2=2\|h\|^2-2\Re\langle h,Uh\rangle$.}
+\Stepjust{Replace $\|Uh\|^2$ by $\|h\|^2$ in Step~1.}
+
+\Step{Rearrange: $2\Re\langle h,Uh\rangle=2\|h\|^2-\|h-Uh\|^2$.}
+\Stepjust{Solve Step~3 for $2\Re\langle h,Uh\rangle$.}
+
+\QEDstep
+\end{structuredproof}
+
+%% =================================================================
+\section{Local explicit-formula terms}
+%% =================================================================
+
+Fix $\lambda>1$ and consider $g$ supported in $[\lambda^{-1},\lambda]$.
+
+We record the two local distributions we use; these are the only ``input formulas''.
+
+\subsection{Prime terms}
+For a prime $p$ define
+\begin{equation}
+\label{eq:Wp}
+W_p(f):=(\log p)\sum_{m\ge 1} p^{-m/2}\bigl(f(p^m)+f(p^{-m})\bigr).
+\end{equation}
+
+\subsection{Archimedean term}
+Define
+\begin{equation}
+\label{eq:WR}
+W_{\R}(f):=(\log 4\pi+\gamma)\,f(1)+\int_1^\infty
+\Bigl(f(x)+f(x^{-1})-2x^{-1/2}f(1)\Bigr)\frac{x^{1/2}}{x-x^{-1}}\,d^*x,
+\end{equation}
+where $\gamma$ is the Euler--Mascheroni constant.
+
+\begin{remark}[Restriction to a compact multiplicative interval]
+\label{rem:truncate}
+If $\operatorname{supp}(g)\subset[\lambda^{-1},\lambda]$, then for $a>\lambda^2$
+the supports of $g$ and $U_ag$ are disjoint, hence $\langle g,U_ag\rangle=0$ and
+$f(a)=0$. Consequently:
+\begin{itemize}
+\item in \eqref{eq:Wp} only those $(p,m)$ with $p^m\le \lambda^2$ contribute;
+\item in \eqref{eq:WR}, after the change of variables $x=e^t$, only $t\in[0,2\log\lambda]$
+contributes to the term involving $f(e^t)+f(e^{-t})$.
+\end{itemize}
+This finiteness is crucial and is completely elementary.
+\end{remark}
+
+%% =================================================================
+\section{Logarithmic coordinates and translations}
+%% =================================================================
+
+Set $u=\log x$, so that $d^*x=du$ and the interval $[\lambda^{-1},\lambda]$ becomes
+\[
+I:=(-L,L),\qquad L:=\log\lambda.
+\]
+For $G\in L^2(I)$ we denote by $\widetilde G$ its extension by $0$ to $\R$.
+Let $S_t$ be translation on $L^2(\R)$:
+\[
+(S_t\phi)(u):=\phi(u-t).
+\]
+Then in logarithmic coordinates, the dilation $U_{e^t}$ from \eqref{eq:Ua} corresponds to
+translation: if $G(u)=g(e^u)$, then $(U_{e^t}g)(e^u)=g(e^{u-t})$, i.e.\ $\widetilde G\mapsto S_t\widetilde G$.
+
+%% =================================================================
+\section{Energy decomposition into translation differences}
+%% =================================================================
+
+\subsection{Prime contributions}
+\begin{lemma}[Prime term as a difference energy plus a constant]
+\label{lem:prime-energy}
+Let $f=g*g^*$ with $g$ supported in $[\lambda^{-1},\lambda]$, and let $G(u)=g(e^u)$.
+Then
+\[
+-W_p(f)
+=\sum_{\substack{m\ge 1\\ p^m\le \lambda^2}} (\log p)\,p^{-m/2}\,\|\widetilde G-S_{m\log p}\widetilde G\|_{L^2(\R)}^2
+\;+\;c_p(\lambda)\,\|G\|_{L^2(I)}^2,
+\]
+where $c_p(\lambda)\in \R$ is a finite constant depending only on $p$ and $\lambda$.
+\end{lemma}
+
+\begin{structuredproof}
+\Step{$W_p(f)=(\log p)\sum_{m\ge 1}p^{-m/2}\,2\Re\langle g,U_{p^m}g\rangle$.}
+
+\Substep{By~\eqref{eq:Wp}, $W_p(f)=(\log p)\sum_{m\ge 1}p^{-m/2}\bigl(f(p^m)+f(p^{-m})\bigr)$.}
+\Substepjust{Definition of $W_p$.}
+
+\Substep{$f(p^m)+f(p^{-m})=2\Re\langle g,U_{p^m}g\rangle$.}
+\Substepjust{By Lemma~\ref{lem:f-inner}, $f(a)+f(a^{-1})=2\Re\langle g,U_ag\rangle$.  Set $a=p^m$.}
+
+\Substep{Combine Steps~1.1 and~1.2.}
+\Substepjust{Substitute the identity from Step~1.2 into the sum from Step~1.1.}
+
+\Step{For each $m\ge 1$ with $p^m\le\lambda^2$:
+$2\Re\langle g,U_{p^m}g\rangle = 2\|g\|_2^2-\|g-U_{p^m}g\|_2^2$.}
+\Stepjust{Lemma~\ref{lem:unitary} applied with $U=U_{p^m}$, $h=g$.}
+
+\Step{For $m\ge 1$ with $p^m>\lambda^2$: $\langle g,U_{p^m}g\rangle=0$.}
+\Stepjust{By Remark~\ref{rem:truncate}: when $p^m>\lambda^2$, the supports of $g$ (in $[\lambda^{-1},\lambda]$)
+and $U_{p^m}g$ (in $[p^m\lambda^{-1},p^m\lambda]$) are disjoint.}
+
+\Step{In logarithmic coordinates:
+$\|g-U_{p^m}g\|_2=\|\widetilde G-S_{m\log p}\widetilde G\|_{L^2(\R)}$.}
+\Stepjust{The substitution $u=\log x$ converts $d^*x=du$, $g(x)\mapsto G(u)$, and
+$(U_{p^m}g)(x)=g(x/p^m)\mapsto G(u-m\log p)=(S_{m\log p}\widetilde G)(u)$.
+The $L^2(\R_+^*,d^*x)$ norm becomes the $L^2(\R,du)$ norm.}
+
+\Step{Assemble the formula for $-W_p(f)$.}
+
+\Substep{From Steps~1--3, only terms with $p^m\le\lambda^2$ contribute, and for those terms:
+\[
+W_p(f)=(\log p)\sum_{\substack{m\ge 1\\ p^m\le\lambda^2}}p^{-m/2}\bigl(2\|g\|_2^2-\|g-U_{p^m}g\|_2^2\bigr).
+\]}
+\Substepjust{Combine Steps~1, 2, and 3: the terms with $p^m>\lambda^2$ vanish by Step~3; the remaining
+terms are rewritten using Step~2.}
+
+\Substep{Negate and use Step~4:
+\[
+-W_p(f)=\sum_{\substack{m\ge 1\\ p^m\le\lambda^2}}(\log p)\,p^{-m/2}\,
+\|\widetilde G-S_{m\log p}\widetilde G\|_{L^2(\R)}^2
+-2(\log p)\Bigl(\sum_{\substack{m\ge 1\\ p^m\le\lambda^2}}p^{-m/2}\Bigr)\|g\|_2^2.
+\]}
+\Substepjust{Negate Step~5.1 and replace $\|g-U_{p^m}g\|_2$ by $\|\widetilde G-S_{m\log p}\widetilde G\|_{L^2(\R)}$ using Step~4.}
+
+\Substep{Set $c_p(\lambda):=-2(\log p)\sum_{\substack{m\ge 1,\, p^m\le\lambda^2}}p^{-m/2}$.
+Then $c_p(\lambda)\in\R$ is finite (the sum has finitely many terms), and
+$\|g\|_2^2=\|G\|_{L^2(I)}^2$.}
+\Substepjust{The sum is finite because only finitely many integers $m$ satisfy $p^m\le\lambda^2$.
+The norm identity $\|g\|_2=\|G\|_{L^2(I)}$ follows from the change of variables $u=\log x$.}
+
+\QEDstep
+\end{structuredproof}
+
+\subsection{Archimedean contribution}
+\begin{lemma}[Archimedean term as a continuum of difference energies plus a constant]
+\label{lem:arch-energy}
+Let $f=g*g^*$ with $g$ supported in $[\lambda^{-1},\lambda]$, and let $G(u)=g(e^u)$.
+Define the strictly positive weight on $(0,\infty)$,
+\[
+w(t):=\frac{e^{t/2}}{e^t-e^{-t}}=\frac{e^{t/2}}{2\sinh t}.
+\]
+Then
+\[
+-W_{\R}(f)
+=\int_{0}^{2L} w(t)\,\|\widetilde G-S_t\widetilde G\|_{L^2(\R)}^2\,dt
+\;+\;c_\infty(\lambda)\,\|G\|_{L^2(I)}^2,
+\]
+where $c_\infty(\lambda)\in \R$ is a finite constant depending only on $\lambda$.
+\end{lemma}
+
+\begin{structuredproof}
+\Step{Rewrite $W_\R(f)$ by substituting $x=e^t$:
+\[
+W_{\R}(f)=(\log4\pi+\gamma)\,f(1)+\int_0^\infty\Bigl(f(e^t)+f(e^{-t})-2e^{-t/2}f(1)\Bigr)\,w(t)\,dt.
+\]}
+\Stepjust{Starting from~\eqref{eq:WR}, set $x=e^t$ so that $d^*x=dt$.
+Then $x^{1/2}/(x-x^{-1})=e^{t/2}/(e^t-e^{-t})=w(t)$, and the integration range $x\in[1,\infty)$
+becomes $t\in[0,\infty)$.}
+
+\Step{$f(1)=\|g\|_2^2$ and $f(e^t)+f(e^{-t})=2\Re\langle g,U_{e^t}g\rangle$.}
+\Stepjust{The first identity is Lemma~\ref{lem:f-inner} with $a=1$.
+The second is Lemma~\ref{lem:f-inner}: $f(a)+f(a^{-1})=2\Re\langle g,U_ag\rangle$ with $a=e^t$.}
+
+\Step{$-2\Re\langle g,U_{e^t}g\rangle=\|g-U_{e^t}g\|_2^2-2\|g\|_2^2$.}
+\Stepjust{Lemma~\ref{lem:unitary} with $U=U_{e^t}$, $h=g$:
+$2\Re\langle g,U_{e^t}g\rangle=2\|g\|_2^2-\|g-U_{e^t}g\|_2^2$.  Negate both sides.}
+
+\Step{Substituting Steps~2 and 3 into the integral from Step~1, the integrand of $-W_\R(f)$
+(inside $\int_0^\infty$) equals
+\[
+w(t)\bigl(\|g-U_{e^t}g\|_2^2+2(e^{-t/2}-1)\|g\|_2^2\bigr).
+\]}
+
+\Substep{From Step~1 (negated), $-W_\R(f)=-(\log 4\pi+\gamma)\|g\|_2^2
++\int_0^\infty\bigl(-2\Re\langle g,U_{e^t}g\rangle+2e^{-t/2}\|g\|_2^2\bigr)w(t)\,dt$.}
+\Substepjust{Negate Step~1 and use $f(1)=\|g\|_2^2$ from Step~2.}
+
+\Substep{Replace $-2\Re\langle g,U_{e^t}g\rangle$ by $\|g-U_{e^t}g\|_2^2-2\|g\|_2^2$ (Step~3):
+the integrand becomes $(\|g-U_{e^t}g\|_2^2-2\|g\|_2^2+2e^{-t/2}\|g\|_2^2)w(t)
+=w(t)(\|g-U_{e^t}g\|_2^2+2(e^{-t/2}-1)\|g\|_2^2)$.}
+\Substepjust{Algebra: $-2+2e^{-t/2}=2(e^{-t/2}-1)$.}
+
+\Step{In logarithmic coordinates: $\|g-U_{e^t}g\|_2=\|\widetilde G-S_t\widetilde G\|_{L^2(\R)}$.}
+\Stepjust{Same argument as in Lemma~\ref{lem:prime-energy}, Step~4.}
+
+\Step{Split the integral at $t=2L$.  For $t>2L$, $\|\widetilde G-S_t\widetilde G\|_2^2=2\|G\|_2^2$.}
+\Stepjust{By Remark~\ref{rem:truncate}, when $t>2L=2\log\lambda$, the supports of
+$\widetilde G$ (contained in $[-L,L]$) and $S_t\widetilde G$ (contained in $[-L+t,L+t]$,
+with $-L+t>L$) are disjoint.
+Hence $\|\widetilde G-S_t\widetilde G\|_2^2=\|\widetilde G\|_2^2+\|S_t\widetilde G\|_2^2
+=2\|G\|_2^2$.}
+
+\Step{The tail integral over $(2L,\infty)$ is a finite constant times $\|G\|_2^2$.}
+
+\Substep{For $t>2L$, the integrand from Step~4 becomes
+$w(t)(2\|G\|_2^2+2(e^{-t/2}-1)\|G\|_2^2)=2e^{-t/2}w(t)\|G\|_2^2$.}
+\Substepjust{Substitute $\|\widetilde G-S_t\widetilde G\|_2^2=2\|G\|_2^2$ from Step~6 into the
+integrand from Step~4 (after applying Step~5):
+$2\|G\|_2^2+2(e^{-t/2}-1)\|G\|_2^2=2e^{-t/2}\|G\|_2^2$.}
+
+\Substep{$\int_{2L}^\infty 2e^{-t/2}w(t)\,dt<\infty$.}
+\Substepjust{As $t\to\infty$, $w(t)=e^{t/2}/(2\sinh t)\sim e^{-t/2}$, so
+$2e^{-t/2}w(t)\sim 2e^{-t}$, which is integrable.}
+
+\Step{The integral over $[0,2L]$ contributes the main term plus a finite constant.}
+
+\Substep{For $t\in[0,2L]$, the integrand (Step~4 with Step~5) splits as
+$w(t)\|\widetilde G-S_t\widetilde G\|_2^2+2(e^{-t/2}-1)w(t)\|G\|_2^2$.}
+\Substepjust{Rewrite Step~4 using Step~5.}
+
+\Substep{$\int_0^{2L}2(e^{-t/2}-1)w(t)\,dt$ is finite.}
+\Substepjust{Near $t=0$: $w(t)\sim (2t)^{-1}$ and $e^{-t/2}-1\sim -t/2$, so the
+integrand is $\sim -1/2$, which is bounded.  On the compact interval $[0,2L]$ with
+this bounded behavior, the integral converges absolutely.}
+
+\Step{Define $c_\infty(\lambda):=-(\log 4\pi+\gamma)+\int_0^{2L}2(e^{-t/2}-1)w(t)\,dt
++\int_{2L}^\infty 2e^{-t/2}w(t)\,dt$.}
+\Stepjust{Collect all $\|G\|_2^2$-proportional terms: the $-(\log 4\pi+\gamma)$ from
+Step~4.1, the integral $\int_0^{2L}2(e^{-t/2}-1)w(t)\,dt$ from Step~8.2,
+and the tail integral from Step~7.2.  Each is finite, so $c_\infty(\lambda)\in\R$.}
+
+\Step{Conclusion: $-W_\R(f)=\int_0^{2L}w(t)\|\widetilde G-S_t\widetilde G\|_2^2\,dt
++c_\infty(\lambda)\|G\|_{L^2(I)}^2$.}
+\Stepjust{Combine Steps~8.1, 7, and 9, noting $\|g\|_2^2=\|G\|_{L^2(I)}^2$ by the change
+of variables.}
+
+\QEDstep
+\end{structuredproof}
+
+\subsection{Global quadratic form on the interval}
+
+\begin{definition}[Difference-energy form]
+\label{def:E}
+Fix $\lambda>1$ and $L=\log\lambda$. For $G\in L^2(I)$ define
+\begin{align}
+\mathcal E_\lambda(G)
+&:=\int_{0}^{2L} w(t)\,\|\widetilde G-S_t\widetilde G\|_{L^2(\R)}^2\,dt
++\sum_{\substack{p\ \mathrm{prime}\\ p\le \lambda^2}}\ \sum_{\substack{m\ge 1\\ p^m\le \lambda^2}}
+(\log p)p^{-m/2}\,\|\widetilde G-S_{m\log p}\widetilde G\|_{L^2(\R)}^2.
+\end{align}
+\end{definition}
+
+\begin{remark}[What we have proved so far]
+Lemmas~\ref{lem:prime-energy} and \ref{lem:arch-energy} show that for $f=g*g^*$ with
+$\operatorname{supp}(g)\subset[\lambda^{-1},\lambda]$, the quantity
+\[
+-\sum_{v\in\{\infty\}\cup\{p\}} W_v(f)
+\]
+equals $\mathcal E_\lambda(G)$ plus an additive constant multiple of $\|G\|_2^2$.
+Since adding a constant multiple of $\|G\|_2^2$ only shifts the spectrum of the associated
+operator, it does not affect positivity/irreducibility properties of the semigroup and does not
+affect eigenfunction parity considerations.
+\end{remark}
+
+%% =================================================================
+\section{Markov property (normal contractions)}
+%% =================================================================
+
+\begin{definition}[Normal contraction]
+A map $\Phi:\R\to\R$ is a normal contraction if $\Phi(0)=0$ and
+$|\Phi(a)-\Phi(b)|\le |a-b|$ for all $a,b\in\R$.
+\end{definition}
+
+\begin{lemma}[Markov property]
+\label{lem:markov}
+For every normal contraction $\Phi$ and every $G\in L^2(I)$,
+\[
+\mathcal E_\lambda(\Phi\circ G)\le \mathcal E_\lambda(G).
+\]
+In particular, $\mathcal E_\lambda(|G|)\le \mathcal E_\lambda(G)$.
+\end{lemma}
+
+\begin{structuredproof}
+\Step{For each fixed $t\in\R$:
+$\|\widetilde{\Phi\circ G}-S_t\widetilde{\Phi\circ G}\|_2^2
+\le\|\widetilde G-S_t\widetilde G\|_2^2$.}
+
+\Substep{$\widetilde{\Phi\circ G}=\Phi\circ\widetilde G$.}
+\Substepjust{Since $\Phi(0)=0$, the extension by zero commutes with composition by~$\Phi$:
+for $u\notin I$, $\widetilde G(u)=0$, so $\Phi(\widetilde G(u))=\Phi(0)=0=\widetilde{\Phi\circ G}(u)$;
+for $u\in I$, both sides equal $\Phi(G(u))$.}
+
+\Substep{$|\Phi(\widetilde G(u))-\Phi(\widetilde G(u-t))|^2\le|\widetilde G(u)-\widetilde G(u-t)|^2$
+for every $u\in\R$.}
+\Substepjust{$\Phi$ is $1$-Lipschitz by hypothesis (the ``normal contraction'' condition $|\Phi(a)-\Phi(b)|\le|a-b|$).
+Apply this pointwise with $a=\widetilde G(u)$, $b=\widetilde G(u-t)$, and square.}
+
+\Substep{Integrate Step~1.2 over $\R$ with respect to $du$:
+\[
+\int_\R|\Phi(\widetilde G(u))-\Phi(\widetilde G(u-t))|^2\,du
+\le\int_\R|\widetilde G(u)-\widetilde G(u-t)|^2\,du.
+\]}
+\Substepjust{Integrate both sides of the pointwise inequality from Step~1.2.}
+
+\Substep{Rewrite using Step~1.1 and the definition of $S_t$: this is precisely
+$\|\widetilde{\Phi\circ G}-S_t\widetilde{\Phi\circ G}\|_2^2\le\|\widetilde G-S_t\widetilde G\|_2^2$.}
+\Substepjust{$(S_t\widetilde{\Phi\circ G})(u)=(\Phi\circ\widetilde G)(u-t)=\Phi(\widetilde G(u-t))$.}
+
+\Step{$\mathcal E_\lambda(\Phi\circ G)\le\mathcal E_\lambda(G)$.}
+\Stepjust{By Definition~\ref{def:E}, $\mathcal E_\lambda(G)$ is the integral of
+$w(t)\|\widetilde G-S_t\widetilde G\|_2^2$ over $[0,2L]$ (with weight $w(t)\ge 0$)
+plus a finite sum of terms $(\log p)p^{-m/2}\|\widetilde G-S_{m\log p}\widetilde G\|_2^2$
+(all coefficients $\ge 0$).  Step~1 shows each summand decreases (or stays the same)
+when $G$ is replaced by $\Phi\circ G$.  Since all weights are nonnegative,
+the integral and sum are each $\le$ the corresponding quantity for~$G$.}
+
+\Step{In particular, $\mathcal E_\lambda(|G|)\le\mathcal E_\lambda(G)$.}
+\Stepjust{$\Phi(x)=|x|$ is a normal contraction: $\Phi(0)=0$ and
+$\bigl||a|-|b|\bigr|\le|a-b|$ by the reverse triangle inequality.
+Apply Step~2.}
+
+\QEDstep
+\end{structuredproof}
+
+%% =================================================================
+\section{A translation-invariance lemma on an interval}
+%% =================================================================
+
+\begin{lemma}[Local translation invariance forces null or conull]\label{lem:trans-inv}
+Let $I\subset\R$ be a nontrivial open interval and let $B\subset I$ be measurable.
+Assume that there exists $\varepsilon>0$ such that for every $t\in(0,\varepsilon)$,
+\begin{equation}\label{eq:indicator-inv}
+\1_{B}(u)=\1_{B}(u-t)\quad\text{for a.e.\ }u\in I\cap(I+t).
+\end{equation}
+Then either $m(B)=0$ or $m(I\setminus B)=0$.
+\end{lemma}
+
+\begin{structuredproof}
+\Step{Set $f:=\1_B\in L^1_{\mathrm{loc}}(I)$.  Fix a compact subinterval $J\Subset I$.
+Choose $0<\delta<\min\{\varepsilon,\mathrm{dist}(J,\partial I)\}$.}
+\Stepjust{Since $J\Subset I$, we have $\mathrm{dist}(J,\partial I)>0$, so
+$\delta$ as described exists.}
+
+\Step{For every $t\in(0,\delta)$: $f(u+t)=f(u)$ for a.e.\ $u\in J$.}
+
+\Substep{From~\eqref{eq:indicator-inv}: for $t\in(0,\varepsilon)$,
+$f(u)=f(u-t)$ for a.e.\ $u\in I\cap(I+t)$.}
+\Substepjust{Hypothesis of the lemma, since $0<t<\delta<\varepsilon$.}
+
+\Substep{Substitute $u\mapsto u+t$: $f(u+t)=f(u)$ for a.e.\ $u\in (I-t)\cap I$.}
+\Substepjust{The set $I\cap(I+t)$ becomes $(I-t)\cap I$ after the shift.}
+
+\Substep{$J\subset (I-t)\cap I$.}
+\Substepjust{For $u\in J$: since $\delta<\mathrm{dist}(J,\partial I)$, we have $u\in I$ and
+$u+t\in I$ (as $|t|<\delta$), so $u\in I$ and $u\in I-t$, giving $u\in(I-t)\cap I$.}
+
+\Substep{Combine: $f(u+t)=f(u)$ for a.e.\ $u\in J$.}
+\Substepjust{Restrict the a.e.\ identity from Step~2.2 to the subset $J\subset(I-t)\cap I$ (Step~2.3).}
+
+\Step{The identity extends to $|t|<\delta$: $f(u+t)=f(u)$ for a.e.\ $u\in J$, for all $t\in(-\delta,\delta)$.}
+\Stepjust{Step~2 handles $t\in(0,\delta)$.  For $t\in(-\delta,0)$, replace $t$ by $-t\in(0,\delta)$
+in Step~2 to get $f(u-t)=f(u)$ a.e.\ on $J$, which after the substitution $u\mapsto u+t$
+(and noting $J+t\subset I$ for $|t|<\delta$, same argument as Step~2.3) yields $f(u)=f(u+t)$ a.e.\ on appropriate sets.
+At $t=0$ the identity is trivial.}
+
+\Step{Define the mollification $f_\eta:=f*\rho_\eta$ on $J_\eta:=\{u\in J:\mathrm{dist}(u,\R\setminus J)>\eta\}$,
+where $\rho_\eta(s)=\eta^{-1}\rho(s/\eta)$ for a standard nonneg.\ mollifier $\rho$ supported in $(-1,1)$ with $\int\rho=1$, and $0<\eta<\delta/2$.}
+\Stepjust{Standard construction.  $f_\eta\in C^\infty(J_\eta)$ by standard properties of convolution with $C_c^\infty$ kernels.}
+
+\Step{$f_\eta$ is translation-invariant on $J_\eta$ for shifts $|t|<\delta/2$:
+$f_\eta(u+t)=f_\eta(u)$ for $u\in J_\eta$.}
+
+\Substep{For $u\in J_\eta$ and $s\in\supp\rho_\eta\subset(-\eta,\eta)$: $u-s\in J$.}
+\Substepjust{$|u-s-u|=|s|<\eta<\mathrm{dist}(u,\R\setminus J)$ by definition of $J_\eta$.}
+
+\Substep{$f_\eta(u+t)=\int_\R f(u+t-s)\rho_\eta(s)\,ds
+=\int_\R f(u-s)\rho_\eta(s)\,ds=f_\eta(u)$.}
+\Substepjust{By Fubini and Step~5.1, for each $s\in\supp\rho_\eta$, $u-s\in J$ and
+$|t|<\delta/2<\delta$, so Step~3 gives $f((u-s)+t)=f(u-s)$ for a.e.\ such $u-s$.
+Hence $f(u+t-s)=f(u-s)$ a.e., and integration against $\rho_\eta(s)\,ds$ yields the identity.}
+
+\Step{$f_\eta$ is constant on $J_\eta$.}
+\Stepjust{$J_\eta$ is a connected open interval (nonempty for small $\eta$) and $f_\eta\in C^\infty(J_\eta)$
+is invariant under all translations of size $<\delta/2$ (Step~5).
+A smooth function on a connected open subset of $\R$ that is invariant under arbitrarily small translations
+has zero derivative everywhere: for any $u\in J_\eta$, $f_\eta'(u)=\lim_{t\to 0}(f_\eta(u+t)-f_\eta(u))/t=0$.
+Hence $f_\eta$ is constant.}
+
+\Step{$f=\1_B$ is a.e.\ constant on $J$.}
+\Stepjust{As $\eta\downarrow 0$, $f_\eta\to f$ in $L^1(J)$ (standard mollification convergence theorem).
+Since each $f_\eta$ is constant on $J_\eta$ and $J_\eta\nearrow J^\circ=J$, the limit $f$ is
+a.e.\ equal to a constant on~$J$.}
+
+\Step{$f=\1_B$ is a.e.\ constant on~$I$.}
+\Stepjust{The compact subinterval $J\Subset I$ was arbitrary (Step~1).  Cover $I$ by
+a countable increasing sequence $J_1\subset J_2\subset\cdots$ of compact subintervals
+with $\bigcup_n J_n=I$.  By Step~7, $\1_B$ is a.e.\ constant on each $J_n$.  Since
+successive $J_n$'s overlap, the constant must be the same on all of them.
+Hence $\1_B$ is a.e.\ constant on~$I$.}
+
+\Step{$m(B)=0$ or $m(I\setminus B)=0$.}
+\Stepjust{Since $\1_B\in\{0,1\}$ a.e., the only possible constants are $0$ and $1$.
+If $\1_B=0$ a.e.\ on $I$, then $m(B)=0$.  If $\1_B=1$ a.e.\ on $I$, then $m(I\setminus B)=0$.}
+
+\QEDstep
+\end{structuredproof}
+
+%% =================================================================
+\section{Irreducibility from the archimedean continuum}
+%% =================================================================
+
+\subsection{A concrete criterion}
+
+\begin{lemma}[Indicator-energy vanishes only for null/conull sets]
+\label{lem:indicator-energy}
+Let $B\subset I$ be measurable. If $\mathcal E_\lambda(\1_B)=0$, then $m(B)=0$ or $m(I\setminus B)=0$.
+\end{lemma}
+
+\begin{structuredproof}
+\Step{The archimedean contribution to $\mathcal E_\lambda(\1_B)$ vanishes:
+$\int_0^{2L}w(t)\|\widetilde{\1_B}-S_t\widetilde{\1_B}\|_2^2\,dt=0$.}
+\Stepjust{By Definition~\ref{def:E}, $\mathcal E_\lambda(\1_B)$ is a sum of nonneg.\ terms (the archimedean
+integral plus the prime sums).  If the total is $0$, each nonneg.\ summand must be $0$.
+In particular, the archimedean integral (whose integrand is nonneg.) equals~$0$.}
+
+\Step{$\|\widetilde{\1_B}-S_t\widetilde{\1_B}\|_2^2=0$ for a.e.\ $t\in(0,2L)$.}
+\Stepjust{The integrand $w(t)\|\widetilde{\1_B}-S_t\widetilde{\1_B}\|_2^2$ is nonneg.\ and
+$w(t)>0$ for all $t>0$ (since $w(t)=e^{t/2}/(2\sinh t)$ with numerator and denominator
+both positive for $t>0$).
+A nonneg.\ integral vanishing (Step~1) with a strictly positive weight implies the
+other factor vanishes a.e.}
+
+\Step{Upgrade to \emph{all} $t\in(0,2L)$:
+$\|\widetilde{\1_B}-S_t\widetilde{\1_B}\|_2^2=0$ for every $t\in(0,2L)$.}
+
+\Substep{The function $t\mapsto\|\phi-S_t\phi\|_2^2$ is continuous for any $\phi\in L^2(\R)$.}
+\Substepjust{By strong continuity of the translation group $(S_t)_{t\in\R}$ on $L^2(\R)$
+(which follows from dominated convergence: if $t_n\to t$ then $S_{t_n}\phi\to S_t\phi$ in $L^2$),
+the map $t\mapsto S_t\phi$ is continuous $\R\to L^2(\R)$, and the squared norm is a continuous
+function of its argument.}
+
+\Substep{A continuous function that vanishes a.e.\ on an interval vanishes everywhere on that interval.}
+\Substepjust{Let $h:(0,2L)\to[0,\infty)$ be continuous with $h=0$ a.e.
+If $h(t_0)>0$ for some $t_0$, then by continuity $h>0$ on an open neighborhood of $t_0$,
+which has positive Lebesgue measure---contradicting $h=0$ a.e.}
+
+\Substep{Apply Steps~3.1 and 3.2 with $\phi=\widetilde{\1_B}$.}
+\Substepjust{Step~2 says $\|\widetilde{\1_B}-S_t\widetilde{\1_B}\|_2^2=0$ for a.e.\ $t\in(0,2L)$;
+Step~3.1 says this function of $t$ is continuous; Step~3.2 upgrades ``a.e.'' to ``all.''} %
+
+\Step{For every $t\in(0,2L)$: $\1_B(u)=\1_B(u-t)$ for a.e.\ $u\in I\cap(I+t)$.}
+\Stepjust{$\|\widetilde{\1_B}-S_t\widetilde{\1_B}\|_2^2=0$ (Step~3) means
+$\widetilde{\1_B}(u)=\widetilde{\1_B}(u-t)$ for a.e.\ $u\in\R$.
+Restricting to $u\in I\cap(I+t)$: both $u\in I$ and $u-t\in I$, so
+$\widetilde{\1_B}(u)=\1_B(u)$ and $\widetilde{\1_B}(u-t)=\1_B(u-t)$.}
+
+\Step{$m(B)=0$ or $m(I\setminus B)=0$.}
+\Stepjust{Step~4 holds for all $t\in(0,2L)$, which contains an interval $(0,\varepsilon)$
+for any $\varepsilon\le 2L$.  Lemma~\ref{lem:trans-inv} applies (with $\varepsilon=2L$)
+and yields the conclusion.}
+
+\QEDstep
+\end{structuredproof}
+
+%% =================================================================
+\subsection{Operator realization: closedness and compact resolvent}
+%% =================================================================
+
+\subsubsection{Ambient form on $L^2(\R)$ and Fourier representation}
+
+Let $\mathcal F:L^2(\R)\to L^2(\R)$ denote the unitary Fourier transform
+\[
+\widehat{\phi}(\xi):=\int_{\R}\phi(u)e^{-iu\xi}\,du,
+\qquad
+\phi(u)=\frac1{2\pi}\int_{\R}\widehat{\phi}(\xi)e^{iu\xi}\,d\xi,
+\]
+so that Plancherel reads $\|\phi\|_{L^2(\R)}^2=\frac1{2\pi}\int_{\R}|\widehat{\phi}(\xi)|^2\,d\xi$.
+
+Define the ``ambient'' quadratic form on $L^2(\R)$ by
+\begin{align*}
+\mathcal E_\lambda^{\R}(\phi)
+&:=\int_{0}^{2L} w(t)\,\|\phi-S_t\phi\|_{L^2(\R)}^2\,dt\\
+&\qquad\qquad
++\sum_{\substack{p\ \mathrm{prime}\\ p\le \lambda^2}}\ \sum_{\substack{m\ge 1\\ p^m\le \lambda^2}}
+(\log p)p^{-m/2}\,\|\phi-S_{m\log p}\phi\|_{L^2(\R)}^2,
+\end{align*}
+with domain $\mathcal D(\mathcal E_\lambda^{\R}):=\{\phi\in L^2(\R):\mathcal E_\lambda^{\R}(\phi)<\infty\}$.
+By definition, for $G\in L^2(I)$,
+\[
+\mathcal E_\lambda(G)=\mathcal E_\lambda^{\R}(\widetilde G).
+\]
+
+\begin{lemma}[Plancherel identity for translation differences]\label{lem:plancherel-diff}
+For $\phi\in L^2(\R)$ and $t\in\R$,
+\[
+\|\phi-S_t\phi\|_{L^2(\R)}^2
+=\frac1{2\pi}\int_{\R}|1-e^{-i\xi t}|^2\,|\widehat\phi(\xi)|^2\,d\xi
+=\frac1{2\pi}\int_{\R}4\sin^2\!\Bigl(\frac{\xi t}{2}\Bigr)\,|\widehat\phi(\xi)|^2\,d\xi.
+\]
+\end{lemma}
+
+\begin{structuredproof}
+\Step{$\widehat{S_t\phi}(\xi)=e^{-i\xi t}\widehat\phi(\xi)$.}
+\Stepjust{By definition, $\widehat{S_t\phi}(\xi)=\int_\R\phi(u-t)e^{-iu\xi}\,du$.
+Substituting $v=u-t$, $du=dv$:
+$=\int_\R\phi(v)e^{-i(v+t)\xi}\,dv=e^{-it\xi}\widehat\phi(\xi)$.}
+
+\Step{$\|\phi-S_t\phi\|_2^2=\frac{1}{2\pi}\int_\R|1-e^{-i\xi t}|^2|\widehat\phi(\xi)|^2\,d\xi$.}
+\Stepjust{By Plancherel, $\|\phi-S_t\phi\|_2^2=\frac{1}{2\pi}\int_\R|\widehat\phi(\xi)-\widehat{S_t\phi}(\xi)|^2\,d\xi$.
+Step~1 gives $\widehat\phi(\xi)-\widehat{S_t\phi}(\xi)=(1-e^{-i\xi t})\widehat\phi(\xi)$.}
+
+\Step{$|1-e^{-i\eta}|^2=4\sin^2(\eta/2)$.}
+\Stepjust{$1-e^{-i\eta}=1-\cos\eta+i\sin\eta$, so
+$|1-e^{-i\eta}|^2=(1-\cos\eta)^2+\sin^2\eta=2-2\cos\eta=4\sin^2(\eta/2)$
+by the double-angle formula $\cos\eta=1-2\sin^2(\eta/2)$.}
+
+\Step{Set $\eta=\xi t$ in Step~3 and substitute into Step~2.}
+\Stepjust{$|1-e^{-i\xi t}|^2=4\sin^2(\xi t/2)$.  This gives the second equality.}
+
+\QEDstep
+\end{structuredproof}
+
+\begin{lemma}[Fourier representation]\label{lem:FourierRep}
+For $\phi\in L^2(\R)$,
+\[
+\mathcal E_\lambda^{\R}(\phi)=\frac1{2\pi}\int_{\R}\psi_\lambda(\xi)\,|\widehat{\phi}(\xi)|^2\,d\xi
+\quad\text{in }[0,\infty],
+\]
+where
+\begin{align}
+\psi_\lambda(\xi)
+&:=4\int_0^{2L} w(t)\,\sin^2\!\Bigl(\frac{\xi t}{2}\Bigr)\,dt\notag\\
+&\qquad\qquad
++4\sum_{\substack{p\ \mathrm{prime}\\ p\le \lambda^2}}\ \sum_{\substack{m\ge 1\\ p^m\le \lambda^2}}
+(\log p)p^{-m/2}\,\sin^2\!\Bigl(\frac{\xi m\log p}{2}\Bigr).\label{eq:defpsi}
+\end{align}
+In particular $\psi_\lambda$ is measurable, even, finite for each $\xi$, and $\psi_\lambda(\xi)\ge 0$.
+\end{lemma}
+
+\begin{structuredproof}
+\Step{Apply Lemma~\ref{lem:plancherel-diff} to each translation-difference norm in $\mathcal E_\lambda^\R(\phi)$.}
+\Stepjust{Each term $\|\phi-S_t\phi\|_2^2$ or $\|\phi-S_{m\log p}\phi\|_2^2$ in Definition~\ref{def:E}
+equals $\frac{1}{2\pi}\int_\R 4\sin^2(\xi t/2)|\widehat\phi(\xi)|^2\,d\xi$ (resp.\ with $t$ replaced
+by $m\log p$).}
+
+\Step{Interchange integration/summation order by Tonelli's theorem:
+\[
+\mathcal E_\lambda^\R(\phi)=\frac{1}{2\pi}\int_\R\psi_\lambda(\xi)|\widehat\phi(\xi)|^2\,d\xi.
+\]}
+\Stepjust{All integrands are nonneg.\ ($w(t)\ge 0$, $\sin^2\ge 0$, $|\widehat\phi|^2\ge 0$, $(\log p)p^{-m/2}\ge 0$).
+Tonelli's theorem permits interchange of the $\xi$-integral with the $t$-integral and the finite sums.
+The resulting multiplier of $|\widehat\phi(\xi)|^2$ is precisely $\psi_\lambda(\xi)$.}
+
+\Step{$\psi_\lambda$ is measurable, even, finite for each $\xi$, and $\ge 0$.}
+
+\Substep{Measurability: $\psi_\lambda$ is a sum of continuous functions of~$\xi$.}
+\Substepjust{Each $\sin^2(\xi t/2)$ is continuous in $\xi$.  The integral $\int_0^{2L}w(t)\sin^2(\xi t/2)\,dt$
+is continuous in $\xi$ by dominated convergence (the integrand is bounded by $w(t)$, which is integrable).
+The prime sum is a finite sum of continuous functions.}
+
+\Substep{Evenness: $\psi_\lambda(-\xi)=\psi_\lambda(\xi)$.}
+\Substepjust{$\sin^2((-\xi)t/2)=\sin^2(\xi t/2)$.}
+
+\Substep{Finiteness: for each fixed $\xi$, $\psi_\lambda(\xi)<\infty$.}
+\Substepjust{The integral $\int_0^{2L}w(t)\sin^2(\xi t/2)\,dt\le\int_0^{2L}w(t)\,dt<\infty$
+(since $w(t)\sim (2t)^{-1}$ near $0$ and the domain is bounded).
+The prime sum is finite (finitely many terms, each finite).}
+
+\Substep{Nonnegativity: $\psi_\lambda(\xi)\ge 0$.}
+\Substepjust{Every summand is a product of nonneg.\ factors.}
+
+\QEDstep
+\end{structuredproof}
+
+\begin{proposition}[Closedness on $L^2(\R)$]\label{prop:closedR}
+The form $\mathcal E_\lambda^{\R}$ is densely defined, symmetric, nonneg., and closed on $L^2(\R)$.
+Moreover,
+\[
+\mathcal D(\mathcal E_\lambda^{\R})
+=\Bigl\{\phi\in L^2(\R):\int_{\R}\psi_\lambda(\xi)\,|\widehat\phi(\xi)|^2\,d\xi<\infty\Bigr\},
+\]
+and $\mathcal D(\mathcal E_\lambda^{\R})$ is a Hilbert space for the norm
+$\|\phi\|_{\mathcal D}^2:=\|\phi\|_{L^2(\R)}^2+\mathcal E_\lambda^{\R}(\phi)$.
+\end{proposition}
+
+\begin{structuredproof}
+\Step{$\mathcal E_\lambda^\R$ is the quadratic form of multiplication by $\psi_\lambda$ in Fourier space.}
+\Stepjust{Lemma~\ref{lem:FourierRep}: $\mathcal E_\lambda^\R(\phi)=\frac{1}{2\pi}\int_\R\psi_\lambda(\xi)|\widehat\phi(\xi)|^2\,d\xi$.}
+
+\Step{$\mathcal D(\mathcal E_\lambda^\R)=\{\phi\in L^2(\R):\int\psi_\lambda(\xi)|\widehat\phi(\xi)|^2\,d\xi<\infty\}$.}
+\Stepjust{Immediate from Step~1: $\phi\in\mathcal D(\mathcal E_\lambda^\R)$ iff $\mathcal E_\lambda^\R(\phi)<\infty$
+iff $\int\psi_\lambda|\widehat\phi|^2<\infty$.}
+
+\Step{$\mathcal D(\mathcal E_\lambda^\R)$ with the norm $\|\phi\|_{\mathcal D}^2=\frac{1}{2\pi}\int(1+\psi_\lambda(\xi))|\widehat\phi(\xi)|^2\,d\xi$ is a Hilbert space.}
+\Stepjust{Via $\phi\mapsto\widehat\phi$, this norm space is isometrically isomorphic to
+$L^2(\R,(1+\psi_\lambda(\xi))\frac{d\xi}{2\pi})$, which is a weighted $L^2$ space with a
+nonneg.\ measurable weight, hence complete.}
+
+\Step{The form is closed.}
+\Stepjust{A nonneg.\ quadratic form is closed iff its domain equipped with the graph norm is complete.
+This is Step~3.}
+
+\Step{Nonnegativity and symmetry are immediate.}
+\Stepjust{Nonnegativity: $\psi_\lambda\ge 0$ implies $\mathcal E_\lambda^\R(\phi)\ge 0$.
+Symmetry: $\mathcal E_\lambda^\R$ is defined on real-valued or complex-valued functions via a real
+nonneg.\ multiplier; the associated bilinear form inherits symmetry from the pointwise identity.}
+
+\Step{$\mathcal E_\lambda^\R$ is densely defined: $C_c^\infty(\R)\subset\mathcal D(\mathcal E_\lambda^\R)$.}
+
+\Substep{For $\phi\in C_c^\infty(\R)$: $\|\phi-S_t\phi\|_2\le|t|\|\phi'\|_2$.}
+\Substepjust{By the mean value theorem applied pointwise:
+$|\phi(u)-\phi(u-t)|=|t\phi'(\xi_u)|\le|t|\cdot\|\phi'\|_\infty$ for some $\xi_u$ between $u-t$ and $u$.
+But we can be more precise: $\phi(u)-\phi(u-t)=\int_0^t\phi'(u-s)\,ds$, so
+$|\phi(u)-\phi(u-t)|^2\le t^2\|\phi'\|_\infty^2$.
+Integrating and using that $\phi$ has compact support:
+$\|\phi-S_t\phi\|_2^2\le t^2\|\phi'\|_2^2$ (by a Cauchy--Schwarz refinement, or
+simply note $\le t^2\cdot\mathrm{meas}(\mathrm{supp}(\phi)+[-|t|,|t|])\cdot\|\phi'\|_\infty^2$;
+more directly, Plancherel gives $\|\phi-S_t\phi\|_2^2=\frac{1}{2\pi}\int 4\sin^2(\xi t/2)|\widehat\phi(\xi)|^2\,d\xi\le t^2\frac{1}{2\pi}\int\xi^2|\widehat\phi(\xi)|^2\,d\xi=t^2\|\phi'\|_2^2$).}
+
+\Substep{$\int_0^{2L}w(t)t^2\,dt<\infty$.}
+\Substepjust{Near $t=0$: $w(t)\sim(2t)^{-1}$, so $w(t)t^2\sim t/2$, which is integrable.
+The domain $[0,2L]$ is bounded, so the integral is finite.}
+
+\Substep{$\mathcal E_\lambda^\R(\phi)\le\|\phi'\|_2^2\bigl(\int_0^{2L}w(t)t^2\,dt+\sum_{p,m}(\log p)p^{-m/2}(m\log p)^2\bigr)<\infty$.}
+\Substepjust{From Step~6.1: each $\|\phi-S_t\phi\|_2^2\le t^2\|\phi'\|_2^2$.
+Apply this to the archimedean integral and each prime term.  The prime sum is finite
+(finitely many terms, each $\le(\log p)p^{-m/2}(m\log p)^2\|\phi'\|_2^2$).}
+
+\Substep{$C_c^\infty(\R)$ is dense in $L^2(\R)$.}
+\Substepjust{Standard fact in functional analysis.}
+
+\QEDstep
+\end{structuredproof}
+
+\begin{proposition}[Closedness on $L^2(I)$]\label{prop:closedI}
+The form $\mathcal E_\lambda$ on $H=L^2(I)$ is densely defined, symmetric, nonneg., and closed.
+\end{proposition}
+
+\begin{structuredproof}
+\Step{$G\mapsto\widetilde G$ is an isometry from $L^2(I)$ onto
+$H_I:=\{\phi\in L^2(\R):\phi=0\text{ a.e.\ on }\R\setminus I\}$.}
+\Stepjust{$\|\widetilde G\|_{L^2(\R)}^2=\int_\R|\widetilde G(u)|^2\,du=\int_I|G(u)|^2\,du=\|G\|_{L^2(I)}^2$.
+Surjectivity: any $\phi\in H_I$ is the zero-extension of $G:=\phi|_I$.}
+
+\Step{$\mathcal E_\lambda(G)=\mathcal E_\lambda^\R(\widetilde G)$.}
+\Stepjust{By definition (Definition~\ref{def:E} and the definition of $\mathcal E_\lambda^\R$).}
+
+\Step{$\mathcal E_\lambda$ is the restriction of $\mathcal E_\lambda^\R$ to $H_I$.}
+\Stepjust{Steps~1 and 2: $H_I$ is a closed subspace of $L^2(\R)$, and $\mathcal E_\lambda$ on $L^2(I)$
+corresponds (via the isometry) to $\mathcal E_\lambda^\R$ restricted to~$H_I$.}
+
+\Step{$\mathcal E_\lambda$ is closed.}
+\Stepjust{The restriction of a closed form to a closed subspace is closed.  More explicitly:
+if $G_n\to G$ in $L^2(I)$ and $\mathcal E_\lambda(G_n-G_m)\to 0$, then $\widetilde G_n\to\widetilde G$
+in $L^2(\R)$ (Step~1) and $\mathcal E_\lambda^\R(\widetilde G_n-\widetilde G_m)\to 0$ (Step~2),
+so closedness of $\mathcal E_\lambda^\R$ (Prop.~\ref{prop:closedR}) gives
+$\widetilde G\in\mathcal D(\mathcal E_\lambda^\R)$ and $\mathcal E_\lambda^\R(\widetilde G_n-\widetilde G)\to 0$,
+whence $G\in\mathcal D(\mathcal E_\lambda)$ and $\mathcal E_\lambda(G_n-G)\to 0$.}
+
+\Step{$\mathcal E_\lambda$ is densely defined.}
+\Stepjust{$C_c^\infty(I)\subset\mathcal D(\mathcal E_\lambda)$: for $G\in C_c^\infty(I)$,
+$\widetilde G\in C_c^\infty(\R)\subset\mathcal D(\mathcal E_\lambda^\R)$
+(Proposition~\ref{prop:closedR}, Step~6), so $G\in\mathcal D(\mathcal E_\lambda)$.
+Since $C_c^\infty(I)$ is dense in $L^2(I)$, the form is densely defined.}
+
+\Step{Nonnegativity and symmetry follow from those of $\mathcal E_\lambda^\R$.}
+\Stepjust{$\mathcal E_\lambda(G)=\mathcal E_\lambda^\R(\widetilde G)\ge 0$ (Prop.~\ref{prop:closedR}).}
+
+\QEDstep
+\end{structuredproof}
+
+\subsubsection{A coercive lower bound for the symbol $\psi_\lambda$}
+
+\begin{lemma}[A lower bound for $w(t)$]\label{lem:wlower}
+Let $t_0:=\min(1,2L)$. There exists $c_0=c_0(L)>0$ such that for all $t\in(0,t_0]$,
+\[
+w(t)=\frac{e^{t/2}}{2\sinh t}\ge \frac{c_0}{t}.
+\]
+\end{lemma}
+
+\begin{structuredproof}
+\Step{$\sinh t\le te^t$ for all $t>0$.}
+\Stepjust{$\sinh t=\frac{e^t-e^{-t}}{2}\le\frac{e^t}{2}\cdot 2t/(2t/(e^t-e^{-t})\cdot 2)$---more directly,
+$\sinh t=\sum_{n=0}^\infty\frac{t^{2n+1}}{(2n+1)!}\le t\sum_{n=0}^\infty\frac{t^{2n}}{(2n)!}
+=t\cosh t\le te^t$.}
+
+\Step{$w(t)\ge\frac{e^{-t/2}}{2t}$ for $t>0$.}
+\Stepjust{$w(t)=\frac{e^{t/2}}{2\sinh t}\ge\frac{e^{t/2}}{2te^t}=\frac{e^{-t/2}}{2t}$, using Step~1.}
+
+\Step{For $t\in(0,1]$: $e^{-t/2}\ge e^{-1/2}$.}
+\Stepjust{$e^{-t/2}$ is decreasing; its minimum on $(0,1]$ is at $t=1$.}
+
+\Step{Set $c_0:=e^{-1/2}/2$.  Then for $t\in(0,t_0]\subset(0,1]$: $w(t)\ge\frac{c_0}{t}$.}
+\Stepjust{$w(t)\ge\frac{e^{-t/2}}{2t}\ge\frac{e^{-1/2}}{2t}=\frac{c_0}{t}$, combining Steps~2 and~3.}
+
+\QEDstep
+\end{structuredproof}
+
+\begin{lemma}[Logarithmic growth of $\psi_\lambda$]\label{lem:psilog}
+There exist constants $c_1,c_2>0$ and $\xi_0\ge 2$ (depending only on $L$) such that for all $|\xi|\ge \xi_0$,
+\[
+\psi_\lambda(\xi)\ge c_1\log|\xi|-c_2.
+\]
+In particular $\psi_\lambda(\xi)\to\infty$ as $|\xi|\to\infty$.
+\end{lemma}
+
+\begin{structuredproof}
+\Step{Drop the nonneg.\ prime sum:
+$\psi_\lambda(\xi)\ge 4\int_0^{t_0}w(t)\sin^2(\xi t/2)\,dt$.}
+\Stepjust{The prime sum in~\eqref{eq:defpsi} is $\ge 0$, and we restrict the archimedean
+integral from $[0,2L]$ to $[0,t_0]\subset[0,2L]$ (the integrand is nonneg.).}
+
+\Step{Apply Lemma~\ref{lem:wlower}: $\psi_\lambda(\xi)\ge 4c_0\int_0^{t_0}\frac{1}{t}\sin^2(\xi t/2)\,dt$.}
+\Stepjust{For $t\in(0,t_0]$, $w(t)\ge c_0/t$ by Lemma~\ref{lem:wlower}.}
+
+\Step{For $|\xi|\ge\xi_0:=4\pi/t_0$, define intervals
+$J_n:=\bigl[\frac{2\pi n+\pi/2}{|\xi|},\frac{2\pi n+3\pi/2}{|\xi|}\bigr]$ for $n\ge 0$.
+Then $\sin^2(\xi t/2)\ge 1/2$ for $t\in J_n$.}
+\Stepjust{Set $\theta=|\xi|t/2$.  For $t\in J_n$, $\theta\in[\pi n+\pi/4,\pi n+3\pi/4]$.
+On this interval, $|\sin\theta|\ge\sin(\pi/4)=1/\sqrt{2}$, so $\sin^2\theta\ge 1/2$.
+Since $\sin^2(\xi t/2)=\sin^2(|\xi|t/2)=\sin^2\theta$, the claim follows.}
+
+\Step{Let $N$ be the largest integer with $J_{N-1}\subset(0,t_0]$.  Then $N\asymp|\xi|$.}
+\Stepjust{The right endpoint of $J_{N-1}$ is $\frac{2\pi(N-1)+3\pi/2}{|\xi|}\le t_0$, giving
+$N\le\frac{t_0|\xi|}{2\pi}+\frac{1}{4}+1$.  The condition $|\xi|\ge 4\pi/t_0$ ensures $N\ge 1$.
+Thus $N$ is of order $|\xi|$ with constants depending on $t_0$.}
+
+\Step{$\int_0^{t_0}\frac{1}{t}\sin^2(\xi t/2)\,dt\ge\frac{1}{2}\sum_{n=0}^{N-1}\log\frac{2\pi n+3\pi/2}{2\pi n+\pi/2}$.}
+\Stepjust{Restrict the integral to $\bigcup_{n=0}^{N-1}J_n\subset(0,t_0]$.
+On $J_n$, $\sin^2(\xi t/2)\ge 1/2$ (Step~3), so
+$\int_{J_n}\frac{1}{t}\cdot\frac{1}{2}\,dt=\frac{1}{2}\log\frac{2\pi n+3\pi/2}{2\pi n+\pi/2}$.}
+
+\Step{$\sum_{n=0}^{N-1}\log\frac{2\pi n+3\pi/2}{2\pi n+\pi/2}\ge c'\log N-C$ for absolute constants $c',C>0$.}
+
+\Substep{$\log\frac{2\pi n+3\pi/2}{2\pi n+\pi/2}=\log\bigl(1+\frac{\pi}{2\pi n+\pi/2}\bigr)\ge\frac{c}{n+1}$
+for some absolute $c>0$.}
+\Substepjust{Using $\log(1+x)\ge x/(1+x)$: with $x=\pi/(2\pi n+\pi/2)$,
+$\log(1+x)\ge\frac{\pi/(2\pi n+\pi/2)}{1+\pi/(2\pi n+\pi/2)}=\frac{\pi}{2\pi n+3\pi/2}\ge\frac{\pi}{2\pi(n+1)+3\pi/2}\ge\frac{c}{n+1}$.}
+
+\Substep{$\sum_{n=0}^{N-1}\frac{1}{n+1}=H_N\ge\log N$ (where $H_N$ is the $N$-th harmonic number).}
+\Substepjust{Standard lower bound for harmonic numbers: $H_N\ge\log N$ for $N\ge 1$.}
+
+\Substep{Combine: the sum $\ge c\cdot\log N$.}
+\Substepjust{Multiply Step~6.1 by $1$ and sum, then apply Step~6.2.}
+
+\Step{Since $N\asymp|\xi|$ (Step~4): $\log N=\log|\xi|+O(1)$.}
+\Stepjust{$N=\Theta(|\xi|)$ implies $\log N=\log|\xi|+\log(N/|\xi|)=\log|\xi|+O(1)$.}
+
+\Step{Conclusion: $\psi_\lambda(\xi)\ge 4c_0\cdot\frac{1}{2}\cdot c'\cdot(\log|\xi|-C')=c_1\log|\xi|-c_2$.}
+\Stepjust{Chain Steps~2, 5, 6, and 7: $\psi_\lambda(\xi)\ge 4c_0\cdot\frac{1}{2}\cdot(c'\log N-C)
+\ge 2c_0c'(\log|\xi|+O(1))-2c_0C$.  Set $c_1:=2c_0c'$ and absorb the $O(1)$ into~$c_2$.}
+
+\QEDstep
+\end{structuredproof}
+
+\begin{corollary}[Energy controls a logarithmic frequency moment]\label{cor:tail}
+There exist constants $a,b>0$ (depending only on $L$) such that for every $\phi\in\mathcal D(\mathcal E_\lambda^{\R})$,
+\[
+\int_\R \log(2+|\xi|)\,|\widehat\phi(\xi)|^2\,d\xi
+\le a\,\|\phi\|_{L^2(\R)}^2 + b\,\int_\R \psi_\lambda(\xi)\,|\widehat\phi(\xi)|^2\,d\xi.
+\]
+\end{corollary}
+
+\begin{structuredproof}
+\Step{For all $\xi\in\R$: $\log(2+|\xi|)\le a'+b'\psi_\lambda(\xi)$ for suitable $a',b'>0$.}
+
+\Substep{For $|\xi|\ge\xi_0$: $\psi_\lambda(\xi)\ge c_1\log|\xi|-c_2$ (Lemma~\ref{lem:psilog}).}
+\Substepjust{Direct application of Lemma~\ref{lem:psilog}.}
+
+\Substep{Hence $\log(2+|\xi|)\le\log|\xi|+\log 3\le\frac{1}{c_1}(\psi_\lambda(\xi)+c_2)+\log 3$ for $|\xi|\ge\xi_0$.}
+\Substepjust{$\log(2+|\xi|)\le\log(3|\xi|)=\log 3+\log|\xi|$, and from Step~1.1:
+$\log|\xi|\le(\psi_\lambda(\xi)+c_2)/c_1$.}
+
+\Substep{For $|\xi|<\xi_0$: $\log(2+|\xi|)\le\log(2+\xi_0)$, a finite constant.}
+\Substepjust{$\log(2+|\xi|)$ is bounded on bounded sets.}
+
+\Substep{Combine: set $b':=1/c_1$ and $a':=c_2/c_1+\log 3+\log(2+\xi_0)$.
+Then $\log(2+|\xi|)\le a'+b'\psi_\lambda(\xi)$ for all~$\xi$.}
+\Substepjust{For $|\xi|\ge\xi_0$, use Step~1.2.  For $|\xi|<\xi_0$, $a'\ge\log(2+\xi_0)\ge\log(2+|\xi|)$
+and $b'\psi_\lambda(\xi)\ge 0$.}
+
+\Step{Multiply by $|\widehat\phi(\xi)|^2$ and integrate:
+$\int\log(2+|\xi|)|\widehat\phi(\xi)|^2\,d\xi\le a'\int|\widehat\phi(\xi)|^2\,d\xi+b'\int\psi_\lambda(\xi)|\widehat\phi(\xi)|^2\,d\xi$.}
+\Stepjust{Pointwise inequality from Step~1 times $|\widehat\phi(\xi)|^2\ge 0$, integrated.}
+
+\Step{By Plancherel, $\frac{1}{2\pi}\int|\widehat\phi|^2\,d\xi=\|\phi\|_2^2$.  Set $a:=2\pi a'$, $b:=b'$.}
+\Stepjust{Rewrite Step~2 in terms of $\|\phi\|_2^2$ and $\mathcal E_\lambda^\R(\phi)$ (via Lemma~\ref{lem:FourierRep}).}
+
+\QEDstep
+\end{structuredproof}
+
+\subsubsection{Compact embedding and compact resolvent}
+
+\begin{theorem}[Kolmogorov--Riesz compactness criterion in $L^2(\R)$]\label{thm:KR}
+A set $\mathcal K\subset L^2(\R)$ is relatively compact if and only if:
+\begin{enumerate}
+\item[(i)] (\emph{tightness}) for every $\varepsilon>0$ there exists $R>0$ such that
+$\int_{|u|>R}|\phi(u)|^2\,du<\varepsilon^2$ for all $\phi\in\mathcal K$;
+\item[(ii)] (\emph{translation equicontinuity}) for every $\varepsilon>0$ there exists $\delta>0$ such that
+$\|\phi-S_h\phi\|_{2}<\varepsilon$ for all $\phi\in\mathcal K$ and all $|h|<\delta$.
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+See, e.g., Lieb--Loss~\cite{LiebLossAnalysis} for a proof of Theorem~\ref{thm:KR}.
+\end{remark}
+
+\begin{lemma}[Uniform translation control from the form norm]\label{lem:trans}
+Fix $M>0$ and define
+$\mathcal K_M:=\{\phi\in H_I:\ \|\phi\|_2^2+\mathcal E_\lambda^{\R}(\phi)\le M\}$.
+Then $\mathcal K_M$ satisfies condition (ii) in Theorem~\ref{thm:KR}.
+\end{lemma}
+
+\begin{structuredproof}
+\Step{For $\phi\in\mathcal K_M$ and $|h|\le 1$:
+$\|\phi-S_h\phi\|_2^2=\frac{1}{2\pi}\int_\R 4\sin^2(\xi h/2)|\widehat\phi(\xi)|^2\,d\xi$.}
+\Stepjust{Lemma~\ref{lem:plancherel-diff}.}
+
+\Step{Split the integral at a parameter $R\ge 1$ into low and high frequencies.}
+
+\Substep{Low-frequency bound ($|\xi|\le R$):
+$\int_{|\xi|\le R}4\sin^2(\xi h/2)|\widehat\phi(\xi)|^2\,d\xi\le(Rh)^2\cdot 2\pi\|\phi\|_2^2$.}
+\Substepjust{$\sin^2(x)\le x^2$ gives $4\sin^2(\xi h/2)\le(\xi h)^2\le(Rh)^2$ for $|\xi|\le R$.
+Then $\int_{|\xi|\le R}(Rh)^2|\widehat\phi|^2\le(Rh)^2\int_\R|\widehat\phi|^2=(Rh)^2\cdot 2\pi\|\phi\|_2^2$.}
+
+\Substep{High-frequency bound ($|\xi|>R$):
+$\int_{|\xi|>R}4\sin^2(\xi h/2)|\widehat\phi(\xi)|^2\,d\xi\le\frac{4}{\log(2+R)}\int_\R\log(2+|\xi|)|\widehat\phi(\xi)|^2\,d\xi$.}
+\Substepjust{$\sin^2\le 1$ gives the left side $\le 4\int_{|\xi|>R}|\widehat\phi|^2\,d\xi$.
+For $|\xi|>R$, $1\le\frac{\log(2+|\xi|)}{\log(2+R)}$, so
+$\int_{|\xi|>R}|\widehat\phi|^2\le\frac{1}{\log(2+R)}\int_{|\xi|>R}\log(2+|\xi|)|\widehat\phi|^2
+\le\frac{1}{\log(2+R)}\int_\R\log(2+|\xi|)|\widehat\phi|^2$.}
+
+\Step{By Corollary~\ref{cor:tail}, $\int_\R\log(2+|\xi|)|\widehat\phi|^2\le C(M,L)$ uniformly
+over $\phi\in\mathcal K_M$.}
+\Stepjust{$\|\phi\|_2^2+\mathcal E_\lambda^\R(\phi)\le M$ by definition of $\mathcal K_M$.
+Corollary~\ref{cor:tail} bounds $\int\log(2+|\xi|)|\widehat\phi|^2$ by $aM+bM=C(M,L)$.}
+
+\Step{Combine: $\|\phi-S_h\phi\|_2^2\le(Rh)^2M+\frac{C'(M,L)}{\log(2+R)}$.}
+\Stepjust{Add the bounds from Steps~2.1 and 2.2, using Step~3 to bound the high-frequency term.
+Here $C'(M,L)=4C(M,L)/(2\pi)$ (absorbing constants).}
+
+\Step{Given $\varepsilon>0$, choose $R$ then $\delta$ to make each term $\le\varepsilon^2/2$.}
+
+\Substep{Choose $R$ so that $\frac{C'(M,L)}{\log(2+R)}\le\varepsilon^2/2$.}
+\Substepjust{$\log(2+R)\to\infty$ as $R\to\infty$, so such $R$ exists.}
+
+\Substep{Then choose $\delta>0$ so that $(R\delta)^2M\le\varepsilon^2/2$.}
+\Substepjust{Take $\delta:=\varepsilon/(R\sqrt{2M})$ (assuming $M>0$; if $M=0$ then $\mathcal K_M=\{0\}$
+and the result is trivial).}
+
+\Substep{For $|h|<\delta$: $\|\phi-S_h\phi\|_2^2\le\varepsilon^2/2+\varepsilon^2/2=\varepsilon^2$.}
+\Substepjust{Substitute into Step~4.}
+
+\QEDstep
+\end{structuredproof}
+
+\begin{proposition}[Compact embedding of the form domain]\label{prop:compactEmbed}
+The embedding $(\mathcal D(\mathcal E_\lambda),\|\cdot\|_{\mathcal D})\hookrightarrow L^2(I)$ is compact.
+\end{proposition}
+
+\begin{structuredproof}
+\Step{Let $\{G_n\}\subset\mathcal D(\mathcal E_\lambda)$ with $\|G_n\|_2^2+\mathcal E_\lambda(G_n)\le M$.
+Set $\phi_n:=\widetilde G_n\in H_I$.}
+\Stepjust{Setup.  Then $\|\phi_n\|_2^2+\mathcal E_\lambda^\R(\phi_n)=\|G_n\|_2^2+\mathcal E_\lambda(G_n)\le M$,
+so $\phi_n\in\mathcal K_M$.}
+
+\Step{$\{\phi_n\}$ satisfies tightness condition~(i) in Theorem~\ref{thm:KR}.}
+\Stepjust{Each $\phi_n$ is supported in $\overline I=[-L,L]$.  For any $R>L$,
+$\int_{|u|>R}|\phi_n(u)|^2\,du=0<\varepsilon^2$.}
+
+\Step{$\{\phi_n\}$ satisfies translation equicontinuity (ii) in Theorem~\ref{thm:KR}.}
+\Stepjust{Lemma~\ref{lem:trans}: $\mathcal K_M$ satisfies~(ii).}
+
+\Step{$\{\phi_n\}$ is relatively compact in $L^2(\R)$.}
+\Stepjust{Theorem~\ref{thm:KR} applied to $\mathcal K:=\{\phi_n:n\ge 1\}$, using Steps~2 and 3.}
+
+\Step{$\{G_n\}$ is relatively compact in $L^2(I)$.}
+\Stepjust{The map $\phi\mapsto\phi|_I$ is a continuous surjection $H_I\to L^2(I)$
+(indeed, an isometry).  Continuous images of relatively compact sets are relatively compact.
+So from Step~4, $\{G_n=\phi_n|_I\}$ is relatively compact in $L^2(I)$.}
+
+\QEDstep
+\end{structuredproof}
+
+\begin{theorem}[Closed form, associated operator, and compact resolvent]\label{thm:operator}
+There exists a unique selfadjoint operator $A_\lambda\ge 0$ on $L^2(I)$ associated to the closed form
+$\mathcal E_\lambda$ (Proposition~\ref{prop:closedI}) in the sense of the representation theorem for closed forms.
+Moreover, $A_\lambda$ has compact resolvent.
+\end{theorem}
+
+\begin{structuredproof}
+\Step{There exists a unique selfadjoint operator $A_\lambda\ge 0$ with
+$\mathcal D(\mathcal E_\lambda)=\mathcal D(A_\lambda^{1/2})$ and
+$\mathcal E_\lambda(G)=\|A_\lambda^{1/2}G\|_2^2$.}
+\Stepjust{By the representation theorem for densely defined, closed, lower-bounded symmetric forms
+(Kato~\cite[Thm.~VI.2.1]{KatoPerturbation}; in the Dirichlet-form setting,
+Fukushima--Oshima--Takeda~\cite[Thm.~1.3.1]{FOT}).
+Proposition~\ref{prop:closedI} verified that $\mathcal E_\lambda$ satisfies all hypotheses.}
+
+\Step{$(A_\lambda+1)^{-1}$ is compact on $L^2(I)$.}
+
+\Substep{Let $\{f_n\}$ be bounded in $L^2(I)$: $\|f_n\|_2\le C$.  Set $u_n:=(A_\lambda+1)^{-1}f_n$.}
+\Substepjust{$A_\lambda+1$ is invertible because $A_\lambda\ge 0$, so $A_\lambda+1\ge 1>0$.}
+
+\Substep{$u_n\in\mathcal D(A_\lambda)\subset\mathcal D(\mathcal E_\lambda)$ and $(A_\lambda+1)u_n=f_n$.}
+\Substepjust{Definition of the resolvent.}
+
+\Substep{$\mathcal E_\lambda(u_n)+\|u_n\|_2^2=\langle f_n,u_n\rangle$.}
+\Substepjust{Take the $L^2$ inner product of $(A_\lambda+1)u_n=f_n$ with $u_n$:
+$\langle A_\lambda u_n,u_n\rangle+\|u_n\|_2^2=\langle f_n,u_n\rangle$.
+By the form identity, $\langle A_\lambda u_n,u_n\rangle=\mathcal E_\lambda(u_n)$.}
+
+\Substep{$\|u_n\|_2^2+\mathcal E_\lambda(u_n)\le\|f_n\|_2^2$.}
+\Substepjust{From Step~2.3: $\mathcal E_\lambda(u_n)+\|u_n\|_2^2=\langle f_n,u_n\rangle\le\|f_n\|_2\|u_n\|_2$
+by Cauchy--Schwarz.  Since $\|u_n\|_2^2\le\mathcal E_\lambda(u_n)+\|u_n\|_2^2\le\|f_n\|_2\|u_n\|_2$,
+we get $\|u_n\|_2\le\|f_n\|_2$, hence
+$\mathcal E_\lambda(u_n)+\|u_n\|_2^2\le\|f_n\|_2\|u_n\|_2\le\|f_n\|_2^2$.}
+
+\Substep{$\{u_n\}$ has a convergent subsequence in $L^2(I)$.}
+\Substepjust{Step~2.4 shows $\{u_n\}$ is bounded in the form norm
+(with $M:=C^2$), so Proposition~\ref{prop:compactEmbed} gives
+relative compactness in $L^2(I)$.}
+
+\Substep{$(A_\lambda+1)^{-1}$ maps bounded sequences to sequences with convergent subsequences,
+hence is compact.}
+\Substepjust{This is the definition of a compact operator: it maps bounded sets to relatively compact sets.
+Steps~2.1--2.5 verify this.}
+
+\QEDstep
+\end{structuredproof}
+
+%% =================================================================
+\subsection{Semigroup and irreducibility}
+%% =================================================================
+
+\begin{definition}[Irreducibility for semigroups on $L^2(I)$]
+A closed ideal in $L^2(I)$ has the form $L^2(B)$ for some measurable $B\subset I$.
+We call $T$ \emph{irreducible} if the only invariant closed ideals are $\{0\}$ and $L^2(I)$.
+\end{definition}
+
+\begin{lemma}[Invariant ideals and splitting of the form]\label{lem:invariance_split}
+Assume Theorem~\ref{thm:operator}. Let $B\subset I$ be measurable and suppose
+$L^2(B)$ is invariant under $T(t)=e^{-tA_\lambda}$.
+Then for every $G\in\mathcal D(\mathcal E_\lambda)$:
+$\1_B G,\1_{I\setminus B}G\in\mathcal D(\mathcal E_\lambda)$ and
+$\mathcal E_\lambda(G)=\mathcal E_\lambda(\1_B G)+\mathcal E_\lambda(\1_{I\setminus B}G)$.
+\end{lemma}
+
+\begin{structuredproof}
+\Step{Let $P=M_{\1_B}$ (multiplication by $\1_B$) and $Q=I-P$.  Then $P$ is an orthogonal projection
+with $\mathrm{Ran}(P)=L^2(B)$.}
+\Stepjust{$P^2=P$ ($\1_B^2=\1_B$) and $P^*=P$ ($\1_B$ is real), so $P$ is an orthogonal projection.
+$Pf=\1_Bf$ vanishes outside $B$, so $\mathrm{Ran}(P)=L^2(B)$.}
+
+\Step{$P$ commutes with $T(t)$ for all $t\ge 0$.}
+
+\Substep{Invariance of $L^2(B)=\mathrm{Ran}(P)$ means $T(t)(\mathrm{Ran}(P))\subset\mathrm{Ran}(P)$,
+i.e.\ $PT(t)P=T(t)P$.}
+\Substepjust{$T(t)Pf\in L^2(B)$ for all $f$, so $PT(t)Pf=T(t)Pf$.}
+
+\Substep{Take adjoints: $(PT(t)P)^*=(T(t)P)^*$, giving $PT(t)P=PT(t)$.}
+\Substepjust{$P^*=P$ and $T(t)^*=T(t)$ (selfadjointness of $A_\lambda$ implies selfadjointness of $e^{-tA_\lambda}$).
+So $(PT(t)P)^*=P^*T(t)^*P^*=PT(t)P$ and $(T(t)P)^*=P^*T(t)^*=PT(t)$.
+From Step~2.1: $PT(t)P=T(t)P$; equating with the adjoint computation: $PT(t)P=PT(t)$.
+Together: $T(t)P=PT(t)$.}
+
+\Step{$P$ commutes with $A_\lambda^{1/2}$.}
+\Stepjust{$P$ commutes with $T(t)=e^{-tA_\lambda}$ for all $t>0$ (Step~2).
+By the spectral theorem, $P$ commutes with every bounded Borel function of $A_\lambda$.
+In particular, $P$ commutes with the spectral projections of $A_\lambda$, hence with
+$A_\lambda^{1/2}$ (which is defined via the spectral theorem).}
+
+\Step{$P(\mathcal D(\mathcal E_\lambda))\subset\mathcal D(\mathcal E_\lambda)$ and
+$Q(\mathcal D(\mathcal E_\lambda))\subset\mathcal D(\mathcal E_\lambda)$.}
+\Stepjust{$\mathcal D(\mathcal E_\lambda)=\mathcal D(A_\lambda^{1/2})$.
+If $u\in\mathcal D(A_\lambda^{1/2})$, then $A_\lambda^{1/2}Pu=PA_\lambda^{1/2}u\in L^2(I)$ (Step~3),
+so $Pu\in\mathcal D(A_\lambda^{1/2})$.  Similarly for $Qu=(I-P)u$.}
+
+\Step{$\mathcal E_\lambda(G)=\mathcal E_\lambda(PG)+\mathcal E_\lambda(QG)$ for $G\in\mathcal D(\mathcal E_\lambda)$.}
+
+\Substep{$\mathcal E_\lambda(G)=\|A_\lambda^{1/2}G\|_2^2$.}
+\Substepjust{Form identity from the representation theorem (Step~1 of Theorem~\ref{thm:operator}).}
+
+\Substep{$A_\lambda^{1/2}G=A_\lambda^{1/2}PG+A_\lambda^{1/2}QG=PA_\lambda^{1/2}G+QA_\lambda^{1/2}G$.}
+\Substepjust{$G=PG+QG$ and $A_\lambda^{1/2}$ commutes with $P$ and $Q$ (Step~3).}
+
+\Substep{$PA_\lambda^{1/2}G$ and $QA_\lambda^{1/2}G$ are orthogonal in $L^2(I)$.}
+\Substepjust{$\langle Pv,Qv\rangle=\langle Pv,(I-P)v\rangle=\langle Pv,v\rangle-\langle Pv,Pv\rangle
+=\langle P^2v,v\rangle-\|Pv\|^2=\|Pv\|^2-\|Pv\|^2=0$.  Apply with $v=A_\lambda^{1/2}G$.}
+
+\Substep{$\|A_\lambda^{1/2}G\|^2=\|PA_\lambda^{1/2}G\|^2+\|QA_\lambda^{1/2}G\|^2
+=\|A_\lambda^{1/2}PG\|^2+\|A_\lambda^{1/2}QG\|^2
+=\mathcal E_\lambda(PG)+\mathcal E_\lambda(QG)$.}
+\Substepjust{Pythagorean theorem (Step~5.3), then $PA_\lambda^{1/2}G=A_\lambda^{1/2}PG$ (Step~3),
+then the form identity (Step~5.1) applied to $PG$ and $QG$ (which lie in $\mathcal D(\mathcal E_\lambda)$
+by Step~4).}
+
+\QEDstep
+\end{structuredproof}
+
+\begin{proposition}[Triviality of invariant ideals for $\mathcal E_\lambda$]\label{prop:irreducible}
+Assume Theorem~\ref{thm:operator}. Let $B\subset I$ be measurable and assume
+$L^2(B)$ is invariant under $T(t)=e^{-tA_\lambda}$.
+Then $m(B)=0$ or $m(I\setminus B)=0$.
+\end{proposition}
+
+\begin{structuredproof}
+\Step{By Lemma~\ref{lem:invariance_split}, for every $G\in\mathcal D(\mathcal E_\lambda)$:
+\begin{equation}\label{eq:Einvariance}
+\mathcal E_\lambda(G)=\mathcal E_\lambda(\1_BG)+\mathcal E_\lambda(\1_{I\setminus B}G).
+\end{equation}}
+\Stepjust{Direct application of Lemma~\ref{lem:invariance_split}.}
+
+\Step{$1\in\mathcal D(\mathcal E_\lambda)$ (the constant function $G\equiv 1$ on $I$).}
+
+\Substep{For each shift $s>0$: $\|\widetilde 1-S_s\widetilde 1\|_2^2=m(I\,\Delta\,(I+s))$.}
+\Substepjust{$\widetilde 1=\1_{(-L,L)}$ and $S_s\widetilde 1=\1_{(-L+s,L+s)}$.
+$\|\widetilde 1-S_s\widetilde 1\|_2^2=m(I\,\Delta\,(I+s))$, the measure of the symmetric difference.}
+
+\Substep{For $0<s<2L$: $m(I\,\Delta\,(I+s))=2s$.}
+\Substepjust{$I\setminus(I+s)=(-L,-L+s)$ has measure $s$; $(I+s)\setminus I=(L,L+s)$ has measure $s$.}
+
+\Substep{The archimedean integral $\int_0^{2L}w(t)\cdot 2t\,dt<\infty$.}
+\Substepjust{$w(t)\sim(2t)^{-1}$ near $0$, so $w(t)\cdot 2t\sim 1$ near $0$: integrable.
+On $[0,2L]$ (bounded), the integral is finite.}
+
+\Substep{The prime sum in $\mathcal E_\lambda(1)$ is finite.}
+\Substepjust{Finitely many shift sizes $m\log p$ with $p^m\le\lambda^2$, each giving
+$\|\widetilde 1-S_{m\log p}\widetilde 1\|_2^2=2m\log p<\infty$.}
+
+\Substep{$\mathcal E_\lambda(1)<\infty$, hence $1\in\mathcal D(\mathcal E_\lambda)$.}
+\Substepjust{Combine Steps~2.3 and~2.4.}
+
+\Step{Apply~\eqref{eq:Einvariance} with $G\equiv 1$.
+Set $f:=\widetilde{\1_B}$, $g:=\widetilde{\1_{B^c}}$ where $B^c:=I\setminus B$.
+Then $\widetilde 1=f+g$ and $fg=0$ a.e.}
+\Stepjust{$\1_B+\1_{B^c}=1$ on $I$ and $\1_B\cdot\1_{B^c}=0$.
+Zero-extending: $f+g=\widetilde 1$ and $fg=0$ a.e.\ on $\R$.}
+
+\Step{For each shift $s>0$:
+$\|(f+g)-S_s(f+g)\|_2^2=\|f-S_sf\|_2^2+\|g-S_sg\|_2^2+2\langle f-S_sf,g-S_sg\rangle$.}
+\Stepjust{Expand $\|a+b\|^2=\|a\|^2+\|b\|^2+2\Re\langle a,b\rangle$
+with $a=f-S_sf$ and $b=g-S_sg$.  Since $f,g$ are real-valued, $\langle a,b\rangle\in\R$.}
+
+\Step{Substituting Step~4 into~\eqref{eq:Einvariance} (which, via Definition~\ref{def:E}, is
+an identity between weighted sums/integrals of $\|\cdot-S_s\cdot\|_2^2$ terms):
+the cross-terms sum to zero.}
+
+\Substep{$\mathcal E_\lambda(1)=\mathcal E_\lambda(\1_B)+\mathcal E_\lambda(\1_{B^c})$ (from Step~1 with $G=1$).}
+\Substepjust{Equation~\eqref{eq:Einvariance} with $G\equiv 1$.}
+
+\Substep{Expand each $\mathcal E_\lambda$ using Definition~\ref{def:E} and Step~4:
+each shift-size gives the identity from Step~4.  After subtracting $\mathcal E_\lambda(\1_B)+\mathcal E_\lambda(\1_{B^c})$
+from $\mathcal E_\lambda(1)$, the remainder is
+\[
+\textstyle
+\int_0^{2L}w(t)\cdot 2\langle f-S_tf,g-S_tg\rangle\,dt
++\sum_{p,m}(\log p)p^{-m/2}\cdot 2\langle f-S_{m\log p}f,g-S_{m\log p}g\rangle=0.
+\]}
+\Substepjust{Combine Step~4 for each shift size with Step~5.1.  The ``diagonal'' terms cancel, leaving the cross terms.}
+
+\Step{For any $s>0$: $\langle f-S_sf,g-S_sg\rangle\le 0$.}
+
+\Substep{$\langle f-S_sf,g-S_sg\rangle=\langle f,g\rangle-\langle f,S_sg\rangle-\langle S_sf,g\rangle+\langle S_sf,S_sg\rangle$.}
+\Substepjust{Bilinearity of the inner product.}
+
+\Substep{$\langle f,g\rangle=0$.}
+\Substepjust{$fg=0$ a.e.\ (Step~3), so $\int_\R f(u)g(u)\,du=0$.}
+
+\Substep{$\langle S_sf,S_sg\rangle=\langle f,g\rangle=0$.}
+\Substepjust{$S_s$ is unitary: $\langle S_sf,S_sg\rangle=\langle f,g\rangle$.  Then Step~6.2.}
+
+\Substep{$\langle f,S_sg\rangle\ge 0$ and $\langle S_sf,g\rangle=\langle g,S_sf\rangle\ge 0$.}
+\Substepjust{$f=\widetilde{\1_B}\ge 0$ and $S_sg=\widetilde{\1_{B^c}}(\cdot-s)\ge 0$, so
+$\langle f,S_sg\rangle=\int f\cdot S_sg\ge 0$.  Similarly for $\langle g,S_sf\rangle$.}
+
+\Substep{Combine: $\langle f-S_sf,g-S_sg\rangle=0-\langle f,S_sg\rangle-\langle g,S_sf\rangle+0\le 0$.}
+\Substepjust{Steps~6.1--6.4.}
+
+\Step{$\langle f,S_tg\rangle=\langle g,S_tf\rangle=0$ for a.e.\ $t\in(0,2L)$.}
+\Stepjust{From Step~5.2, the weighted sum of the cross terms is $0$.
+All weights are $\ge 0$, and $w(t)>0$ for $t>0$.
+Each cross term $\langle f-S_tf,g-S_tg\rangle\le 0$ (Step~6).
+A sum of nonpositive terms with positive weights equaling zero forces each term to be zero a.e.
+Hence $\langle f-S_tf,g-S_tg\rangle=0$ for a.e.\ $t\in(0,2L)$.
+From Step~6.5: this means $\langle f,S_tg\rangle+\langle g,S_tf\rangle=0$ a.e.
+Since both are $\ge 0$ (Step~6.4), each is $0$.}
+
+\Step{Upgrade to \emph{all} $t\in(0,2L)$: $\langle f,S_tg\rangle=0$ for every $t\in(0,2L)$.}
+\Stepjust{$t\mapsto\langle f,S_tg\rangle$ is continuous (strong continuity of $S_t$ on $L^2(\R)$).
+A continuous nonneg.\ function vanishing a.e.\ on $(0,2L)$ vanishes everywhere on $(0,2L)$.
+(Same argument as in Lemma~\ref{lem:indicator-energy}, Step~3.)}
+
+\Step{For every $t\in(0,2L)$: $\1_B(u)=\1_B(u-t)$ for a.e.\ $u\in I\cap(I+t)$.}
+
+\Substep{$0=\langle f,S_tg\rangle=\int_{I\cap(I+t)}\1_B(u)\cdot\1_{B^c}(u-t)\,du$.}
+\Substepjust{Unwinding definitions: $f=\widetilde{\1_B}$, $S_tg(u)=\widetilde{\1_{B^c}}(u-t)$.
+The integrand is nonzero only where both $u\in I$ (so $f(u)=\1_B(u)$) and
+$u-t\in I$ (so $g(u-t)=\1_{B^c}(u-t)$), i.e.\ $u\in I\cap(I+t)$.}
+
+\Substep{Since $\1_B(u)\cdot\1_{B^c}(u-t)\ge 0$ and the integral is $0$:
+$\1_B(u)\cdot\1_{B^c}(u-t)=0$ for a.e.\ $u\in I\cap(I+t)$.}
+\Substepjust{A nonneg.\ integrable function with zero integral vanishes a.e.}
+
+\Substep{Hence $\1_B(u)\le\1_B(u-t)$ for a.e.\ $u\in I\cap(I+t)$.}
+\Substepjust{Step~9.2 says: wherever $\1_B(u)=1$, we must have $\1_{B^c}(u-t)=0$, i.e.\ $\1_B(u-t)=1$.}
+
+\Substep{Similarly, $\langle g,S_tf\rangle=0$ gives $\1_B(u-t)\le\1_B(u)$ a.e.\ on $I\cap(I+t)$.}
+\Substepjust{$\langle g,S_tf\rangle=\int_{I\cap(I+t)}\1_{B^c}(u)\1_B(u-t)\,du=0$ (Step~8).
+Same argument as Steps~9.2--9.3 with $B$ and $B^c$ swapped.}
+
+\Substep{Combine: $\1_B(u)=\1_B(u-t)$ a.e.\ on $I\cap(I+t)$.}
+\Substepjust{Steps~9.3 and 9.4.}
+
+\Step{$m(B)=0$ or $m(I\setminus B)=0$.}
+\Stepjust{Step~9.5 holds for every $t\in(0,2L)$.  This provides the hypothesis of
+Lemma~\ref{lem:trans-inv} with $\varepsilon=2L$.  The conclusion follows.}
+
+\QEDstep
+\end{structuredproof}
+
+\begin{remark}[Why we do not use $\mathcal E_\lambda(\1_B)=0$]\label{rem:killing}
+Because $\mathcal E_\lambda$ is defined using zero-extension to $\R$ (Definition~\ref{def:E}), the form is
+typically non-conservative: in general $\mathcal E_\lambda(1)>0$.
+In the conservative case ($\mathcal E(1)=0$) one often has an equivalence between invariance and the condition
+$\mathcal E(\1_B)=0$.  Here, the presence of killing means $\mathcal E_\lambda(\1_B)=0$ is a \emph{stronger}
+condition than invariance, so we instead argue directly from the correct invariance identity
+\eqref{eq:Einvariance}, which depends only on the interaction/jump part.
+\end{remark}
+
+\begin{corollary}[Irreducibility for $\mathcal E_\lambda$]\label{cor:irreducible}
+Assume Theorem~\ref{thm:operator}. Then $T(t)=e^{-tA_\lambda}$ is irreducible.
+\end{corollary}
+
+\begin{structuredproof}
+\Step{Let $J\subset L^2(I)$ be a closed $T(t)$-invariant ideal.  Then $J=L^2(B)$ for some
+measurable $B\subset I$.}
+\Stepjust{Standard lattice-theory fact: every closed ideal in $L^2(I)$ has the form $L^2(B)$
+for some measurable $B\subset I$.}
+
+\Step{$m(B)=0$ or $m(I\setminus B)=0$.}
+\Stepjust{Proposition~\ref{prop:irreducible}.}
+
+\Step{$J=\{0\}$ or $J=L^2(I)$.}
+\Stepjust{If $m(B)=0$, then $L^2(B)=\{0\}$.  If $m(I\setminus B)=0$, then $L^2(B)=L^2(I)$.}
+
+\QEDstep
+\end{structuredproof}
+
+%% =================================================================
+\section{Positivity improving and the ground state}
+\label{sec:PF}
+%% =================================================================
+
+\subsection{External theorems used}
+
+\begin{theorem}[Positivity improving from positivity + irreducibility + holomorphy]
+\label{thm:ABHN}
+Let $E$ be a Banach lattice and $S$ a positive, irreducible, holomorphic $C_0$-semigroup on $E$.
+Then $S$ is positivity improving: for each $t>0$ and each $0\le f\in E$ with $f\ne 0$,
+one has $S(t)f>0$ (in the lattice sense; on $L^2$ this means $>0$ a.e.).
+\end{theorem}
+
+\begin{remark}[Source]
+This is stated (for general Banach lattices) as Theorem~2.3 in Arendt--ter~Elst--Gl{\"u}ck~\cite{ATGStrictPos2020}.
+\end{remark}
+
+\begin{theorem}[Simplicity of the principal eigenvalue under compact resolvent]
+\label{thm:principal-simple}
+Let $A$ be selfadjoint and lower bounded on $L^2(I)$ with compact resolvent, and let $S(t)=e^{-tA}$.
+If $S$ is positivity improving, then $\min\sigma(A)$ is a simple eigenvalue
+and admits an eigenfunction which is strictly positive a.e.
+\end{theorem}
+
+\begin{remark}[Source]
+Proposition~2.4 in the same paper of Arendt et al.,
+a Perron--Frobenius/Krein--Rutman/Jentzsch consequence for compact positive operators.
+\end{remark}
+
+\subsection{Application to $A_\lambda$}
+
+\begin{proposition}[Positivity improving and simple ground state for $A_\lambda$]
+\label{prop:groundstate}
+Assume Theorem~\ref{thm:operator}. Then:
+\begin{enumerate}
+\item The semigroup $T(t)=e^{-tA_\lambda}$ is positivity preserving (Markovian).
+\item $T(t)$ is irreducible.
+\item $T(t)$ is holomorphic.
+\end{enumerate}
+Consequently $T(t)$ is positivity improving, and the lowest eigenvalue of $A_\lambda$ is simple with a
+strictly positive a.e.\ eigenfunction.
+\end{proposition}
+
+\begin{structuredproof}
+\Step{$T(t)$ is positivity preserving (Markovian).}
+\Stepjust{Lemma~\ref{lem:markov} shows that $\mathcal E_\lambda$ satisfies the Markov
+(normal contraction) property.  By the general correspondence between Dirichlet forms
+and positivity-preserving semigroups (Fukushima--Oshima--Takeda~\cite[Thm.~1.4.1]{FOT};
+Ouhabaz~\cite[Ch.~1, \S\S1.4--1.5]{OuhabazHeatEq}), the associated semigroup $T(t)$
+is positivity preserving.}
+
+\Step{$T(t)$ is irreducible.}
+\Stepjust{Corollary~\ref{cor:irreducible}.}
+
+\Step{$T(t)$ is holomorphic.}
+\Stepjust{$A_\lambda$ is selfadjoint and lower bounded ($A_\lambda\ge 0$).
+By the spectral theorem, $e^{-zA_\lambda}$ is bounded and holomorphic on
+$\{z\in\C:\Re z>0\}$.  In particular, $T(t)=e^{-tA_\lambda}$ extends to a
+holomorphic semigroup.}
+
+\Step{$T(t)$ is positivity improving.}
+\Stepjust{Apply Theorem~\ref{thm:ABHN}: $T(t)$ is positive (Step~1), irreducible (Step~2),
+and holomorphic (Step~3).  Therefore it is positivity improving.}
+
+\Step{The lowest eigenvalue of $A_\lambda$ is simple, with a strictly positive a.e.\ eigenfunction.}
+\Stepjust{Apply Theorem~\ref{thm:principal-simple}: $A_\lambda$ is selfadjoint, lower bounded,
+has compact resolvent (Theorem~\ref{thm:operator}), and $T(t)=e^{-tA_\lambda}$ is positivity
+improving (Step~4).  The conclusion follows.}
+
+\QEDstep
+\end{structuredproof}
+
+%% =================================================================
+\section{Evenness of the ground state from inversion symmetry}
+%% =================================================================
+
+\begin{proposition}[Inversion (reflection) symmetry]\label{prop:reflection}
+Let $R:L^2(I)\to L^2(I)$ be the unitary involution $(RG)(u):=G(-u)$.
+Then $R(\mathcal D(\mathcal E_\lambda))=\mathcal D(\mathcal E_\lambda)$ and
+$\mathcal E_\lambda(RG)=\mathcal E_\lambda(G)$ for all $G\in\mathcal D(\mathcal E_\lambda)$.
+Consequently, $A_\lambda$ commutes with $R$.
+\end{proposition}
+
+\begin{structuredproof}
+\Step{$R$ is a well-defined unitary involution on $L^2(I)$, and $R$ preserves $H_I\subset L^2(\R)$.}
+\Stepjust{$I=(-L,L)$ is symmetric about $0$: if $u\in I$ then $-u\in I$.
+So $(RG)(u)=G(-u)$ maps $L^2(I)$ to itself.  $R$ is unitary ($\|RG\|_2=\|G\|_2$ by substitution
+$u\mapsto -u$) and $R^2=\mathrm{Id}$.
+If $\phi\in H_I$ (i.e.\ $\phi=0$ outside $I$), then $R\phi(u)=\phi(-u)$ vanishes for $u\notin I$
+(since $-u\notin I$), so $R\phi\in H_I$.}
+
+\Step{$RS_t=S_{-t}R$ on $L^2(\R)$.}
+\Stepjust{$(RS_t\phi)(u)=(S_t\phi)(-u)=\phi(-u-t)$ and
+$(S_{-t}R\phi)(u)=(R\phi)(u-(-t))=(R\phi)(u+t)=\phi(-u-t)$.  They agree.}
+
+\Step{$\|\widetilde{RG}-S_t\widetilde{RG}\|_2=\|\widetilde G-S_t\widetilde G\|_2$ for every $t\in\R$.}
+
+\Substep{$\widetilde{RG}=R\widetilde G$ (extension by zero commutes with reflection, since $I$ is symmetric).}
+\Substepjust{For $u\in I$: $\widetilde{RG}(u)=(RG)(u)=G(-u)=(R\widetilde G)(u)$.
+For $u\notin I$: $\widetilde{RG}(u)=0$ and $(R\widetilde G)(u)=\widetilde G(-u)=0$ (since $-u\notin I$).}
+
+\Substep{$\|R\widetilde G-S_tR\widetilde G\|_2
+=\|R(\widetilde G-S_{-t}\widetilde G)\|_2$ (using Step~2: $S_tR=RS_{-t}$, so $S_tR\widetilde G=RS_{-t}\widetilde G$).}
+\Substepjust{$R\widetilde G-S_tR\widetilde G=R\widetilde G-RS_{-t}\widetilde G=R(\widetilde G-S_{-t}\widetilde G)$.}
+
+\Substep{$\|R(\widetilde G-S_{-t}\widetilde G)\|_2=\|\widetilde G-S_{-t}\widetilde G\|_2$ ($R$ is unitary).}
+\Substepjust{Unitarity of $R$.}
+
+\Substep{$\|\widetilde G-S_{-t}\widetilde G\|_2=\|\widetilde G-S_t\widetilde G\|_2$.}
+\Substepjust{$\|\phi-S_{-t}\phi\|_2=\|S_t\phi-\phi\|_2=\|\phi-S_t\phi\|_2$ (norm is symmetric).
+More formally: $\|\phi-S_{-t}\phi\|_2^2=\int|\phi(u)-\phi(u+t)|^2\,du$; substituting $v=u+t$:
+$=\int|\phi(v-t)-\phi(v)|^2\,dv=\|\phi-S_t\phi\|_2^2$.}
+
+\Substep{Chain Steps~3.1--3.4:
+$\|\widetilde{RG}-S_t\widetilde{RG}\|_2=\|R\widetilde G-S_tR\widetilde G\|_2=\|\widetilde G-S_{-t}\widetilde G\|_2=\|\widetilde G-S_t\widetilde G\|_2$.}
+
+\Step{$\mathcal E_\lambda(RG)=\mathcal E_\lambda(G)$.}
+\Stepjust{By Definition~\ref{def:E}, $\mathcal E_\lambda$ is built from terms of the form
+$\|\widetilde G-S_t\widetilde G\|_2^2$ with nonneg.\ weights.
+Step~3 shows each such term is the same for $RG$ as for $G$.
+Therefore $\mathcal E_\lambda(RG)=\mathcal E_\lambda(G)$.
+In particular, $RG\in\mathcal D(\mathcal E_\lambda)$ iff $G\in\mathcal D(\mathcal E_\lambda)$.}
+
+\Step{$A_\lambda$ commutes with $R$.}
+
+\Substep{For $u\in\mathcal D(A_\lambda)$ and $v\in\mathcal D(\mathcal E_\lambda)$:
+$\langle A_\lambda Ru,v\rangle=\mathcal E_\lambda(Ru,v)$.}
+\Substepjust{$Ru\in\mathcal D(A_\lambda)$ (since $R$ preserves $\mathcal D(\mathcal E_\lambda)\supset\mathcal D(A_\lambda)$, and the form identity extends).  The form identity
+$\langle A_\lambda w,v\rangle=\mathcal E_\lambda(w,v)$ for $w\in\mathcal D(A_\lambda)$, $v\in\mathcal D(\mathcal E_\lambda)$.  Set $w=Ru$.}
+
+\Substep{$\mathcal E_\lambda(Ru,v)=\mathcal E_\lambda(u,R^{-1}v)=\mathcal E_\lambda(u,Rv)$.}
+\Substepjust{Invariance of $\mathcal E_\lambda$ under $R$ (Step~4) implies, by polarization,
+$\mathcal E_\lambda(Ru,Rv)=\mathcal E_\lambda(u,v)$ for all $u,v\in\mathcal D(\mathcal E_\lambda)$.
+Set $v\mapsto Rv$: $\mathcal E_\lambda(Ru,R(Rv))=\mathcal E_\lambda(Ru,v)=\mathcal E_\lambda(u,Rv)$
+(using $R^2=\mathrm{Id}$).}
+
+\Substep{$\mathcal E_\lambda(u,Rv)=\langle A_\lambda u,Rv\rangle=\langle RA_\lambda u,v\rangle$.}
+\Substepjust{Form identity: $\mathcal E_\lambda(u,Rv)=\langle A_\lambda u,Rv\rangle$ (since $u\in\mathcal D(A_\lambda)$
+and $Rv\in\mathcal D(\mathcal E_\lambda)$).
+Then $\langle A_\lambda u,Rv\rangle=\langle R^*A_\lambda u,v\rangle=\langle RA_\lambda u,v\rangle$
+since $R^*=R$ ($R$ is selfadjoint: $R=R^{-1}=R^*$).}
+
+\Substep{Combining: $\langle A_\lambda Ru,v\rangle=\langle RA_\lambda u,v\rangle$ for all $v\in\mathcal D(\mathcal E_\lambda)$.}
+\Substepjust{Steps~5.1, 5.2, 5.3.}
+
+\Substep{$A_\lambda Ru=RA_\lambda u$.}
+\Substepjust{$\mathcal D(\mathcal E_\lambda)$ is dense in $L^2(I)$
+(Proposition~\ref{prop:closedI}).
+Step~5.4 says $A_\lambda Ru-RA_\lambda u$ is orthogonal to a dense subspace, hence $=0$.}
+
+\QEDstep
+\end{structuredproof}
+
+\begin{corollary}[Even ground state]
+\label{cor:even}
+Assume Theorem~\ref{thm:operator} and Proposition~\ref{prop:reflection}. Let $\psi$ be the strictly positive ground-state
+eigenfunction from Proposition~\ref{prop:groundstate}. Then $\psi$ is even: $\psi(-u)=\psi(u)$ a.e.
+\end{corollary}
+
+\begin{structuredproof}
+\Step{Define $\psi^\sharp:=R\psi$.  Then $\psi^\sharp$ is an eigenfunction of $A_\lambda$ for the same
+eigenvalue $\mu_0:=\min\sigma(A_\lambda)$.}
+\Stepjust{$A_\lambda\psi=\mu_0\psi$.  Since $A_\lambda R=RA_\lambda$ (Proposition~\ref{prop:reflection}):
+$A_\lambda\psi^\sharp=A_\lambda R\psi=RA_\lambda\psi=R(\mu_0\psi)=\mu_0 R\psi=\mu_0\psi^\sharp$.}
+
+\Step{$\psi^\sharp>0$ a.e.}
+\Stepjust{$\psi>0$ a.e.\ (Proposition~\ref{prop:groundstate}).
+$\psi^\sharp(u)=\psi(-u)$.  Since $I$ is symmetric and $\psi>0$ a.e.\ on $I$,
+the reflection $\psi^\sharp>0$ a.e.\ on~$I$.}
+
+\Step{$\psi^\sharp=c\psi$ for some $c\in\R$.}
+\Stepjust{Proposition~\ref{prop:groundstate} says the eigenspace for $\mu_0$ is one-dimensional (simple eigenvalue).
+Both $\psi$ and $\psi^\sharp$ lie in this eigenspace (Steps~1 and the original eigenvalue equation).
+Hence $\psi^\sharp=c\psi$ for some scalar~$c$.  Since both are real-valued (reflection preserves real-valuedness), $c\in\R$.}
+
+\Step{$c>0$.}
+\Stepjust{$\psi^\sharp>0$ a.e.\ (Step~2) and $\psi>0$ a.e.\ (Proposition~\ref{prop:groundstate}).
+If $c\le 0$, then $\psi^\sharp=c\psi\le 0$ a.e., contradicting $\psi^\sharp>0$ a.e.}
+
+\Step{$c=1$.}
+\Stepjust{$\|\psi^\sharp\|_2=\|R\psi\|_2=\|\psi\|_2$ ($R$ is unitary).
+From $\psi^\sharp=c\psi$: $\|c\psi\|_2=|c|\|\psi\|_2=\|\psi\|_2$.
+Since $\|\psi\|_2>0$ ($\psi\ne 0$), $|c|=1$.  Combined with $c>0$ (Step~4): $c=1$.}
+
+\Step{$\psi(-u)=\psi(u)$ a.e.}
+\Stepjust{$\psi^\sharp=\psi$ (Step~5), i.e.\ $R\psi=\psi$, i.e.\ $\psi(-u)=\psi(u)$ a.e.}
+
+\QEDstep
+\end{structuredproof}
+
+%% =================================================================
+\section{Summary of concrete progress}
+%% =================================================================
+
+\begin{itemize}
+\item Starting solely from the explicit local formulas \eqref{eq:Wp}--\eqref{eq:WR}, we derived
+a representation of $-\sum_v W_v(g*g^*)$ (up to an additive constant multiple of $\|g\|_2^2$) as a
+positive combination of translation-difference energies in log-coordinates
+(Definition~\ref{def:E}, Lemmas~\ref{lem:prime-energy}--\ref{lem:arch-energy}).
+\item We proved the Markov/normal contraction inequality for this form (Lemma~\ref{lem:markov}).
+\item Using only measure theory (Lebesgue density), we proved that invariance under all sufficiently small
+translations forces a measurable subset of an interval to be null or conull (Lemma~\ref{lem:trans-inv}),
+and we used it to show that $\mathcal E_\lambda(\1_B)=0$ implies $B$ is null or conull
+(Lemma~\ref{lem:indicator-energy}).
+\item Assuming the standard operator setup (closed form, selfadjoint operator, compact resolvent),
+we obtained irreducibility and then (by a standard external theorem) positivity improving of the semigroup,
+hence simplicity and strict positivity of the ground state (Proposition~\ref{prop:groundstate}).
+\item Finally, inversion symmetry forces that strictly positive simple ground state to be even
+(Corollary~\ref{cor:even}).
+\end{itemize}
+
+%% =================================================================
+\section{Bibliographic pointers}
+\label{sec:bib}
+%% =================================================================
+
+\begin{thebibliography}{99}
+
+\bibitem{ATGStrictPos2020}
+W.~Arendt, A.~F.~M.~ter~Elst, and J.~Gl{\"u}ck.
+\newblock Strict positivity for the principal eigenfunction of elliptic operators with various boundary conditions.
+\newblock \emph{Adv.\ Nonlinear Stud.} \textbf{20} (2020), no.~3, 633--650.
+\newblock DOI:~10.1515/ans-2020-2091.
+\newblock Also available as arXiv:1909.12194.
+
+\bibitem{FOT}
+M.~Fukushima, Y.~Oshima, and M.~Takeda.
+\newblock \emph{Dirichlet Forms and Symmetric Markov Processes}.
+\newblock 2nd revised and extended ed., De~Gruyter Studies in Mathematics, vol.~19,
+Walter de~Gruyter, Berlin, 2010.
+\newblock DOI:~10.1515/9783110218091.
+
+\bibitem{LamportHowToWrite}
+L.~Lamport.
+\newblock How to write a proof.
+\newblock \emph{Amer.\ Math.\ Monthly} \textbf{102} (1995), no.~7, 600--608.
+\newblock DOI:~10.2307/2974556.
+
+\bibitem{OuhabazConvex1996}
+E.-M.~Ouhabaz.
+\newblock Invariance of closed convex sets and domination criteria for semigroups.
+\newblock \emph{Potential Anal.} \textbf{5} (1996), no.~6, 611--625.
+\newblock DOI:~10.1007/BF00275797.
+
+\bibitem{OuhabazHeatEq}
+E.-M.~Ouhabaz.
+\newblock \emph{Analysis of Heat Equations on Domains}.
+\newblock London Mathematical Society Monographs Series, vol.~31, Princeton University Press,
+Princeton, NJ, 2005.
+\newblock DOI:~10.1515/9781400826483.
+
+\bibitem{KatoPerturbation}
+T.~Kato.
+\newblock \emph{Perturbation Theory for Linear Operators}.
+\newblock Classics in Mathematics, Springer, Berlin, 1995.
+\newblock DOI:~10.1007/978-3-642-66282-9.
+
+\bibitem{LiebLossAnalysis}
+E.~H.~Lieb and M.~Loss.
+\newblock \emph{Analysis}.
+\newblock 2nd ed., Graduate Studies in Mathematics, vol.~14,
+American Mathematical Society, Providence, RI, 2001.
+\newblock MR1817225.
+\newblock DOI:~10.1090/gsm/014.
+
+\end{thebibliography}
+
+\end{document}
