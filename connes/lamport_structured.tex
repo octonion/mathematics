@@ -1135,9 +1135,12 @@ Together: $T(t)P=PT(t)$.}
 
 \Step{$P$ commutes with $A_\lambda^{1/2}$.}
 \Stepjust{$P$ commutes with $T(t)=e^{-tA_\lambda}$ for all $t>0$ (Step~2).
-By the spectral theorem, $P$ commutes with every bounded Borel function of $A_\lambda$.
-In particular, $P$ commutes with the spectral projections of $A_\lambda$, hence with
-$A_\lambda^{1/2}$ (which is defined via the spectral theorem).}
+Since the family of functions $\{e^{-t\lambda}\}_{t>0}$ separates points on $[0,\infty)$,
+a bounded operator commuting with every $e^{-tA_\lambda}$ must commute with the
+spectral measure $E(\cdot)$ of $A_\lambda$ (by the spectral theorem and a monotone-class
+or Stone--Weierstrass argument), hence with every bounded Borel function of $A_\lambda$.
+In particular, $P$ commutes with
+$A_\lambda^{1/2}=\int_0^\infty \lambda^{1/2}\,dE(\lambda)$.}
 
 \Step{$P(\mathcal D(\mathcal E_\lambda))\subset\mathcal D(\mathcal E_\lambda)$ and
 $Q(\mathcal D(\mathcal E_\lambda))\subset\mathcal D(\mathcal E_\lambda)$.}
