@@ -1036,7 +1036,10 @@ $\|\phi-S_h\phi\|_{2}<\varepsilon$ for all $\phi\in\mathcal K$ and all $|h|<\del
 \end{theorem}
 
 \begin{remark}
-See, e.g., Lieb--Loss~\cite{LiebLossAnalysis} for a proof of Theorem~\ref{thm:KR}.
+See Brezis~\cite[Cor.~4.27]{BrezisFA} for a proof of Theorem~\ref{thm:KR}.
+(Brezis Thm.\,4.26 covers the bounded-domain case; Cor.\,4.27 extends to full $L^2(\mathbb{R})$
+and requires the tightness condition~(i), which in Proposition~\ref{prop:compactEmbed}
+is supplied by compact support of all $\phi_n$ in $\overline{I}$.)
 \end{remark}
 
 \begin{lemma}[Uniform translation control from the form norm]\label{lem:trans}
@@ -1128,9 +1131,14 @@ Moreover, $A_\lambda$ has compact resolvent.
 \Step{There exists a unique selfadjoint operator $A_\lambda\ge 0$ with
 $\mathcal D(\mathcal E_\lambda)=\mathcal D(A_\lambda^{1/2})$ and
 $\mathcal E_\lambda(G)=\|A_\lambda^{1/2}G\|_2^2$.}
-\Stepjust{By the representation theorem for densely defined, closed, lower-bounded symmetric forms
-(Kato~\cite[Thm.~VI.2.1]{KatoPerturbation}; in the Dirichlet-form setting,
+\Stepjust{By the First and Second Representation Theorems for densely defined, closed,
+lower-bounded symmetric forms
+(Kato~\cite[Thm.~VI.2.1, Thm.~VI.2.23]{KatoPerturbation}; in the Dirichlet-form setting,
 Fukushima--Oshima--Takeda~\cite[Thm.~1.3.1]{FOT}).
+Kato Thm.\,VI.2.1 gives existence of the unique associated selfadjoint operator;
+Kato Thm.\,VI.2.23 (Second Representation Theorem) establishes
+$\mathcal{D}(\mathcal{E}_\lambda)=\mathcal{D}(A_\lambda^{1/2})$ and the identity
+$\mathcal{E}_\lambda(G)=\|A_\lambda^{1/2}G\|_2^2$.
 Proposition~\ref{prop:closedI} verified that $\mathcal E_\lambda$ satisfies all hypotheses.}
 
 \Step{$(A_\lambda+1)^{-1}$ is compact on $L^2(I)$.}
@@ -1386,7 +1394,8 @@ Assume Theorem~\ref{thm:operator}. Then $T(t)=e^{-tA_\lambda}$ is irreducible.
 \Step{Let $J\subset L^2(I)$ be a closed $T(t)$-invariant ideal.  Then $J=L^2(B)$ for some
 measurable $B\subset I$.}
 \Stepjust{Standard lattice-theory fact: every closed ideal in $L^2(I)$ has the form $L^2(B)$
-for some measurable $B\subset I$.}
+for some measurable $B\subset I$
+(Schaefer~\cite[Sect.~III.1, Ex.~1]{SchaeferBanachLattices}).}
 
 \Step{$m(B)=0$ or $m(I\setminus B)=0$.}
 \Stepjust{Proposition~\ref{prop:irreducible}.}
@@ -1418,8 +1427,17 @@ This is stated (for general Banach lattices) as Theorem~2.3 in Arendt--ter~Elst-
 \begin{theorem}[Simplicity of the principal eigenvalue under compact resolvent]
 \label{thm:principal-simple}
 Let $A$ be selfadjoint and lower bounded on $L^2(I)$ with compact resolvent, and let $S(t)=e^{-tA}$.
-If $S$ is positivity improving, then $\min\sigma(A)$ is a simple eigenvalue
-and admits an eigenfunction which is strictly positive a.e.
+If $S$ is positivity improving, then all four conclusions of
+Arendt--ter~Elst--Gl\"{u}ck~\cite[Prop.~2.4]{ATGStrictPos2020} hold:
+\begin{enumerate}
+\item[(a)] $\sigma(A)\ne\emptyset$;
+\item[(b)] $\lambda_1:=\inf\{\operatorname{Re}\lambda:\lambda\in\sigma(A)\}$ is an eigenvalue
+  (so the infimum is a minimum);
+\item[(c)] the associated eigenfunction satisfies $\psi>0$ a.e.\ (a strictly positive quasi-interior
+  point in $L^2(I)$);
+\item[(d)] $\lambda_1$ has algebraic multiplicity one (simple eigenvalue).
+\end{enumerate}
+In summary: $\min\sigma(A)$ is a simple eigenvalue admitting an eigenfunction strictly positive a.e.
 \end{theorem}
 
 \begin{remark}[Source]
@@ -1446,16 +1464,19 @@ strictly positive a.e.\ eigenfunction.
 \Stepjust{Lemma~\ref{lem:markov} shows that $\mathcal E_\lambda$ satisfies the Markov
 (normal contraction) property.  By the general correspondence between Dirichlet forms
 and positivity-preserving semigroups (Fukushima--Oshima--Takeda~\cite[Thm.~1.4.1]{FOT};
-Ouhabaz~\cite[Ch.~1, \S\S1.4--1.5]{OuhabazHeatEq}), the associated semigroup $T(t)$
+Ouhabaz~\cite[Thm.~1.4.1]{OuhabazHeatEq}), the associated semigroup $T(t)$
 is positivity preserving.}
 
 \Step{$T(t)$ is irreducible.}
 \Stepjust{Corollary~\ref{cor:irreducible}.}
 
 \Step{$T(t)$ is holomorphic.}
-\Stepjust{$A_\lambda$ is selfadjoint and lower bounded ($A_\lambda\ge 0$).
-By the spectral theorem, $e^{-zA_\lambda}$ is bounded and holomorphic on
-$\{z\in\C:\Re z>0\}$.  In particular, $T(t)=e^{-tA_\lambda}$ extends to a
+\Stepjust{$A_\lambda$ is selfadjoint and lower bounded ($A_\lambda\ge 0$), hence m-sectorial
+with numerical range in $[0,\infty)$.
+By Kato~\cite[Ex.~IX.1.25]{KatoPerturbation} (backed by
+Thm.\,IX.1.24), $e^{-zA_\lambda}$ is bounded and holomorphic on
+$\{z\in\C:\Re z>0\}$ with $\|e^{-zA_\lambda}\|\le 1$.
+In particular, $T(t)=e^{-tA_\lambda}$ extends to a
 holomorphic semigroup.}
 
 \Step{$T(t)$ is positivity improving.}
@@ -1465,7 +1486,13 @@ and holomorphic (Step~3).  Therefore it is positivity improving.}
 \Step{The lowest eigenvalue of $A_\lambda$ is simple, with a strictly positive a.e.\ eigenfunction.}
 \Stepjust{Apply Theorem~\ref{thm:principal-simple}: $A_\lambda$ is selfadjoint, lower bounded,
 has compact resolvent (Theorem~\ref{thm:operator}), and $T(t)=e^{-tA_\lambda}$ is positivity
-improving (Step~4).  The conclusion follows.}
+improving (Step~4).
+All four conclusions of Theorem~\ref{thm:principal-simple}
+(ATG~\cite[Prop.~2.4]{ATGStrictPos2020}) hold:
+(a)~$\sigma(A_\lambda)\ne\emptyset$;
+(b)~$\lambda_1:=\min\sigma(A_\lambda)$ exists and is an eigenvalue;
+(c)~the corresponding eigenfunction is strictly positive a.e.;
+(d)~$\lambda_1$ is a simple eigenvalue (multiplicity~one).}
 
 \QEDstep
 \end{structuredproof}
@@ -1630,7 +1657,7 @@ W.~Arendt, A.~F.~M.~ter~Elst, and J.~Gl{\"u}ck.
 M.~Fukushima, Y.~Oshima, and M.~Takeda.
 \newblock \emph{Dirichlet Forms and Symmetric Markov Processes}.
 \newblock 2nd revised and extended ed., De~Gruyter Studies in Mathematics, vol.~19,
-Walter de~Gruyter, Berlin, 2010.
+Walter de~Gruyter, Berlin, 2011.
 \newblock DOI:~10.1515/9783110218091.
 
 \bibitem{LamportHowToWrite}
@@ -1638,12 +1665,6 @@ L.~Lamport.
 \newblock How to write a proof.
 \newblock \emph{Amer.\ Math.\ Monthly} \textbf{102} (1995), no.~7, 600--608.
 \newblock DOI:~10.2307/2974556.
-
-\bibitem{OuhabazConvex1996}
-E.-M.~Ouhabaz.
-\newblock Invariance of closed convex sets and domination criteria for semigroups.
-\newblock \emph{Potential Anal.} \textbf{5} (1996), no.~6, 611--625.
-\newblock DOI:~10.1007/BF00275797.
 
 \bibitem{OuhabazHeatEq}
 E.-M.~Ouhabaz.
@@ -1658,13 +1679,20 @@ T.~Kato.
 \newblock Classics in Mathematics, Springer, Berlin, 1995.
 \newblock DOI:~10.1007/978-3-642-66282-9.
 
-\bibitem{LiebLossAnalysis}
-E.~H.~Lieb and M.~Loss.
-\newblock \emph{Analysis}.
-\newblock 2nd ed., Graduate Studies in Mathematics, vol.~14,
-American Mathematical Society, Providence, RI, 2001.
-\newblock MR1817225.
-\newblock DOI:~10.1090/gsm/014.
+\bibitem{BrezisFA}
+H.~Brezis.
+\newblock \emph{Functional Analysis, Sobolev Spaces and Partial Differential Equations}.
+\newblock Universitext, Springer, New York, 2011.
+\newblock ISBN:~978-0-387-70913-0.
+\newblock DOI:~10.1007/978-0-387-70914-7.
+
+\bibitem{SchaeferBanachLattices}
+H.~H.~Schaefer.
+\newblock \emph{Banach Lattices and Positive Operators}.
+\newblock Grundlehren der mathematischen Wissenschaften, vol.~215,
+Springer-Verlag, Berlin, 1974.
+\newblock ISBN:~978-3-540-06936-2.
+\newblock DOI:~10.1007/978-3-642-65970-6.
 
 \end{thebibliography}
 
