@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in,top=0.85in,bottom=0.85in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue}
+
+\definecolor{alertred}{RGB}{180,40,40}
+\newcommand{\verify}{\textcolor{alertred}{\textbf{[VERIFY]}}\;}
+
+\title{\textbf{Additional References}\\[0.4em]
+  \large\normalfont\itshape
+  Energy Decomposition, Compact Resolvent, and Perron--Frobenius Properties\\
+  of the Restricted Weil Quadratic Form}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}\noindent
+This document collects the 13 additional references recommended for inclusion in the
+paper, grouped by priority.  Entries marked \textcolor{alertred}{\textbf{[VERIFY]}} require
+confirmation of publication details against the original source before use; all other
+entries have been verified against independent sources or primary documents seen during
+the audit process.
+\end{abstract}
+
+\bigskip
+
+%%% ================================================================
+\section*{Group~1: Essential --- direct technical ancestors}
+%%% ================================================================
+
+\begin{enumerate}[label={\textbf{[\arabic*]}}, leftmargin=2.5em, itemsep=0.9em]
+
+\item \label{Weil1952}
+A.~Weil,
+``Sur les formules explicites de la th\'eorie des nombres premiers,''
+\textit{Comm.\ S\'em.\ Math.\ Univ.\ Lund} (1952), 252--265.
+(Volume dedicated to Marcel Riesz.)\\
+\textit{Note}: Primary source for the Weil explicit formula and positivity
+criterion in the form used in the paper; the distributions $W_p$ and $W_{\mathbb{R}}$
+descend from this work.
+
+\item \label{Connes1999}
+A.~Connes,
+``Trace formula in noncommutative geometry and the zeros of the Riemann zeta function,''
+\textit{Selecta Math.\ (N.S.)}~\textbf{5} (1999), no.~1, 29--106.\\
+DOI:~\href{https://doi.org/10.1007/s000290050042}{10.1007/s000290050042}.\\
+\textit{Note}: Establishes the semilocal trace formula and the explicit distributions
+$W_p$, $W_{\mathbb{R}}$ whose negatives form the quadratic form studied in the paper;
+also introduces the adele class space framework.
+
+\item \label{ConnesConsani2023}
+A.~Connes and C.~Consani,
+``Spectral triples and $\zeta$-cycles,''
+\textit{Enseign.\ Math.}~\textbf{69} (2023), no.~1--2, 93--148.\\
+DOI:~\href{https://doi.org/10.4171/LEM/1042}{10.4171/LEM/1042}.\\
+\textit{Note}: Asserts for each $\lambda>1$ the existence of a selfadjoint operator
+$A_\lambda$ on $L^2([\lambda^{-1},\lambda], d^*x)$ with compact resolvent (see
+\S6.4 of Connes~2026 [5] and its reference~[25]); the present paper supplies the
+self-contained proof of this property.
+
+\item \label{ConnesVanSuijlekom2025}
+A.~Connes and W.~van Suijlekom,
+``Quadratic forms, real zeros and echoes of the spectral action,''
+\textit{Commun.\ Math.\ Phys.}~\textbf{406} (2025), Paper no.~312.\\
+DOI:~\href{https://doi.org/10.1007/s00220-025-05240-6}{10.1007/s00220-025-05240-6}.
+(Volume dedicated to H.~Araki.)\\
+\textit{Note}: Proves (Theorem~6.1 of Connes~2026 [5]) that if the minimum eigenvalue
+of $A_\lambda$ is simple with even eigenfunction, then all zeros of the Mellin transform
+of the minimiser lie on the critical line; the present paper establishes precisely those
+hypotheses.
+
+\end{enumerate}
+
+\bigskip
+%%% ================================================================
+\section*{Group~2: Highly recommended --- direct context and payoff}
+%%% ================================================================
+
+\begin{enumerate}[resume, label={\textbf{[\arabic*]}}, leftmargin=2.5em, itemsep=0.9em]
+
+\item \label{Connes2026}
+A.~Connes,
+``The Riemann Hypothesis: Past, Present and a Letter Through Time,''
+arXiv:2602.04022v1 [math.NT], February~2026.\\
+\textit{Note}: Survey and original contribution explaining why the compact resolvent
+and Perron--Frobenius properties of $A_\lambda$ (proved in the present paper) are
+needed for the programme outlined in \S6.4 thereof; also provides the most current
+bibliographic guide to the full Connes programme.
+
+\item \label{ConnesConsani2021}
+A.~Connes and C.~Consani,
+``Weil positivity and trace formula, the archimedean place,''
+\textit{Selecta Math.\ (N.S.)}~\textbf{27} (2021), no.~4, Paper no.~77, 70~pp.\\
+DOI:~\href{https://doi.org/10.1007/s00029-021-00672-x}{10.1007/s00029-021-00672-x}.\\
+\textit{Note}: Studies archimedean Weil positivity and the Sonin-space lower bound;
+provides essential geometric context for the semilocal operator $A_\lambda$.
+
+\end{enumerate}
+
+\bigskip
+%%% ================================================================
+\section*{Group~3: Worthwhile --- complementary approaches and broader context}
+%%% ================================================================
+
+\begin{enumerate}[resume, label={\textbf{[\arabic*]}}, leftmargin=2.5em, itemsep=0.9em]
+
+\item \label{BurnolPropagator}
+\verify
+J.-F.~Burnol,
+``The explicit formula and a propagator,''\\
+\textit{Note}: Complementary treatment of the Weil explicit formula through a
+propagator analysis; the precise publication venue and year require verification.
+
+\item \label{BurnolConductor}
+\verify
+J.-F.~Burnol,
+``Spectral analysis of the local conductor operator,''\\
+\textit{Note}: Analyses the spectral theory of a local operator complementary to the
+approach taken in the present paper; publication details require verification.
+
+\item \label{BurnolHilbert2001}
+J.-F.~Burnol,
+``Sur certains espaces de Hilbert de fonctions enti\`eres, li\'es \`a la transformation
+de Fourier et aux fonctions $L$ de Dirichlet et de Riemann,''
+\textit{C.\ R.\ Acad.\ Sci.\ Paris S\'er.\ I}~\textbf{333} (2001), 201--206.\\
+DOI:~\href{https://doi.org/10.1016/S0764-4442(01)02049-3}{10.1016/S0764-4442(01)02049-3}.\\
+\textit{Note}: Introduces Hilbert spaces of entire functions in the $L^2$ analysis
+of Fourier/Dirichlet/Riemann $L$-functions; foundational for the Sonin space approach
+credited in Connes~2026 [5], \S7.2.
+
+\item \label{BurnolSonine2002}
+J.-F.~Burnol,
+``Sur les espaces de Sonine associ\'es par de~Branges \`a la transformation de Fourier,''
+\textit{C.\ R.\ Acad.\ Sci.\ Paris S\'er.\ I}~\textbf{335} (2002), 689--692.\\
+DOI:~\href{https://doi.org/10.1016/S1631-073X(02)02569-5}{10.1016/S1631-073X(02)02569-5}.\\
+\textit{Note}: Studies Sonin spaces via de~Branges' theory of Fourier transforms;
+introduced into the RH context in Connes~2026 [5], \S7.2.
+
+\item \label{BurnolComplete2004}
+J.-F.~Burnol,
+``Two complete and minimal systems associated with the zeros of the Riemann zeta
+function,''
+\textit{J.\ Th\'eor.\ Nombres Bordeaux}~\textbf{16} (2004), no.~1, 65--94.\\
+URL:~\href{http://jtnb.cedram.org/item?id=JTNB_2004__16_1_65_0}{jtnb.cedram.org}.\\
+\textit{Note}: Constructs complete and minimal systems linked to zeta zeros; provides
+$L^2$ functional-analytic background complementary to the present paper's approach.
+
+\item \label{Poitou1977}
+G.~Poitou,
+``Sur les petits discriminants,''
+\textit{S\'eminaire Delange--Pisot--Poitou. Th\'eorie des Nombres},
+18\`eme ann\'ee, 1976--77, Expos\'e no.~6, 18~pp.,
+Secr\'etariat Math\'ematique, Paris, 1977.\\
+\textit{Note}: Classical application of Weil positivity to lower bounds on
+discriminants of number fields; exemplifies the arithmetic power of the
+positivity criterion that motivates the present paper.
+
+\item \label{BattistoniMolteni}
+\verify
+F.~Battistoni and G.~Molteni,
+``Explicit formul\ae\ for $L$-functions and generators of the class group,''\\
+\textit{Note}: Applies explicit formula techniques to class group structure;
+publication details (journal, volume, year) require verification before inclusion.
+
+\end{enumerate}
+
+\bigskip\bigskip
+\noindent\textbf{Notes on \textcolor{alertred}{[VERIFY]} entries.}
+Three entries above carry a \verify flag:
+\begin{itemize}[leftmargin=2em, itemsep=3pt]
+  \item \textbf{[7]} Burnol, ``The explicit formula and a propagator'': the title is
+    known from literature but the precise journal, volume, and year could not be
+    confirmed without access to a database.
+  \item \textbf{[8]} Burnol, ``Spectral analysis of the local conductor operator'':
+    same situation.
+  \item \textbf{[13]} Battistoni--Molteni: full bibliographic data unavailable at
+    time of drafting.
+\end{itemize}
+All three should be resolved via MathSciNet, zbMATH, or arXiv before the paper
+is submitted.
+
+\end{document}
