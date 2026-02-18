@@ -1,0 +1,546 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.85in,top=0.75in,bottom=0.75in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{pdflscape}
+
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue}
+
+%% Colours
+\definecolor{headbg}{RGB}{44,62,80}
+\definecolor{flagbg}{RGB}{255,243,205}
+\definecolor{flagborder}{RGB}{230,126,34}
+\definecolor{sectionbg}{RGB}{236,240,241}
+\definecolor{sectionfg}{RGB}{85,85,85}
+
+%% Custom column types
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+%% Flag cell macro
+\newcommand{\flagrow}{\rowcolor{flagbg}}
+\newcommand{\okrow}{\rowcolor{green!8}}
+\newcommand{\sectionrow}{\rowcolor{sectionbg}}
+\newcommand{\warn}{\textcolor{flagborder}{\textbf{[!]}}\xspace}
+\newcommand{\ok}{\textcolor{green!60!black}{\textbf{[\checkmark]}}\xspace}
+
+\newcommand{\bibkey}[1]{\texttt{\small #1}}
+\newcommand{\locn}[1]{\textit{#1}}
+\newcommand{\id}[1]{\textbf{#1}}
+\newcommand{\internal}[1]{\texttt{\small #1}}
+
+\setlist[itemize]{leftmargin=1.2em, topsep=1pt, itemsep=0pt, parsep=0pt}
+
+%%% ----------------------------------------------------------------
+\title{\textbf{External Theorem Audit}\\[0.4em]
+  \large\normalfont\itshape
+  Energy Decomposition, Compact Resolvent, and Perron--Frobenius Properties\\
+  of the Restricted Weil Quadratic Form}
+\author{}
+\date{}
+%%% ----------------------------------------------------------------
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}\noindent
+This document lists every external mathematical result invoked in the paper, together with
+(i)~the precise statement assumed, (ii)~the exact bibliographic reference cited, and
+(iii)~notes for the human verifier.  Its purpose is to make cross-checking against the
+original sources as mechanical as possible.
+The audit has been conducted in three rounds: initial identification; a first literature
+search locating specific theorem numbers; and a second deep literature search with
+extended source analysis, including direct quotation from secondary sources.
+Items marked \textcolor{flagborder}{\textbf{[!]}} still require physical confirmation
+against the book: the theorem number has been located by search but not verified against
+the actual page.
+Items marked \textcolor{green!60!black}{\textbf{[\checkmark]}} have been confirmed by
+multiple independent sources (some with direct quotation); a physical spot-check is still
+advisable but the result is expected correct.
+\end{abstract}
+
+\bigskip
+\noindent\textbf{Bibliography keys used below.}
+\begin{itemize}[leftmargin=2em]
+  \item \bibkey{KatoPerturbation}: T.~Kato, \textit{Perturbation Theory for Linear Operators},
+    Classics in Mathematics, Springer, 1995. DOI:~10.1007/978-3-642-66282-9.\newline
+    {\footnotesize Note: the 1995 printing is a reprint of the 1980 second edition;
+    theorem numbers VI.2.1, VI.2.23, IX.1.24, and Ex.\,IX.1.25 are consistent with this edition.
+    \textbf{Correction}: ``IX.1.4'' cited in earlier audit versions is Remark~1.4
+    (unrelated); the correct holomorphic semigroup references are Thm.\,IX.1.24 and Ex.\,IX.1.25.
+    Numbering differs from the 1966 first edition.}
+  \item \bibkey{FOT}: M.~Fukushima, Y.~Oshima, M.~Takeda, \textit{Dirichlet Forms and
+    Symmetric Markov Processes}, 2nd revised ed., De~Gruyter Studies in Math.\ vol.~19,
+    De~Gruyter, 2011. DOI:~10.1515/9783110218091.\newline
+    {\footnotesize Note: publication year is 2011 per De~Gruyter catalogue; some sources cite 2010.}
+  \item \bibkey{ATGStrictPos2020}: W.~Arendt, A.\,F.\,M.~ter~Elst, J.~Gl\"{u}ck,
+    ``Strict positivity for the principal eigenfunction\ldots'',
+    \textit{Adv.\ Nonlinear Stud.}\ \textbf{20} (2020), no.\,3, 633--650.
+    DOI:~10.1515/ans-2020-2091.\newline
+    {\footnotesize Use the published DOI (not the arXiv preprint 1909.12194).}
+  \item \bibkey{OuhabazHeatEq}: E.-M.~Ouhabaz, \textit{Analysis of Heat Equations on Domains},
+    LMS Monographs vol.~31, Princeton UP, 2005. ISBN:~978-0-691-12016-4.
+  \item \bibkey{BrezisFA}: H.~Brezis, \textit{Functional Analysis, Sobolev Spaces and Partial
+    Differential Equations}, Universitext, Springer, 2011.
+    ISBN:~978-0-387-70913-0. DOI:~10.1007/978-0-387-70914-7.\newline
+    {\footnotesize Note: cover reads ``2010'' but copyright/print year is 2011.
+    This is the correct source for T2. \textit{(New entry; add to bibliography.)}}
+  \item \bibkey{LiebLossAnalysis}: E.\,H.~Lieb, M.~Loss, \textit{Analysis}, 2nd ed.,
+    Grad.\ Studies in Math.\ vol.~14, AMS, 2001.
+    ISBN:~978-0-8218-2783-3. DOI:~10.1090/gsm/014.\newline
+    {\footnotesize \textbf{Does not contain the Kolmogorov--Riesz theorem.}
+    The ``Thm.\,2.13'' number was a citation error: that number belongs to
+    \textit{Ground States of Quantum Field Models} (Hiroshima 2019), a secondary source
+    which internally numbers a version of the result as 2.13.
+    Remove \texttt{LiebLossAnalysis} from the T2 citation.}
+  \item \bibkey{SchaeferBanachLattices}: H.\,H.~Schaefer, \textit{Banach Lattices and Positive
+    Operators}, Grundlehren vol.~215, Springer, 1974.
+    ISBN:~978-3-540-06936-2. DOI:~10.1007/978-3-642-65970-6.
+    \textit{(New entry; add to bibliography.)}
+\end{itemize}
+
+%%% ================================================================
+\clearpage
+\begin{landscape}
+
+\renewcommand{\arraystretch}{1.35}
+\small
+
+\begin{longtable}{
+    C{0.55cm}
+    L{4.2cm}
+    L{7.2cm}
+    L{4.5cm}
+    L{4.6cm}
+  }
+
+\toprule
+\rowcolor{headbg}
+\textcolor{white}{\textbf{\#}} &
+\textcolor{white}{\textbf{Internal label / where used}} &
+\textcolor{white}{\textbf{Statement assumed in this paper}} &
+\textcolor{white}{\textbf{Cited reference}} &
+\textcolor{white}{\textbf{Notes for verifier}} \\
+\midrule
+\endfirsthead
+
+\toprule
+\rowcolor{headbg}
+\textcolor{white}{\textbf{\#}} &
+\textcolor{white}{\textbf{Internal label / where used}} &
+\textcolor{white}{\textbf{Statement assumed in this paper}} &
+\textcolor{white}{\textbf{Cited reference}} &
+\textcolor{white}{\textbf{Notes for verifier}} \\
+\midrule
+\endhead
+
+\bottomrule
+\multicolumn{5}{r}{\small\itshape Continued on next page\ldots}\\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+%% ─── Section: Form / operator correspondence ───────────────────
+\sectionrow
+\multicolumn{5}{l}{\textcolor{sectionfg}{\small\textsc{Form\,/\,operator correspondence}}} \\
+\midrule
+
+\okrow
+\id{T1} \ok &
+\textbf{Representation theorem for closed forms} \newline
+\textit{Used in:} \internal{thm:operator} Step~1 (first occurrence) &
+If $\mathcal{E}$ is a densely defined, closed, lower-bounded, symmetric form on a Hilbert
+space $H$, then there exists a unique selfadjoint operator $A\ge 0$ such that
+$\mathcal{D}(\mathcal{E})=\mathcal{D}(A^{1/2})$ and $\mathcal{E}(u,v)=\langle A^{1/2}u,A^{1/2}v\rangle$
+for all $u,v\in\mathcal{D}(\mathcal{E})$. &
+\bibkey{KatoPerturbation} \locn{Thm.\,VI.2.1}\newline
+Also:\newline
+\bibkey{KatoPerturbation} \locn{Thm.\,VI.2.23}\newline
+Also:\newline
+\bibkey{FOT} \locn{Thm.\,1.3.1} &
+\ok \textbf{Physically confirmed} from uploaded Kato and FOT.
+Kato VI.2.1 (\textit{First} Representation Theorem): existence of unique m-sectorial $T$
+with $t[u,v]=(Tu,v)$ for $u\in D(T)$, $v\in D(t)$.
+Kato VI.2.23 (\textit{Second} Representation Theorem): $D(H^{1/2})=D(\mathfrak{h})$
+and $\mathfrak{h}[u,v]=(H^{1/2}u,H^{1/2}v)$.
+Both theorems together give the full statement.
+FOT Thm.\,1.3.1 (physically confirmed): one-to-one correspondence between closed
+symmetric forms and non-positive definite selfadjoint operators on $H$;
+Corollary~1.3.1 gives the domain characterisation $\mathcal{E}(u,v)=(-Au,v)$
+for $u\in D(A)$. \\[3pt]
+
+\okrow
+\id{T1$'$} \ok &
+\textbf{Representation theorem (domain characterisation)} \newline
+\textit{Used in:} \internal{prop:reflection} Step~5.4 &
+$w\in\mathcal{D}(A)$ if and only if there exists $h\in H$ such that
+$\mathcal{E}(w,v)=\langle h,v\rangle$ for all $v\in\mathcal{D}(\mathcal{E})$;
+in that case $Aw=h$.
+(Applied to conclude $Ru\in\mathcal{D}(A_\lambda)$ and
+$A_\lambda(Ru)=R(A_\lambda u)$.) &
+\bibkey{KatoPerturbation} \locn{Thm.\,VI.2.1 (iii)}\newline
+(Same reference as T1) &
+\ok \textbf{Physically confirmed} from uploaded Kato.
+Kato Thm.\,VI.2.1 condition~(iii) states explicitly: ``if $u\in D(t)$, $w\in H$,
+and $t[u,v]=(w,v)$ for every $v$ in a core of $t$, then $u\in D(T)$ and $Tu=w$.''
+This is the ``if'' direction.
+The ``only if'' direction follows from condition~(i): $t[u,v]=(Tu,v)$ for $u\in D(T)$.
+Together conditions (i) and (iii) give the full ``iff'', validating Step~5.4. \\[3pt]
+
+%% ─── Section: Compactness ───────────────────────────────────────
+\sectionrow
+\multicolumn{5}{l}{\textcolor{sectionfg}{\small\textsc{Compactness}}} \\
+\midrule
+
+\okrow
+\id{T2} \ok &
+\textbf{Kolmogorov--Riesz--Fr\'{e}chet compactness criterion} \newline
+\textit{Stated as:} \internal{thm:KR}\newline
+\textit{Applied in:} \internal{prop:compactEmbed} Step~4 &
+\textbf{Brezis Thm.\,4.26} (bounded $\Omega$, no tightness needed):
+$F$ bounded in $L^p(\mathbb{R}^N)$ + translation equicontinuity
+$\Rightarrow$ $F|_\Omega$ has compact closure in $L^p(\Omega)$ for any measurable
+$\Omega$ with finite measure.\newline\newline
+\textbf{Brezis Cor.\,4.27} (full $\mathbb{R}^N$, tightness required):
+Adds condition $\forall\varepsilon>0\;\exists\Omega\subset\mathbb{R}^N$ bounded such that
+$\|f\|_{L^p(\mathbb{R}^N\setminus\Omega)}<\varepsilon$ $\forall f\in F$
+$\Rightarrow$ $F$ compact in $L^p(\mathbb{R}^N)$.
+(Remark~13 confirms the converse holds; this is the complete characterization.) &
+\bibkey{BrezisFA}\newline
+\locn{Thm.\,4.26 \&}\newline
+\locn{Cor.\,4.27, p.\,111--113}\newline
+{\footnotesize(physically confirmed from uploaded book pages)} &
+\ok \textbf{Physically confirmed} from uploaded book pages.
+\textbf{Critical distinction:}
+If the compactness argument is on a bounded domain (finite measure),
+Thm.\,4.26 alone suffices.
+If on $L^2(\mathbb{R})$ (full line), Cor.\,4.27 is required;
+the proof must separately establish tightness
+(uniform $L^2$-tail decay).\newline
+\textbf{Citation correction:} \bibkey{LiebLossAnalysis} does not
+contain this theorem.  ``Thm.\,2.13'' originated in
+\textit{Ground States of Quantum Field Models} (Hiroshima 2019)
+with its own internal numbering.
+Replace with:\newline
+{\footnotesize\texttt{\textbackslash cite[Cor.\textasciitilde 4.27]\{BrezisFA\}}}. \\[3pt]
+
+%% ─── Section: Semigroup / Markov ────────────────────────────────
+\sectionrow
+\multicolumn{5}{l}{\textcolor{sectionfg}{\small\textsc{Markov property and positivity}}} \\
+\midrule
+
+\okrow
+\id{T3} \ok &
+\textbf{Markov form $\Rightarrow$ positivity-preserving semigroup} \newline
+\textit{Used in:} \internal{prop:groundstate} Step~1 &
+If a closed symmetric form $\mathcal{E}$ satisfies the normal contraction (Markov) property
+$\mathcal{E}(\Phi\circ G)\le\mathcal{E}(G)$ for every normal contraction $\Phi$,
+then the associated $C_0$-semigroup $T(t)=e^{-tA}$ is positivity preserving
+(i.e.\ $G\ge 0$ a.e.\ implies $T(t)G\ge 0$ a.e.). &
+\bibkey{FOT} \locn{Thm.\,1.4.1}\newline
+Also:\newline
+\bibkey{OuhabazHeatEq} \locn{Thm.\,1.4.1} &
+\ok \textbf{Physically confirmed} from uploaded FOT.
+FOT Thm.\,1.4.1 (physically verified): lists five equivalent conditions (a)--(e)
+for the Markovian property, including
+(a)~$T_t$ Markovian $\forall t>0$; (c)~$\mathcal{E}$ Markovian; (e)~every normal
+contraction operates on $\mathcal{E}$.
+The five conditions are mutually equivalent; the implication used in the
+manuscript is (e)$\Rightarrow$(a) [or (c)$\Rightarrow$(a)], which is direct.
+Ouhabaz Thm.\,1.4.1 treats the more general sectorial setting. \\[3pt]
+
+\okrow
+\id{T4} \ok &
+\textbf{Positivity improving from positivity + irreducibility + holomorphy} \newline
+\textit{Stated as:} \internal{thm:ABHN}\newline
+\textit{Applied in:} \internal{prop:groundstate} Step~4 &
+Let $E$ be a Banach lattice and $S$ a positive, irreducible, holomorphic $C_0$-semigroup
+on $E$.  Then $S$ is \textit{positivity improving\/}: for each $t>0$ and each
+$0\le f\in E$, $f\ne 0$, one has $S(t)f>0$ (on $L^2$ this means~$>0$ a.e.). &
+\bibkey{ATGStrictPos2020} \locn{Thm.\,2.3} &
+\ok Confirmed by deep literature search against published paper.
+ATG Thm.\,2.3 is stated for general Banach lattice $C_0$-semigroups (not restricted to
+elliptic generators).
+\textbf{Holomorphy dependency chain}: selfadjoint $A_\lambda\ge0$
+$\Rightarrow$ m-sectorial (T6, Kato IX.1.4) $\Rightarrow$ holomorphic semigroup
+$\Rightarrow$ hypothesis of T4 satisfied.
+Without T6, this application would be unjustified. \\[3pt]
+
+\okrow
+\id{T5} \ok &
+\textbf{Simplicity of principal eigenvalue under positivity improving\,+\,compact resolvent} \newline
+\textit{Stated as:} \internal{thm:principal-simple}\newline
+\textit{Applied in:} \internal{prop:groundstate} Step~5 &
+Let $A$ be selfadjoint, lower bounded, with compact resolvent on $L^2(I)$.
+If $e^{-tA}$ is positivity improving, then $\min\sigma(A)$ is a simple eigenvalue
+admitting an eigenfunction strictly positive a.e. &
+\bibkey{ATGStrictPos2020} \locn{Prop.\,2.4} &
+\ok Deep audit confirms ATG Prop.\,2.4 requires exactly positivity-improving + compact
+resolvent (no additional hypotheses).  The three explicit conclusions stated in the
+paper are: (a)~the spectral bound $s(-A)$ is an eigenvalue of $-A$;
+(b)~the associated eigenfunction is strictly positive ($\psi\gg 0$);
+(c)~the algebraic multiplicity is one.
+Compact resolvent $\Rightarrow$ $e^{-tA}$ compact for $t>0$ (spectral theorem), which
+supplies the compactness needed for the Perron--Frobenius/Krein--Rutman argument. \\[3pt]
+
+%% ─── Section: Standard results without citation ─────────────────
+\sectionrow
+\multicolumn{5}{l}{\textcolor{sectionfg}{\small\textsc{Standard results invoked without explicit citation}}} \\
+\midrule
+
+\okrow
+\id{T6} \ok &
+\textbf{Selfadjoint $A\ge0$ generates holomorphic semigroup} \newline
+\textit{Used in:} \internal{prop:groundstate} Step~3 &
+If $A$ is selfadjoint with $A\ge0$, then $e^{-zA}$ is a bounded operator for all
+$z$ with $\operatorname{Re}z>0$, $\|e^{-zA}\|\le1$, and
+$z\mapsto e^{-zA}$ is holomorphic on $\{\operatorname{Re}z>0\}$. &
+\bibkey{KatoPerturbation}\newline
+\locn{Thm.\,IX.1.24}\newline
+\locn{Ex.\,IX.1.25}\newline
+{\footnotesize(\textbf{correction}: previous\newline citation ``IX.1.4'' was wrong)} &
+\ok \textbf{Physically confirmed} from uploaded Kato.
+\textbf{Critical correction}: ``Thm.\,IX.1.4'' does \textbf{not exist} in Kato.
+Label IX.1.4 is \textit{Remark~1.4} (about recovering a generator from a contraction
+semigroup --- unrelated to holomorphic semigroups).
+\textbf{Correct references (both physically confirmed):}
+\begin{itemize}[noitemsep,topsep=2pt,leftmargin=1.2em]
+  \item \textbf{Kato Thm.\,IX.1.24}: Let $T$ be m-sectorial in a Hilbert space
+    with vertex~$0$ and half-angle $\omega\in(0,\tfrac\pi2]$.
+    Then $e^{-tT}$ is holomorphic for $|\arg t|<\omega$ and $\|e^{-tT}\|\le 1$.
+  \item \textbf{Kato Ex.\,IX.1.25} (the directly applicable result):
+    ``If $H$ is a nonneg.\ selfadjoint operator in a Hilbert space,
+    $e^{-tH}$ is holomorphic for $\operatorname{Re}t>0$ and $\|e^{-tH}\|\le 1$.''
+\end{itemize}
+Logical chain: selfadjoint $A\ge0$ has numerical range in $[0,\infty)$,
+hence is m-sectorial with any $\omega<\tfrac\pi2$; Ex.\,1.25 gives holomorphy
+directly.
+\textbf{Action}: in the manuscript, replace citation \texttt{IX.1.4} with
+Kato \textbf{Ex.\,IX.1.25} (or Thm.\,IX.1.24 for the general m-sectorial version). \\[3pt]
+
+\flagrow
+\id{T7} \warn &
+\textbf{Closed ideals in $L^2(I)$ have the form $L^2(B)$} \newline
+\textit{Used in:} \internal{cor:irreducible} Step~1 &
+Every closed ideal in $L^2(I)$ (a closed subspace $J$ such that $|f|\le|g|$ a.e.\
+and $g\in J$ implies $f\in J$) has the form $L^2(B)$ for some measurable $B\subset I$.
+(Called ``standard lattice-theory fact'' with no citation.) &
+\bibkey{SchaeferBanachLattices} \locn{Ex.\,1.1.6}\newline
+{\footnotesize(add to bibliography; new entry)} &
+\warn Deep audit found a secondary source (Banach lattice lecture notes) that
+discusses the characterization of $L^p$ ideals in the context of Schaefer's text.
+\textbf{Still physically verify}: the designation ``Example 1.1.6'' is unusual for
+a structural theorem and could reflect a different edition's numbering.
+Note: in Schaefer's framework ``Examples'' regularly contain theorem-grade content.
+Fallback option: the proof is short (the band projection onto $J$ has essential support
+$B$, and $J = L^2(B)$) and could be given as a one-sentence remark, avoiding the
+citation uncertainty entirely. \\[3pt]
+
+%% ─── Section: Bibliographic anomaly (resolved) ─────────────────
+\sectionrow
+\multicolumn{5}{l}{\textcolor{sectionfg}{\small\textsc{Bibliographic anomaly (resolved)}}} \\
+\midrule
+
+\okrow
+--- \ok &
+\textbf{Orphaned bibliography entry} \newline
+\texttt{OuhabazConvex1996} appears in the bibliography but is never \texttt{\textbackslash cite}d in the body. &
+E.-M.~Ouhabaz, ``Invariance of closed convex sets and domination criteria for
+semigroups,'' \textit{Potential Anal.}\ \textbf{5} (1996), 611--625.
+DOI:~10.1007/BF00275797. &
+\textit{Bibliography only; never cited in body.} &
+\ok Confirmed by literature search: the relevant results are fully covered by
+\texttt{OuhabazHeatEq} (the book).
+\textbf{Action: remove \texttt{OuhabazConvex1996}} from the bibliography. \\[3pt]
+
+\end{longtable}
+
+\end{landscape}
+
+%%% ================================================================
+\clearpage
+\section*{Summary}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{12cm}c}
+\toprule
+Item & Count \\
+\midrule
+Total distinct external results invoked (T1--T7;\@ T1 and T1$'$ are two uses of one theorem) & 7 \\[2pt]
+\midrule
+\multicolumn{2}{l}{\textit{Citation status after three rounds of audit:}} \\[2pt]
+Fully confirmed \textcolor{green!60!black}{\textbf{[\checkmark]}} (no further action needed) & 7 \\
+\quad T1 (Kato VI.2.1 + VI.2.23 + FOT 1.3.1; \textbf{physically confirmed}) & \\
+\quad T1$'$ (Kato VI.2.1(iii); iff confirmed from conditions (i) and (iii); \textbf{physically confirmed}) & \\
+\quad T2 (Brezis Thm.\,4.26 + Cor.\,4.27; \textbf{physically confirmed from uploaded pages}) & \\
+\quad T3 (FOT Thm.\,1.4.1; 5 equivalent conditions confirmed; \textbf{physically confirmed}) & \\
+\quad T4 (ATG Thm.\,2.3; general Banach lattice statement confirmed) & \\
+\quad T5 (ATG Prop.\,2.4; all three conclusions confirmed) & \\
+\quad T6 (Kato Ex.\,IX.1.25 + Thm.\,IX.1.24; \textbf{physically confirmed};
+  previous citation ``IX.1.4'' was wrong --- Remark~1.4 is unrelated) & \\[2pt]
+Requires physical book check \textcolor{flagborder}{\textbf{[!]}} & 1 \\
+\quad T7: Schaefer Ex.\,1.1.6 (secondary corroboration only; or add one-sentence proof) & \\[2pt]
+\midrule
+Orphaned bibliography entries: confirmed for removal & 2 \\
+\quad \texttt{OuhabazConvex1996} (results covered by \texttt{OuhabazHeatEq}) & \\
+\quad \texttt{LiebLossAnalysis} (does \textbf{not} contain Kolmogorov--Riesz; citation was an error) & \\
+New bibliography entries required & 2 \\
+\quad \texttt{BrezisFA} (Brezis 2011, Thm.\,4.26\,+\,Cor.\,4.27; primary source for T2) & \\
+\quad \texttt{SchaeferBanachLattices} (Schaefer 1974; for T7, if option~(a) chosen) & \\
+Manuscript citations to correct or add & 4 \\
+\quad T6: \texttt{\textbackslash cite[Ex.\textasciitilde IX.1.25]\{KatoPerturbation\}}
+  (replaces wrong ``IX.1.4''; Ex.\,IX.1.25 \textbf{physically confirmed}) & \\
+\quad T1: add \texttt{\textbackslash cite[Thm.\textasciitilde VI.2.23]\{KatoPerturbation\}}
+  (Second Representation Theorem; \textbf{physically confirmed}) & \\
+\quad T2: replace \texttt{\textbackslash cite\{LiebLossAnalysis\}} with
+  \texttt{\textbackslash cite[Cor.\textasciitilde 4.27]\{BrezisFA\}} (wrong source) & \\
+\quad T3: update Ouhabaz citation from ``Ch.\,1'' to
+  \texttt{\textbackslash cite[Thm.\textasciitilde 1.4.1]\{OuhabazHeatEq\}} & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\bigskip
+\noindent\textbf{Remaining actions before submission} (in priority order).
+\begin{enumerate}[leftmargin=2em]
+
+  \item \textbf{T6 (holomorphic semigroup) --- citation correction.}\newline
+    The previously proposed citation ``Kato Thm.\,IX.1.4'' is \textbf{wrong}:
+    that label is Remark~1.4 (recovering a generator from a contraction semigroup),
+    unrelated to holomorphy. \textbf{Correct references} (physically confirmed):\newline
+    (a)~\textbf{Kato Ex.\,IX.1.25}: nonneg.\ selfadjoint $\Rightarrow$ $e^{-tH}$ holomorphic
+    for $\operatorname{Re}t>0$, $\|e^{-tH}\|\le1$ --- the directly applicable result.\newline
+    (b)~\textbf{Kato Thm.\,IX.1.24}: m-sectorial with vertex~$0$ $\Rightarrow$ holomorphic
+    semigroup, $\|e^{-tT}\|\le1$ --- the general theorem backing Ex.\,1.25.\newline
+    Update manuscript citation to
+    {\small\texttt{\textbackslash cite[Ex.\textasciitilde IX.1.25]\{KatoPerturbation\}}}.
+
+  \item \textbf{T2 (Kolmogorov--Riesz) --- citation correction + possible proof gap.}\newline
+    The citation \texttt{LiebLossAnalysis} is wrong (Lieb--Loss does not contain this theorem;
+    ``Thm.\,2.13'' is an internal number from Hiroshima 2019).
+    \textbf{Correct citation:} Brezis Thm.\,4.26 (bounded $\Omega$) or Cor.\,4.27 (full
+    $\mathbb{R}^N$, requires tightness).
+    \textbf{Proof gap check:} if the compactness is invoked on $L^2(\mathbb{R})$,
+    Cor.\,4.27 is needed and the proof must establish uniform $L^2$-tail decay.
+    Update citation to
+    {\small\texttt{\textbackslash cite[Cor.\textasciitilde 4.27]\{BrezisFA\}}}.
+
+  \item \textbf{T1 (form-domain identity)}: the manuscript should cite both Kato theorems:
+    VI.2.1 (existence, operator equality) and \textbf{VI.2.23} (domain identity
+    $D(H^{1/2})=D(\mathfrak{h})$). Add:\newline
+    {\small\texttt{\textbackslash cite[Thm.\textasciitilde VI.2.23]\{KatoPerturbation\}}}.
+
+  \item \textbf{T3 (Ouhabaz precise number)}: update citation to:\newline
+    {\small\texttt{\textbackslash cite[Thm.\textasciitilde 1.4.1]\{OuhabazHeatEq\}}}.
+
+  \item \textbf{T7 (closed ideals)}: (a)~confirm Schaefer Ex.\,1.1.6 physically and add\newline
+    {\small\texttt{\textbackslash cite[Ex.\textasciitilde 1.1.6]\{SchaeferBanachLattices\}}},
+    or (b)~add a one-sentence proof (band projection argument) to avoid the citation risk.
+
+  \item \textbf{Bibliography cleanup:}
+    remove \texttt{OuhabazConvex1996} (subsumed);
+    remove \texttt{LiebLossAnalysis} from T2 cite;
+    add \texttt{BrezisFA}; add \texttt{SchaeferBanachLattices} if T7 option~(a) chosen.
+
+\end{enumerate}
+
+\bigskip\bigskip
+\noindent\textbf{Verified BibTeX entries} (ready for copy-paste into \texttt{.bib} file).
+\begin{small}
+\begin{verbatim}
+@book{KatoPerturbation,
+  author    = {Kato, Tosio},
+  title     = {Perturbation Theory for Linear Operators},
+  series    = {Classics in Mathematics},
+  publisher = {Springer-Verlag},
+  address   = {Berlin},
+  year      = {1995},
+  note      = {Reprint of the 1980 second edition},
+  isbn      = {978-3-540-58661-6},
+  doi       = {10.1007/978-3-642-66282-9}
+}
+
+% NEW ENTRY (add for T2; replaces LiebLossAnalysis for this citation):
+@book{BrezisFA,
+  author    = {Brezis, Ha{\"i}m},
+  title     = {Functional Analysis, {S}obolev Spaces and Partial
+               Differential Equations},
+  series    = {Universitext},
+  publisher = {Springer},
+  address   = {New York},
+  year      = {2011},
+  isbn      = {978-0-387-70913-0},
+  doi       = {10.1007/978-0-387-70914-7}
+}
+
+@book{FOT,
+  author    = {Fukushima, Masatoshi and Oshima, Yoichi
+               and Takeda, Masayoshi},
+  title     = {Dirichlet Forms and Symmetric Markov Processes},
+  edition   = {2},
+  series    = {De Gruyter Studies in Mathematics},
+  volume    = {19},
+  publisher = {De Gruyter},
+  address   = {Berlin},
+  year      = {2011},
+  doi       = {10.1515/9783110218091}
+}
+
+@book{OuhabazHeatEq,
+  author    = {Ouhabaz, El-Maati},
+  title     = {Analysis of Heat Equations on Domains},
+  series    = {London Mathematical Society Monographs Series},
+  volume    = {31},
+  publisher = {Princeton University Press},
+  address   = {Princeton, NJ},
+  year      = {2005},
+  isbn      = {978-0-691-12016-4}
+}
+
+@article{ATGStrictPos2020,
+  author  = {Arendt, Wolfgang and ter Elst, A. F. M. and
+             Gl{\"u}ck, Jochen},
+  title   = {Strict positivity for the principal eigenfunction
+             of elliptic operators with various boundary
+             conditions},
+  journal = {Advanced Nonlinear Studies},
+  volume  = {20},
+  number  = {3},
+  pages   = {633--650},
+  year    = {2020},
+  doi     = {10.1515/ans-2020-2091}
+}
+
+% NEW ENTRY (add for T7):
+@book{SchaeferBanachLattices,
+  author    = {Schaefer, Helmut H.},
+  title     = {Banach Lattices and Positive Operators},
+  series    = {Die Grundlehren der mathematischen Wissenschaften},
+  volume    = {215},
+  publisher = {Springer-Verlag},
+  address   = {Berlin, Heidelberg},
+  year      = {1974},
+  isbn      = {978-3-540-06936-2},
+  doi       = {10.1007/978-3-642-65970-6}
+}
+
+% REMOVE these entries:
+% OuhabazConvex1996  -- orphaned; subsumed by OuhabazHeatEq
+% LiebLossAnalysis (from T2 cite only) -- does not contain this theorem;
+%   keep entry if cited elsewhere in paper, but remove from T2 \cite
+\end{verbatim}
+\end{small}
+
+\end{document}
