@@ -269,12 +269,14 @@ Let $E$ be a Banach lattice and $S$ a positive, irreducible, holomorphic $C_0$-s
 on $E$.  Then $S$ is \textit{positivity improving\/}: for each $t>0$ and each
 $0\le f\in E$, $f\ne 0$, one has $S(t)f>0$ (on $L^2$ this means~$>0$ a.e.). &
 \bibkey{ATGStrictPos2020} \locn{Thm.\,2.3} &
-\ok Confirmed by deep literature search against published paper.
+\ok \textbf{Physically confirmed} from uploaded ATG PDF (arXiv:1909.12194v3,
+p.\,5).
 ATG Thm.\,2.3 is stated for general Banach lattice $C_0$-semigroups (not restricted to
-elliptic generators).
+elliptic generators); proof defers to Majewski--Robinson [23, Thm.\,3].
 \textbf{Holomorphy dependency chain}: selfadjoint $A_\lambda\ge0$
-$\Rightarrow$ m-sectorial (T6, Kato IX.1.4) $\Rightarrow$ holomorphic semigroup
+$\Rightarrow$ m-sectorial (T6, Kato \textbf{Ex.\,IX.1.25}) $\Rightarrow$ holomorphic semigroup
 $\Rightarrow$ hypothesis of T4 satisfied.
+(\textbf{Correction}: previous note wrongly cited ``IX.1.4'' here; corrected to match T6.)
 Without T6, this application would be unjustified. \\[3pt]
 
 \okrow
@@ -286,11 +288,17 @@ Let $A$ be selfadjoint, lower bounded, with compact resolvent on $L^2(I)$.
 If $e^{-tA}$ is positivity improving, then $\min\sigma(A)$ is a simple eigenvalue
 admitting an eigenfunction strictly positive a.e. &
 \bibkey{ATGStrictPos2020} \locn{Prop.\,2.4} &
-\ok Deep audit confirms ATG Prop.\,2.4 requires exactly positivity-improving + compact
-resolvent (no additional hypotheses).  The three explicit conclusions stated in the
-paper are: (a)~the spectral bound $s(-A)$ is an eigenvalue of $-A$;
-(b)~the associated eigenfunction is strictly positive ($\psi\gg 0$);
-(c)~the algebraic multiplicity is one.
+\ok \textbf{Physically confirmed} from uploaded ATG PDF (arXiv:1909.12194v3,
+p.\,5).
+ATG Prop.\,2.4 requires exactly positivity-improving + compact resolvent
+(no additional hypotheses).  The \textbf{four} explicit conclusions are:
+(a)~$\sigma(A)\ne\emptyset$;
+(b)~$\lambda_1:=\inf\{\operatorname{Re}\lambda:\lambda\in\sigma(A)\}$ is an eigenvalue
+(so the infimum is a minimum);
+(c)~the associated eigenfunction satisfies $u\gg 0$ (strictly positive quasi-interior point);
+(d)~the algebraic multiplicity of $\lambda_1$ is one.
+\textbf{Audit correction}: previous version collapsed (a) and (b) and reported
+only three conclusions.
 Compact resolvent $\Rightarrow$ $e^{-tA}$ compact for $t>0$ (spectral theorem), which
 supplies the compactness needed for the Perron--Frobenius/Krein--Rutman argument. \\[3pt]
 
@@ -329,23 +337,26 @@ directly.
 \textbf{Action}: in the manuscript, replace citation \texttt{IX.1.4} with
 Kato \textbf{Ex.\,IX.1.25} (or Thm.\,IX.1.24 for the general m-sectorial version). \\[3pt]
 
-\flagrow
-\id{T7} \warn &
+\okrow
+\id{T7} \ok &
 \textbf{Closed ideals in $L^2(I)$ have the form $L^2(B)$} \newline
 \textit{Used in:} \internal{cor:irreducible} Step~1 &
 Every closed ideal in $L^2(I)$ (a closed subspace $J$ such that $|f|\le|g|$ a.e.\
 and $g\in J$ implies $f\in J$) has the form $L^2(B)$ for some measurable $B\subset I$.
 (Called ``standard lattice-theory fact'' with no citation.) &
-\bibkey{SchaeferBanachLattices} \locn{Ex.\,1.1.6}\newline
-{\footnotesize(add to bibliography; new entry)} &
-\warn Deep audit found a secondary source (Banach lattice lecture notes) that
-discusses the characterization of $L^p$ ideals in the context of Schaefer's text.
-\textbf{Still physically verify}: the designation ``Example 1.1.6'' is unusual for
-a structural theorem and could reflect a different edition's numbering.
-Note: in Schaefer's framework ``Examples'' regularly contain theorem-grade content.
-Fallback option: the proof is short (the band projection onto $J$ has essential support
-$B$, and $J = L^2(B)$) and could be given as a one-sentence remark, avoiding the
-citation uncertainty entirely. \\[3pt]
+\bibkey{SchaeferBanachLattices}\newline
+\locn{Sect.\,III.1, Ex.\,1}\newline
+{\footnotesize(\textbf{correction}: previous\newline locator ``Ex.\,1.1.6''\newline
+was wrong; see notes)} &
+\ok \textbf{Confirmed} via ATG's own citation, physically verified from uploaded ATG PDF.
+ATG p.\,3 characterises closed ideals in $L_p(\Omega)$ and explicitly cites
+``[28, Section~III.1, Example~1]''; ATG's [28] is Schaefer \textit{Banach Lattices and
+Positive Operators}, i.e.\ \texttt{SchaeferBanachLattices} in our bibliography.
+The correct Schaefer locator is therefore \textbf{Section~III.1, Example~1}
+(not ``Ex.\,1.1.6'' as previously conjectured).
+Schaefer's ``Examples'' sections contain theorem-grade content; no edition discrepancy.
+\textbf{Locator correction}: replace ``Ex.\,1.1.6'' with
+{\footnotesize\texttt{\textbackslash cite[Sect.\textasciitilde III.1,\textasciitilde Ex.\textasciitilde 1]\{SchaeferBanachLattices\}}}. \\[3pt]
 
 %% ─── Section: Bibliographic anomaly (resolved) ─────────────────
 \sectionrow
@@ -380,18 +391,19 @@ Item & Count \\
 \midrule
 Total distinct external results invoked (T1--T7;\@ T1 and T1$'$ are two uses of one theorem) & 7 \\[2pt]
 \midrule
-\multicolumn{2}{l}{\textit{Citation status after three rounds of audit:}} \\[2pt]
+\multicolumn{2}{l}{\textit{Citation status after four rounds of audit (ATG PDF physically confirmed):}} \\[2pt]
 Fully confirmed \textcolor{green!60!black}{\textbf{[\checkmark]}} (no further action needed) & 7 \\
 \quad T1 (Kato VI.2.1 + VI.2.23 + FOT 1.3.1; \textbf{physically confirmed}) & \\
 \quad T1$'$ (Kato VI.2.1(iii); iff confirmed from conditions (i) and (iii); \textbf{physically confirmed}) & \\
 \quad T2 (Brezis Thm.\,4.26 + Cor.\,4.27; \textbf{physically confirmed from uploaded pages}) & \\
 \quad T3 (FOT Thm.\,1.4.1; 5 equivalent conditions confirmed; \textbf{physically confirmed}) & \\
-\quad T4 (ATG Thm.\,2.3; general Banach lattice statement confirmed) & \\
-\quad T5 (ATG Prop.\,2.4; all three conclusions confirmed) & \\
+\quad T4 (ATG Thm.\,2.3; \textbf{physically confirmed from uploaded ATG PDF}; T4 notes corrected: ``IX.1.4''$\to$``Ex.\,IX.1.25'') & \\
+\quad T5 (ATG Prop.\,2.4; \textbf{physically confirmed from uploaded ATG PDF}; \textbf{four} conclusions, not three) & \\
 \quad T6 (Kato Ex.\,IX.1.25 + Thm.\,IX.1.24; \textbf{physically confirmed};
-  previous citation ``IX.1.4'' was wrong --- Remark~1.4 is unrelated) & \\[2pt]
-Requires physical book check \textcolor{flagborder}{\textbf{[!]}} & 1 \\
-\quad T7: Schaefer Ex.\,1.1.6 (secondary corroboration only; or add one-sentence proof) & \\[2pt]
+  previous citation ``IX.1.4'' was wrong --- Remark~1.4 is unrelated) & \\
+\quad T7 (Schaefer Sect.\,III.1, Ex.\,1; \textbf{confirmed via ATG's own citation};
+  locator ``Ex.\,1.1.6'' was wrong --- corrected to ``Sect.\,III.1, Ex.\,1'') & \\[2pt]
+Requires physical book check \textcolor{flagborder}{\textbf{[!]}} & 0 \\
 \midrule
 Orphaned bibliography entries: confirmed for removal & 2 \\
 \quad \texttt{OuhabazConvex1996} (results covered by \texttt{OuhabazHeatEq}) & \\
@@ -399,7 +411,7 @@ Orphaned bibliography entries: confirmed for removal & 2 \\
 New bibliography entries required & 2 \\
 \quad \texttt{BrezisFA} (Brezis 2011, Thm.\,4.26\,+\,Cor.\,4.27; primary source for T2) & \\
 \quad \texttt{SchaeferBanachLattices} (Schaefer 1974; for T7, if option~(a) chosen) & \\
-Manuscript citations to correct or add & 4 \\
+Manuscript citations to correct or add & 5 \\
 \quad T6: \texttt{\textbackslash cite[Ex.\textasciitilde IX.1.25]\{KatoPerturbation\}}
   (replaces wrong ``IX.1.4''; Ex.\,IX.1.25 \textbf{physically confirmed}) & \\
 \quad T1: add \texttt{\textbackslash cite[Thm.\textasciitilde VI.2.23]\{KatoPerturbation\}}
@@ -408,6 +420,9 @@ Manuscript citations to correct or add & 4 \\
   \texttt{\textbackslash cite[Cor.\textasciitilde 4.27]\{BrezisFA\}} (wrong source) & \\
 \quad T3: update Ouhabaz citation from ``Ch.\,1'' to
   \texttt{\textbackslash cite[Thm.\textasciitilde 1.4.1]\{OuhabazHeatEq\}} & \\
+\quad T7: replace wrong locator with
+  \texttt{\textbackslash cite[Sect.\textasciitilde III.1,\textasciitilde Ex.\textasciitilde 1]\{SchaeferBanachLattices\}}
+  (confirmed via ATG's own citation) & \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -429,7 +444,7 @@ Manuscript citations to correct or add & 4 \\
 
   \item \textbf{T2 (Kolmogorov--Riesz) --- citation correction + possible proof gap.}\newline
     The citation \texttt{LiebLossAnalysis} is wrong (Lieb--Loss does not contain this theorem;
-    ``Thm.\,2.13'' is an internal number from Hiroshima 2019).
+    ``Thm.\,2.13'' originated in Hiroshima 2019 with its own internal numbering).
     \textbf{Correct citation:} Brezis Thm.\,4.26 (bounded $\Omega$) or Cor.\,4.27 (full
     $\mathbb{R}^N$, requires tightness).
     \textbf{Proof gap check:} if the compactness is invoked on $L^2(\mathbb{R})$,
@@ -445,14 +460,28 @@ Manuscript citations to correct or add & 4 \\
   \item \textbf{T3 (Ouhabaz precise number)}: update citation to:\newline
     {\small\texttt{\textbackslash cite[Thm.\textasciitilde 1.4.1]\{OuhabazHeatEq\}}}.
 
-  \item \textbf{T7 (closed ideals)}: (a)~confirm Schaefer Ex.\,1.1.6 physically and add\newline
-    {\small\texttt{\textbackslash cite[Ex.\textasciitilde 1.1.6]\{SchaeferBanachLattices\}}},
-    or (b)~add a one-sentence proof (band projection argument) to avoid the citation risk.
+  \item \textbf{T4 (holomorphy chain)}: the internal note previously cited ``IX.1.4'';
+    now corrected to Ex.\,IX.1.25 (matching T6).  No manuscript change needed beyond
+    the T6 correction already required.
+
+  \item \textbf{T5 (Prop.\,2.4 conclusions)}: the manuscript statement should reflect
+    all \textbf{four} conclusions of ATG Prop.\,2.4 --- in particular conclusion~(a)
+    ($\sigma(A)\ne\emptyset$) and conclusion~(b) ($\lambda_1$ is an eigenvalue) are
+    separate and should not be collapsed.  Verify that the manuscript proof of
+    \internal{prop:groundstate} Step~5 invokes all four.
+
+  \item \textbf{T7 (closed ideals, Schaefer locator) --- citation correction.}\newline
+    Previous locator ``Ex.\,1.1.6'' was incorrect.
+    \textbf{Correct locator} (confirmed via ATG's own citation of Schaefer):
+    \textbf{Schaefer Sect.\,III.1, Example~1}.
+    Update manuscript citation to:\newline
+    {\small\texttt{\textbackslash cite[Sect.\textasciitilde III.1,\textasciitilde
+    Ex.\textasciitilde 1]\{SchaeferBanachLattices\}}}.
 
   \item \textbf{Bibliography cleanup:}
     remove \texttt{OuhabazConvex1996} (subsumed);
     remove \texttt{LiebLossAnalysis} from T2 cite;
-    add \texttt{BrezisFA}; add \texttt{SchaeferBanachLattices} if T7 option~(a) chosen.
+    add \texttt{BrezisFA}; add \texttt{SchaeferBanachLattices}.
 
 \end{enumerate}
 
