@@ -441,6 +441,17 @@ abstract properties of $\mathcal E_\lambda$ and do not depend on the explicit-fo
 Since adding a constant multiple of $\|G\|_2^2$ only shifts the spectrum of the associated
 operator, it does not affect positivity/irreducibility properties of the semigroup and does not
 affect eigenfunction parity considerations.
+
+\medskip\noindent
+\emph{Warning (positivity vs.\ spectral shape).}
+Note that $c_p(\lambda)<0$ in Lemma~\ref{lem:prime-energy}, so the sign of the total
+additive constant $C_\lambda$ is not controlled here.
+This means the decomposition does \emph{not} by itself establish nonnegativity of the
+full explicit-formula quadratic form (``Weil positivity'').
+What it does establish is the Markov, irreducible, and compact-resolvent structure of the
+nonnegative difference-energy part $\mathcal E_\lambda$, and hence the simplicity, strict
+positivity, and evenness of the ground-state eigenfunction---properties that are unaffected
+by adding a scalar multiple of $\|G\|_2^2$.
 \end{remark}
 
 %% =================================================================
@@ -544,44 +555,54 @@ in Step~2 to get $f(u-t)=f(u)$ a.e.\ on $J$, which after the substitution $u\map
 (and noting $J+t\subset I$ for $|t|<\delta$, same argument as Step~2.3) yields $f(u)=f(u+t)$ a.e.\ on appropriate sets.
 At $t=0$ the identity is trivial.}
 
-\Step{Define the mollification $f_\eta:=f*\rho_\eta$ on $J_\eta:=\{u\in J:\mathrm{dist}(u,\R\setminus J)>\eta\}$,
-where $\rho_\eta(s)=\eta^{-1}\rho(s/\eta)$ for a standard nonneg.\ mollifier $\rho$ supported in $(-1,1)$ with $\int\rho=1$, and $0<\eta<\delta/2$.}
-\Stepjust{Standard construction.  $f_\eta\in C^\infty(J_\eta)$ by standard properties of convolution with $C_c^\infty$ kernels.}
+\Step{Fix the compact interval $K:=[a+\delta,\,b-\delta]$ where $J=[a,b]$.
+Shrink $J$ at the outset so that $K$ is nonempty.}
+\Stepjust{Choosing $J$ with length $>2\delta$ ensures $K\ne\emptyset$.
+Working on the fixed domain $K\Subset J$ will let us avoid any dependence on varying domains
+in the subsequent mollification argument.}
 
-\Step{$f_\eta$ is translation-invariant on $J_\eta$ for shifts $|t|<\delta/2$:
-$f_\eta(u+t)=f_\eta(u)$ for $u\in J_\eta$.}
+\Step{Let $\rho$ be a standard nonneg.\ mollifier supported in $(-1,1)$ with $\int\rho=1$.
+Set $\rho_\eta(s)=\eta^{-1}\rho(s/\eta)$ and $f_\eta:=f*\rho_\eta$ for $0<\eta<\delta/4$.}
+\Stepjust{Standard construction; $f_\eta\in C^\infty(\R)$.}
 
-\Substep{For $u\in J_\eta$ and $s\in\supp\rho_\eta\subset(-\eta,\eta)$: $u-s\in J$.}
-\Substepjust{$|u-s-u|=|s|<\eta<\mathrm{dist}(u,\R\setminus J)$ by definition of $J_\eta$.}
+\Step{For every $0<\eta<\delta/4$ and every $t\in(0,\delta/2)$: $f_\eta(u+t)=f_\eta(u)$ for all $u\in K$.}
+\Stepjust{Fix $u\in K$ and $|s|<\eta$.  Then
+$u-s\in[a+\delta-\eta,\,b-\delta+\eta]\subset J$ (since $\eta<\delta/4$).
+Let $h_t:=f(\cdot+t)-f(\cdot)$.  By Step~3, $h_t=0$ a.e.\ on $J$, so $h_t=0$ in $L^1(J)$.
+Hence
+\[
+f_\eta(u+t)-f_\eta(u)=(h_t*\rho_\eta)(u)=\int h_t(u-s)\rho_\eta(s)\,ds=0,
+\]
+because $u-s\in J$ on the support of $\rho_\eta$.}
 
-\Substep{$f_\eta(u+t)=\int_\R f(u+t-s)\rho_\eta(s)\,ds
-=\int_\R f(u-s)\rho_\eta(s)\,ds=f_\eta(u)$.}
-\Substepjust{By Fubini and Step~5.1, for each $s\in\supp\rho_\eta$, $u-s\in J$ and
-$|t|<\delta/2<\delta$, so Step~3 gives $f((u-s)+t)=f(u-s)$ for a.e.\ such $u-s$.
-Hence $f(u+t-s)=f(u-s)$ a.e., and integration against $\rho_\eta(s)\,ds$ yields the identity.}
+\Step{For each $\eta\in(0,\delta/4)$, $f_\eta$ is constant on $K$; call this constant $c_\eta$.}
+\Stepjust{$f_\eta\in C^\infty$ and Step~6 gives $f_\eta(u+t)=f_\eta(u)$ for all $u\in K$ and all $t\in(0,\delta/2)$.
+For any $u\in K^\circ$:
+\[
+f_\eta'(u)=\lim_{t\downarrow 0}\frac{f_\eta(u+t)-f_\eta(u)}{t}=0.
+\]
+Hence $f_\eta$ is constant on the connected interval $K$.}
 
-\Step{$f_\eta$ is constant on $J_\eta$.}
-\Stepjust{$J_\eta$ is a connected open interval (nonempty for small $\eta$) and $f_\eta\in C^\infty(J_\eta)$
-is invariant under all translations of size $<\delta/2$ (Step~5).
-A smooth function on a connected open subset of $\R$ that is invariant under arbitrarily small translations
-has zero derivative everywhere: for any $u\in J_\eta$, $f_\eta'(u)=\lim_{t\to 0}(f_\eta(u+t)-f_\eta(u))/t=0$.
-Hence $f_\eta$ is constant.}
+\Step{$(c_\eta)_{\eta\downarrow 0}$ is Cauchy, hence converges to some $c\in\R$.}
+\Stepjust{Since $f\in L^1(K)$ and mollification converges in $L^1(K)$:
+\[
+m(K)|c_\eta-c_{\eta'}|=\|f_\eta-f_{\eta'}\|_{L^1(K)}
+\le \|f_\eta-f\|_{L^1(K)}+\|f-f_{\eta'}\|_{L^1(K)}\to 0.
+\]
+Hence $(c_\eta)$ is Cauchy, so convergent.}
 
-\Step{$f=\1_B$ is a.e.\ constant on $J$.}
-\Stepjust{As $\eta\downarrow 0$, $f_\eta\to f$ in $L^1(J)$ (standard mollification convergence theorem).
-Since each $f_\eta$ is constant on $J_\eta$ and $J_\eta\nearrow J^\circ=J$, the limit $f$ is
-a.e.\ equal to a constant on~$J$.}
+\Step{$f=\1_B$ equals $c$ a.e.\ on $K$, hence $c\in\{0,1\}$.}
+\Stepjust{
+\[
+\|f-c\|_{L^1(K)}\le\|f-f_\eta\|_{L^1(K)}+\|f_\eta-c\|_{L^1(K)}
+=\|f-f_\eta\|_{L^1(K)}+m(K)|c_\eta-c|\to 0.
+\]
+Thus $f=c$ a.e.\ on $K$.  Since $f=\1_B$ takes only values $0$ and $1$ a.e., we have $c\in\{0,1\}$.}
 
-\Step{$f=\1_B$ is a.e.\ constant on~$I$.}
-\Stepjust{The compact subinterval $J\Subset I$ was arbitrary (Step~1).  Cover $I$ by
-a countable increasing sequence $J_1\subset J_2\subset\cdots$ of compact subintervals
-with $\bigcup_n J_n=I$.  By Step~7, $\1_B$ is a.e.\ constant on each $J_n$.  Since
-successive $J_n$'s overlap, the constant must be the same on all of them.
-Hence $\1_B$ is a.e.\ constant on~$I$.}
-
-\Step{$m(B)=0$ or $m(I\setminus B)=0$.}
-\Stepjust{Since $\1_B\in\{0,1\}$ a.e., the only possible constants are $0$ and $1$.
-If $\1_B=0$ a.e.\ on $I$, then $m(B)=0$.  If $\1_B=1$ a.e.\ on $I$, then $m(I\setminus B)=0$.}
+\Step{$f=\1_B$ is a.e.\ constant on~$I$, hence $m(B)=0$ or $m(I\setminus B)=0$.}
+\Stepjust{Cover $I$ by overlapping compact subintervals $J_n\Subset I$ (each chosen with length $>2\delta_n$
+for the appropriate $\delta_n$) and apply Steps~1--9 to each.  On overlaps, the a.e.\ constants must agree,
+so $\1_B$ is a.e.\ constant on all of $I$.  Since $\1_B\in\{0,1\}$ a.e., either $m(B)=0$ or $m(I\setminus B)=0$.}
 
 \QEDstep
 \end{structuredproof}
@@ -643,7 +664,33 @@ and yields the conclusion.}
 \QEDstep
 \end{structuredproof}
 
-%% =================================================================
+\begin{remark}[In the nonconservative (killing) setting, only the null case can occur]
+\label{rem:indicator-energy-sharp}
+Since $\mathcal E_\lambda$ is defined by zero-extension (Definition~\ref{def:E}), one has
+$\mathcal E_\lambda(1)>0$, so the conull alternative $m(I\setminus B)=0$ cannot occur under
+the hypothesis $\mathcal E_\lambda(\1_B)=0$.  Hence that hypothesis actually forces $m(B)=0$.
+\end{remark}
+
+\begin{structuredproof}[Proof of Remark~\ref{rem:indicator-energy-sharp}]
+\Step{$\mathcal E_\lambda(1)>0$.}
+\Stepjust{For $0<t<2L$, $\|\widetilde 1-S_t\widetilde 1\|_2^2=m(I\,\Delta\,(I+t))=2t>0$
+(Proposition~\ref{prop:irreducible}, Step~2.2).
+Since $w(t)>0$ on $(0,2L)$:
+\[
+\mathcal E_\lambda(1)\ge\int_0^{2L}w(t)\cdot 2t\,dt>0.
+\]}
+
+\Step{If $m(I\setminus B)=0$, then $\mathcal E_\lambda(\1_B)=\mathcal E_\lambda(1)>0$.}
+\Stepjust{$m(I\setminus B)=0$ implies $\1_B=1$ in $L^2(I)$, hence
+$\mathcal E_\lambda(\1_B)=\mathcal E_\lambda(1)>0$ by Step~1.}
+
+\Step{Therefore $\mathcal E_\lambda(\1_B)=0$ forces $m(B)=0$.}
+\Stepjust{Contrapositive of Step~2 combined with Lemma~\ref{lem:indicator-energy}.}
+
+\QEDstep
+\end{structuredproof}
+
+%% -----------------------------------------------------------------
 \subsection{Operator realization: closedness and compact resolvent}
 %% =================================================================
 
@@ -1153,19 +1200,30 @@ So $(PT(t)P)^*=P^*T(t)^*P^*=PT(t)P$ and $(T(t)P)^*=P^*T(t)^*=PT(t)$.
 From Step~2.1: $PT(t)P=T(t)P$; equating with the adjoint computation: $PT(t)P=PT(t)$.
 Together: $T(t)P=PT(t)$.}
 
+\Step{$P$ commutes with $(A_\lambda+\alpha)^{-1}$ for every $\alpha>0$.}
+\Stepjust{Since $A_\lambda\ge 0$, the Laplace-transform identity
+\[
+(A_\lambda+\alpha)^{-1}=\int_0^\infty e^{-\alpha t}\,e^{-tA_\lambda}\,dt
+\]
+holds as a Bochner integral in $\mathcal B(L^2(I))$.
+By Step~2, $P$ commutes with $e^{-tA_\lambda}$ for every $t\ge 0$, hence commutes with the Bochner integral.}
+
 \Step{$P$ commutes with $A_\lambda^{1/2}$.}
-\Stepjust{$P$ commutes with $T(t)=e^{-tA_\lambda}$ for all $t>0$ (Step~2).
-Since the family of functions $\{e^{-t\lambda}\}_{t>0}$ separates points on $[0,\infty)$,
-a bounded operator commuting with every $e^{-tA_\lambda}$ must commute with the
-spectral measure $E(\cdot)$ of $A_\lambda$ (by the spectral theorem and a monotone-class
-or Stone--Weierstrass argument), hence with every bounded Borel function of $A_\lambda$.
-In particular, $P$ commutes with
-$A_\lambda^{1/2}=\int_0^\infty \lambda^{1/2}\,dE(\lambda)$.}
+\Stepjust{Let $R:=(A_\lambda+1)^{-1}$, which is bounded and selfadjoint.
+Step~3 (with $\alpha=1$) gives $PR=RP$.
+A bounded operator commuting with the bounded selfadjoint $R$ commutes with every bounded Borel function of $R$,
+in particular with its spectral projections, hence with the spectral measure $E_R$.
+Since $R=\varphi(A_\lambda)$ with $\varphi(\lambda)=(\lambda+1)^{-1}$, a Borel bijection
+$(0,\infty)\to(0,1)$, the spectral measures satisfy $E_{A_\lambda}(\Delta)=E_R(\varphi(\Delta))$ for Borel $\Delta$.
+Thus $P$ commutes with $E_{A_\lambda}(\Delta)$ for all Borel $\Delta$, and therefore
+$P$ commutes with $A_\lambda^{1/2}=\int_0^\infty \mu^{1/2}\,dE_{A_\lambda}(\mu)$
+in the sense that $P\mathcal D(A_\lambda^{1/2})\subset \mathcal D(A_\lambda^{1/2})$
+and $A_\lambda^{1/2}P=PA_\lambda^{1/2}$ on $\mathcal D(A_\lambda^{1/2})$.}
 
 \Step{$P(\mathcal D(\mathcal E_\lambda))\subset\mathcal D(\mathcal E_\lambda)$ and
 $Q(\mathcal D(\mathcal E_\lambda))\subset\mathcal D(\mathcal E_\lambda)$.}
 \Stepjust{$\mathcal D(\mathcal E_\lambda)=\mathcal D(A_\lambda^{1/2})$.
-If $u\in\mathcal D(A_\lambda^{1/2})$, then $A_\lambda^{1/2}Pu=PA_\lambda^{1/2}u\in L^2(I)$ (Step~3),
+If $u\in\mathcal D(A_\lambda^{1/2})$, then $A_\lambda^{1/2}Pu=PA_\lambda^{1/2}u\in L^2(I)$ (Step~4),
 so $Pu\in\mathcal D(A_\lambda^{1/2})$.  Similarly for $Qu=(I-P)u$.}
 
 \Step{$\mathcal E_\lambda(G)=\mathcal E_\lambda(PG)+\mathcal E_\lambda(QG)$ for $G\in\mathcal D(\mathcal E_\lambda)$.}
@@ -1174,7 +1232,7 @@ so $Pu\in\mathcal D(A_\lambda^{1/2})$.  Similarly for $Qu=(I-P)u$.}
 \Substepjust{Form identity from the representation theorem (Step~1 of Theorem~\ref{thm:operator}).}
 
 \Substep{$A_\lambda^{1/2}G=A_\lambda^{1/2}PG+A_\lambda^{1/2}QG=PA_\lambda^{1/2}G+QA_\lambda^{1/2}G$.}
-\Substepjust{$G=PG+QG$ and $A_\lambda^{1/2}$ commutes with $P$ and $Q$ (Step~3).}
+\Substepjust{$G=PG+QG$ and $A_\lambda^{1/2}$ commutes with $P$ and $Q$ (Step~4).}
 
 \Substep{$PA_\lambda^{1/2}G$ and $QA_\lambda^{1/2}G$ are orthogonal in $L^2(I)$.}
 \Substepjust{$\langle Pv,Qv\rangle=\langle Pv,(I-P)v\rangle=\langle Pv,v\rangle-\langle Pv,Pv\rangle
@@ -1183,9 +1241,9 @@ so $Pu\in\mathcal D(A_\lambda^{1/2})$.  Similarly for $Qu=(I-P)u$.}
 \Substep{$\|A_\lambda^{1/2}G\|^2=\|PA_\lambda^{1/2}G\|^2+\|QA_\lambda^{1/2}G\|^2
 =\|A_\lambda^{1/2}PG\|^2+\|A_\lambda^{1/2}QG\|^2
 =\mathcal E_\lambda(PG)+\mathcal E_\lambda(QG)$.}
-\Substepjust{Pythagorean theorem (Step~5.3), then $PA_\lambda^{1/2}G=A_\lambda^{1/2}PG$ (Step~3),
-then the form identity (Step~5.1) applied to $PG$ and $QG$ (which lie in $\mathcal D(\mathcal E_\lambda)$
-by Step~4).}
+\Substepjust{Pythagorean theorem (Step~6.3), then $PA_\lambda^{1/2}G=A_\lambda^{1/2}PG$ (Step~4),
+then the form identity (Step~6.1) applied to $PG$ and $QG$ (which lie in $\mathcal D(\mathcal E_\lambda)$
+by Step~5).}
 
 \QEDstep
 \end{structuredproof}
@@ -1530,7 +1588,7 @@ Since $\|\psi\|_2>0$ ($\psi\ne 0$), $|c|=1$.  Combined with $c>0$ (Step~4): $c=1
 \end{structuredproof}
 
 %% =================================================================
-\section{Summary of concrete progress}
+\section{Conclusion}
 %% =================================================================
 
 \begin{itemize}
