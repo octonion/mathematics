@@ -1,0 +1,511 @@
+% ============================================================
+%  REVISION CHANGE LOG
+%  Weil Quadratic Form — Structured Proof (lamport_structured.tex)
+%  Changes applied in response to the Second Independent Audit
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{etoolbox}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
+
+% --- Severity colours ---
+\definecolor{sigcol}{RGB}{180,30,30}
+\definecolor{modcol}{RGB}{200,100,0}
+\definecolor{mincol}{RGB}{30,100,180}
+\definecolor{trivcol}{RGB}{80,130,60}
+\definecolor{rowsig}{RGB}{255,235,235}
+\definecolor{rowmod}{RGB}{255,245,225}
+\definecolor{rowmin}{RGB}{235,245,255}
+\definecolor{rowtri}{RGB}{240,250,235}
+\definecolor{skiprow}{RGB}{245,245,245}
+
+% --- Severity badge ---
+\newcommand{\sev}[1]{%
+  \ifstrequal{#1}{Significant}{\colorbox{sigcol}{\color{white}\textbf{\small Significant}}}{}%
+  \ifstrequal{#1}{Moderate}{\colorbox{modcol}{\color{white}\textbf{\small Moderate}}}{}%
+  \ifstrequal{#1}{Minor}{\colorbox{mincol}{\color{white}\textbf{\small Minor}}}{}%
+  \ifstrequal{#1}{Trivial}{\colorbox{trivcol}{\color{white}\textbf{\small Trivial}}}{}%
+}
+
+% --- Change environment ---
+\newcounter{changectr}
+\newenvironment{change}[3]{%  #1=row colour, #2=severity, #3=title
+  \refstepcounter{changectr}%
+  \begin{mdframed}[
+      backgroundcolor=#1,
+      linecolor=#1!60!black,
+      linewidth=1.0pt,
+      innertopmargin=6pt,
+      innerbottommargin=6pt,
+      skipabove=8pt,
+      skipbelow=4pt
+    ]
+  \noindent\textbf{Change~\thechangectr\quad}\sev{#2}\quad\textit{#3}\par\smallskip
+}{%
+  \end{mdframed}
+}
+
+\newcommand{\fld}[2]{\noindent\textbf{#1:}\quad #2\par\smallskip}
+
+% --- Skipped-issue environment ---
+\newenvironment{skipped}[2]{%  #1=audit issue number, #2=title
+  \begin{mdframed}[
+      backgroundcolor=skiprow,
+      linecolor=black!30,
+      linewidth=0.8pt,
+      innertopmargin=5pt,
+      innerbottommargin=5pt,
+      skipabove=6pt,
+      skipbelow=3pt
+    ]
+  \noindent\textbf{Audit Issue~#1}\quad\textit{#2}\par\smallskip
+}{%
+  \end{mdframed}
+}
+
+\pagestyle{fancy}
+\fancyhead[L]{\small Revision Change Log}
+\fancyhead[R]{\small\thepage}
+\fancyfoot{}
+
+\title{\textbf{Revision Change Log}\\[6pt]
+\large Weil Quadratic Form --- Structured Proof\\[3pt]
+\normalsize Response to Second Independent Audit}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+% ============================================================
+\section*{Overview}
+% ============================================================
+
+This document records every change made to \texttt{lamport\_structured.tex}
+in response to the 35-issue audit report (Second Independent Audit).
+Of the 35~issues identified, \textbf{34 were addressed} and \textbf{1 was
+deemed not necessary to address}.
+
+\medskip\noindent
+\textbf{Severity breakdown of addressed issues:}
+\begin{itemize}[nosep]
+\item 3 Significant (missing citations for standard theorems)
+\item 5 Moderate (flawed argument, incomplete covering, domain issues, logical inversion)
+\item 15 Minor (convergence, measurability, forward references, notation)
+\item 11 Trivial (notation, redundancies, style)
+\end{itemize}
+
+\medskip\noindent
+\textbf{New bibliography entries added:}
+Engel--Nagel~[EN00] and Reed--Simon~[RS80] (Vol.~I).
+
+% ============================================================
+\newpage
+\section{Change Log}
+% ============================================================
+
+% --- STEP A ---
+\subsection*{Step A --- Algebraic Identities (Lemmas 1--2)}
+
+\begin{change}{rowmin}{Minor}{Convergence of $\langle g,U_ag\rangle$ unstated (Audit \#1)}
+\fld{Location}{Lines 110--115 (setup before Lemma~1)}
+\fld{Original}{``\dots define the unitary dilation operator \dots
+Then $\|U_ag\|_2=\|g\|_2$ and $\langle g,U_ag\rangle$ is well-defined.''}
+\fld{Updated}{``\dots define the dilation operator \dots
+$U_a$ is unitary on $L^2(\mathbb R_+^*,d^*x)$: it is isometric
+($\|U_ag\|_2=\|g\|_2$ by Haar invariance \dots) and surjective
+($U_a^{-1}=U_{a^{-1}}$).  In particular, $\langle g,U_ag\rangle$ is
+well-defined and finite by Cauchy--Schwarz:
+$|\langle g,U_ag\rangle|\le\|g\|_2\|U_ag\|_2=\|g\|_2^2$.''}
+\fld{Reason}{Simultaneously addresses audit issues \#1 (convergence unstated)
+and \#3 (well-definedness/surjectivity implicit).  The unitarity proof,
+Cauchy--Schwarz bound, and surjectivity via explicit inverse are now all stated.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{Ambiguous substitution notation (Audit \#2)}
+\fld{Location}{Lemma~1, Step~2}
+\fld{Original}{``Substituting $y\mapsto y/a$ (with $d^*(y/a)=d^*y$) gives''}
+\fld{Updated}{``Substituting $y'=y/a$ (so $y=ay'$ and $d^*y=d^*y'$ by Haar invariance) gives''}
+\fld{Reason}{The arrow notation $y\mapsto y/a$ could be misread as defining the
+reverse substitution.  The primed-variable form is unambiguous.}
+\end{change}
+
+% --- STEP B ---
+\subsection*{Step B --- Prime Energy Decomposition (Lemma~3)}
+
+\begin{change}{rowmin}{Minor}{Sum finiteness forward reference (Audit \#4)}
+\fld{Location}{Lemma~3, Substep~1.1 justification}
+\fld{Original}{``Definition of $W_p$.''}
+\fld{Updated}{``Definition of $W_p$.  (The sum is in fact finite: Step~3 below shows
+$\langle g,U_{p^m}g\rangle=0$ for $p^m>\lambda^2$, so only finitely many terms
+contribute.  Steps~1--2 are therefore a finite computation.)''}
+\fld{Reason}{The sum is manipulated algebraically before finiteness is established;
+the forward reference resolves this.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{Zero-extension compatibility (Audit \#6)}
+\fld{Location}{Lemma~3, Step~4 justification}
+\fld{Original}{Ended with ``The $L^2(\mathbb R_+^*,d^*x)$ norm becomes the $L^2(\mathbb R,du)$ norm.''}
+\fld{Updated}{Added parenthetical: ``(Here $\widetilde G$ denotes the zero-extension of $G$ to
+$\mathbb R$; the identity holds because $g$ is supported in $[\lambda^{-1},\lambda]$, so $G$ is
+supported in $I=[-L,L]$, and the substitution $u=\log x$ applies simultaneously to both terms.)''}
+\fld{Reason}{Makes the implicit zero-extension explicit.}
+\end{change}
+
+% --- STEP C ---
+\subsection*{Step C --- Archimedean Energy Decomposition (Lemma~4)}
+
+\begin{change}{rowmin}{Minor}{$W_{\mathbb R}(f)$ convergence (Audit \#7)}
+\fld{Location}{Lemma~4, Step~1 justification}
+\fld{Original}{Justification ended after ``$t\in[0,\infty)$.''}
+\fld{Updated}{Added convergence analysis: near $t=0$,
+$f(e^t)+f(e^{-t})-2e^{-t/2}f(1)=O(t)$ by Taylor, cancelling the $1/t$ singularity;
+for $t>2L$, the remaining term is $O(e^{-t})$.}
+\fld{Reason}{The substitution was applied without verifying convergence of the integral.}
+\end{change}
+
+\begin{change}{rowmin}{Minor}{Forward-referential convergence (Audit \#8)}
+\fld{Location}{Lemma~4, Substep~4.1 justification}
+\fld{Original}{``Negate Step~1 and use $f(1)=\|g\|_2^2$ from Step~2.''}
+\fld{Updated}{Added: ``(Absolute convergence of this integral is verified in Steps~7--8 below;
+we proceed with the algebraic manipulation.)''}
+\fld{Reason}{The integral is formed before its convergence is established downstream.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{Cross-reference for norm identity (Audit \#9)}
+\fld{Location}{Lemma~4, Step~10 justification}
+\fld{Original}{``\dots noting $\|g\|_2^2=\|G\|_{L^2(I)}^2$ by the change of variables.''}
+\fld{Updated}{``\dots noting $\|g\|_2^2=\|G\|_{L^2(I)}^2$ (by the isometry $u=\log x$,
+as in Lemma~3, Step~5.3).''}
+\fld{Reason}{Adds explicit back-reference to the earlier proof of this identity.}
+\end{change}
+
+% --- STEP D1 ---
+\subsection*{Step D1 --- Markov Property \& Irreducibility (Lemmas 5--7, Remark~8)}
+
+\begin{change}{rowmin}{Minor}{$\Phi\circ G\in L^2(I)$ membership (Audit \#10)}
+\fld{Location}{Lemma~5, proof}
+\fld{Original}{Proof began directly with the pointwise Lipschitz argument (old Step~1).}
+\fld{Updated}{Inserted new Step~1: ``$\Phi\circ G\in L^2(I)$.'' with justification:
+$|\Phi(G(u))|\le|G(u)|$ pointwise (since $\Phi(0)=0$ and $\Phi$ is 1-Lipschitz),
+hence $\|\Phi\circ G\|_{L^2(I)}\le\|G\|_{L^2(I)}<\infty$.
+All subsequent steps renumbered (old Step~1$\to$2, etc.)
+and internal cross-references updated.}
+\fld{Reason}{The form $\mathcal E_\lambda(\Phi\circ G)$ was evaluated without first
+verifying $\Phi\circ G\in L^2(I)$.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{Vacuous case $\mathcal E_\lambda(G)=+\infty$ (Audit \#11)}
+\fld{Location}{Lemma~5, Step~3 (formerly Step~2) justification}
+\fld{Original}{``By Definition\dots'' (no mention of infinite case).}
+\fld{Updated}{Prepended: ``When $\mathcal E_\lambda(G)=+\infty$ the inequality is trivial.
+Otherwise, by Definition\dots''}
+\fld{Reason}{The inequality holds vacuously when the right side is infinite; this was unstated.}
+\end{change}
+
+\begin{change}{rowmod}{Moderate}{Negative-$t$ extension deleted (Audit \#12)}
+\fld{Location}{Lemma~6, Step~3}
+\fld{Original}{Step~3 claimed the identity extends to $|t|<\delta$ via a substitution
+$u\mapsto u+t$ for $t\in(-\delta,0)$.  This argument was flawed
+(sends $J$ to $J+t\ne J$) and superfluous (only $t>0$ is used downstream).}
+\fld{Updated}{Replaced with: ``Summary: $f(u+t)=f(u)$ for a.e.\ $u\in J$, for all $t\in(0,\delta)$.
+At $t=0$ the identity is trivial.  (The downstream mollification argument,
+Steps~4--9, uses only $t\in(0,\delta/2)$, so no negative-$t$ extension is required.)''}
+\fld{Reason}{Removes an incorrect argument that was never used; downstream reference
+from Step~6 updated from ``By Step~3'' to ``By Step~2''.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{Extension of $f=\mathbf 1_B$ to $\mathbb R$ (Audit \#15)}
+\fld{Location}{Lemma~6, Step~5 (mollifier definition)}
+\fld{Original}{``Standard construction; $f_\eta\in C^\infty(\mathbb R)$.''}
+\fld{Updated}{Added: ``(Extend $f=\mathbf 1_B$ to $\mathbb R$ by zero outside~$I$.  For $u\in K$ the convolution
+samples $f$ only at points $u-s$ with $|s|<\eta<\delta/4$, so $u-s\in J\subset I$
+and the extension choice is immaterial.)''}
+\fld{Reason}{Mollification requires $f$ defined on all of $\mathbb R$, but $f$ was
+defined only on $I$.}
+\end{change}
+
+\begin{change}{rowmod}{Moderate}{Covering argument made explicit (Audit \#13)}
+\fld{Location}{Lemma~6, Step~10}
+\fld{Original}{``Cover $I$ by overlapping compact subintervals $J_n\Subset I$ \dots
+and apply Steps~1--9 to each.  On overlaps, the a.e.\ constants must agree\dots''}
+\fld{Updated}{Supplied explicit construction: $J_n:=[\alpha+1/n,\,\beta-1/n]$,
+$\delta_n:=\min(\varepsilon,1/n)/2$; verified (a) $K_n\ne\emptyset$,
+(b) $K_n\subset K_{n+1}^\circ$ for large $n$ (overlap), (c) $\bigcup_n K_n=I$
+up to measure zero; constants agree on overlaps by positive-measure intersection.}
+\fld{Reason}{Three conditions for the covering to work were left unverified.}
+\end{change}
+
+\begin{change}{rowmin}{Minor}{Forward reference replaced in Remark~8 (Audit \#14)}
+\fld{Location}{Remark~8, Step~1 justification}
+\fld{Original}{``$\|\widetilde 1-S_t\widetilde 1\|_2^2=m(I\,\Delta\,(I+t))=2t>0$
+(Proposition~\ref{prop:irreducible}, Step~2.2).''}
+\fld{Updated}{``$\widetilde 1=\mathbf 1_{(-L,L)}$ and $S_t\widetilde 1=\mathbf 1_{(-L+t,L+t)}$, so
+$\|\widetilde 1-S_t\widetilde 1\|_2^2=m(I\,\Delta\,(I+t))=2t>0$
+(the symmetric difference consists of $(-L,-L+t)$ and $(L,L+t)$, each of measure~$t$).''}
+\fld{Reason}{Eliminates a forward reference to material 600~lines later; the identity is
+trivially self-contained.}
+\end{change}
+
+% --- STEP E ---
+\subsection*{Step E --- Fourier Analysis, Closedness, Compact Resolvent}
+
+\begin{change}{rowmin}{Minor}{Joint measurability for Tonelli (Audit \#25)}
+\fld{Location}{Lemma~9, Step~2 justification}
+\fld{Original}{``All integrands are nonneg\dots\ Tonelli's theorem permits interchange\dots''}
+\fld{Updated}{Prepended: ``The integrand $w(t)\cdot 4\sin^2(\xi t/2)\cdot|\widehat\phi(\xi)|^2$ is
+jointly measurable in $(t,\xi)$: $w(t)$ is Borel on $(0,2L]$,
+$\sin^2(\xi t/2)$ is jointly continuous, and $|\widehat\phi|^2$ is measurable.''}
+\fld{Reason}{Tonelli requires joint measurability, which was not stated.}
+\end{change}
+
+\begin{change}{sigcol}{Significant}{Kato citation for closed-form characterization (Audit \#18)}
+\fld{Location}{Proposition~2, Step~4}
+\fld{Original}{``A nonneg.\ quadratic form is closed iff its domain equipped with the
+graph norm is complete.  This is Step~3.''}
+\fld{Updated}{``By Kato~[Thm.\,VI.1.17], a nonneg.\ symmetric form is closed iff its domain
+equipped with the graph norm $\|\cdot\|_{\mathcal D}$ is complete.
+Step~3 verifies this.''}
+\fld{Reason}{This characterization is a non-trivial theorem, not a definition; citation added.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{Streamlined Substep~6.1 (Audit \#31)}
+\fld{Location}{Proposition~2, Substep~6.1}
+\fld{Original}{Three partially-developed arguments (MVT, compact-support bound, Plancherel).}
+\fld{Updated}{Retained only the Plancherel argument:
+$\|\phi-S_t\phi\|_2^2\le t^2\|\phi'\|_2^2$ using $\sin^2 x\le x^2$.}
+\fld{Reason}{The Plancherel argument is the cleanest and self-contained; the other two
+were redundant and verbose.}
+\end{change}
+
+\begin{change}{rowmin}{Minor}{Disjointness of $J_n$ intervals (Audit \#26)}
+\fld{Location}{Lemma~11, Step~3 justification}
+\fld{Original}{Justification ended after ``the claim follows.''}
+\fld{Updated}{Added: ``The $J_n$ are pairwise disjoint: the left endpoint of $J_{n+1}$ exceeds
+the right endpoint of $J_n$ by $\pi/(2|\xi|)>0$.''}
+\fld{Reason}{The intervals were used without verifying pairwise disjointness.}
+\end{change}
+
+\begin{change}{rowmin}{Minor}{Spurious $+1$ in $N$ bound (Audit \#27)}
+\fld{Location}{Lemma~11, Step~4 justification}
+\fld{Original}{$N\le t_0|\xi|/(2\pi)+1/4+1$}
+\fld{Updated}{$N\le t_0|\xi|/(2\pi)+1/4$}
+\fld{Reason}{The correct derivation from $J_{N-1}\subset(0,t_0]$ gives $N\le t_0|\xi|/(2\pi)+1/4$
+without the extra $+1$.  The error was harmless but should be corrected.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{Spurious $-C$ constant removed (Audit \#32)}
+\fld{Location}{Lemma~11, Step~6 heading and Step~8 justification}
+\fld{Original}{``$\sum\ge c'\log N-C$ for absolute constants $c',C>0$'' (heading);
+Step~8 referenced ``$c'\log N - C$''.}
+\fld{Updated}{``$\sum\ge c'\log N$ for an absolute constant $c'>0$'' (heading);
+Step~8 chain updated to ``$2c_0c'\log N = 2c_0c'(\log|\xi|+O(1))$''.}
+\fld{Reason}{Substep~6.3 derives $\sum\ge c\log N$ with no subtracted constant;
+the $-C$ was an artifact not produced by the argument.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{Superfluous $|h|\le 1$ removed (Audit \#28)}
+\fld{Location}{Lemma~13, Step~1}
+\fld{Original}{``For $\phi\in\mathcal K_M$ and $|h|\le 1$:''}
+\fld{Updated}{``For $\phi\in\mathcal K_M$ and $h\in\mathbb R$:''}
+\fld{Reason}{The Plancherel identity holds for all $h$; the restriction was unnecessary.}
+\end{change}
+
+\begin{change}{rowmin}{Minor}{$L^2$-boundedness for Kolmogorov--Riesz (Audit \#29)}
+\fld{Location}{Proposition~6, Step~4 justification}
+\fld{Original}{``Theorem~KR applied to $\mathcal K:=\{\phi_n\}$, using Steps~2 and~3.''}
+\fld{Updated}{Added: ``(The required $L^2$-boundedness holds: $\|\phi_n\|_2^2\le M$ by Step~1.)''}
+\fld{Reason}{Kolmogorov--Riesz requires $L^2$-boundedness, which was not explicitly listed.}
+\end{change}
+
+\begin{change}{rowmin}{Minor}{Compactness transfer to $H_I$ (Audit \#30)}
+\fld{Location}{Proposition~6, Step~5 justification}
+\fld{Original}{``The map $\phi\mapsto\phi|_I$ is a continuous surjection $H_I\to L^2(I)$
+(indeed, an isometry).\dots''}
+\fld{Updated}{Prepended: ``Since $H_I$ is closed in $L^2(\mathbb R)$, every subsequential
+$L^2(\mathbb R)$-limit of $\{\phi_n\}$ lies in $H_I$.''}
+\fld{Reason}{Relative compactness transferred to $L^2(I)$ without noting limit points
+remain in $H_I$.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{Division by $\|u_n\|_2$ (Audit \#33)}
+\fld{Location}{Theorem~2, Substep~2.4 justification}
+\fld{Original}{``\dots we get $\|u_n\|_2\le\|f_n\|_2$, hence\dots''}
+\fld{Updated}{``\dots we get $\|u_n\|_2\le\|f_n\|_2$ (if $u_n=0$ the bound is trivial), hence\dots''}
+\fld{Reason}{Division by $\|u_n\|_2$ requires $u_n\ne 0$; the vacuous case was unacknowledged.}
+\end{change}
+
+% --- STEP D2 ---
+\subsection*{Step D2 --- Semigroup Route to Irreducibility (Lemma~12, Proposition~4)}
+
+\begin{change}{sigcol}{Significant}{Laplace transform citation (Audit \#16)}
+\fld{Location}{Lemma~12, Step~3 justification}
+\fld{Original}{``Since $A_\lambda\ge 0$, the Laplace-transform identity \dots holds as a Bochner integral
+in $\mathcal B(L^2(I))$.''}
+\fld{Updated}{``By the Laplace-transform formula for $C_0$-semigroups
+(Engel--Nagel~[Cor.\,II.1.11]): \dots (convergence: $\|e^{-\alpha t}T(t)\|\le e^{-\alpha t}$,
+integrable for $\alpha>0$; $\alpha$ lies in the resolvent set of $-A_\lambda$
+since $\sigma(A_\lambda)\subset[0,\infty)$).''}
+\fld{Reason}{The Laplace-transform resolvent formula is a non-trivial theorem requiring
+citation.  Convergence conditions are now also stated.  New bibliography entry added.}
+\end{change}
+
+\begin{change}{sigcol}{Significant}{Spectral commutativity citation (Audit \#17)}
+\fld{Location}{Lemma~12, Step~4 justification}
+\fld{Original}{``A bounded operator commuting with the bounded selfadjoint $R$ commutes with
+every bounded Borel function of $R$, in particular with its spectral projections\dots''}
+\fld{Updated}{``Since $PR=RP$, $P$ commutes with every bounded Borel function of $R$
+(Reed--Simon~[Cor.\ to Thm.\,VIII.5]: $PR^n=R^nP$ by induction; extend to polynomials
+by linearity, to $C(\sigma(R))$ by Weierstrass, and to bounded Borel functions via SOT limits).''}
+\fld{Reason}{The claim requires a three-step argument (induction, Weierstrass, dominated convergence)
+that was stated without proof or citation.  New bibliography entry added.}
+\end{change}
+
+\begin{change}{rowmod}{Moderate}{$A_\lambda^{1/2}P$ domain and identity proved (Audit \#19)}
+\fld{Location}{Lemma~12, Step~4 justification (latter part)}
+\fld{Original}{``\dots $P$ commutes with $A_\lambda^{1/2}=\int_0^\infty\mu^{1/2}\,dE_{A_\lambda}(\mu)$
+in the sense that $P\mathcal D(A_\lambda^{1/2})\subset\mathcal D(A_\lambda^{1/2})$
+and $A_\lambda^{1/2}P=PA_\lambda^{1/2}$ on $\mathcal D(A_\lambda^{1/2})$.''}
+\fld{Updated}{Added explicit spectral-measure calculations:
+\emph{Domain preservation:} $\int\mu\,d\|E_{A_\lambda}(\mu)Pu\|^2
+\le\int\mu\,d\|E_{A_\lambda}(\mu)u\|^2=\|A_\lambda^{1/2}u\|^2<\infty$.
+\emph{Commutativity:} interchange of bounded $P$ with spectral integral justified by
+$PE_{A_\lambda}(\Delta)=E_{A_\lambda}(\Delta)P$.}
+\fld{Reason}{Both claims require non-trivial spectral-measure estimates that were asserted
+without proof.}
+\end{change}
+
+\begin{change}{rowmin}{Minor}{Domain of $\varphi$ corrected (Audit \#20)}
+\fld{Location}{Lemma~12, Step~4 justification}
+\fld{Original}{``$\varphi(\lambda)=(\lambda+1)^{-1}$, a Borel bijection $(0,\infty)\to(0,1)$''}
+\fld{Updated}{``$\varphi(\mu)=(\mu+1)^{-1}$, a continuous strictly decreasing bijection
+$[0,\infty)\to(0,1]$''}
+\fld{Reason}{Since $\sigma(A_\lambda)\subset[0,\infty)$, the domain includes $0$
+(where $\varphi(0)=1$).  Variable renamed from $\lambda$ to $\mu$ to avoid clash
+with the form parameter.}
+\end{change}
+
+\begin{change}{rowmod}{Moderate}{Logical inversion fixed in Proposition~4 (Audit \#21)}
+\fld{Location}{Proposition~4, Steps~1--2}
+\fld{Original}{Step~1 applied the form splitting (Lemma~12) for all $G\in\mathcal D(\mathcal E_\lambda)$;
+Step~2 proved $1\in\mathcal D(\mathcal E_\lambda)$.}
+\fld{Updated}{Swapped: Step~1 now proves $1\in\mathcal D(\mathcal E_\lambda)$;
+Step~2 states the general form splitting.  Substep references updated (2.3/2.4$\to$1.3/1.4),
+and downstream reference ``from Step~1 with $G=1$'' updated to ``from Step~2 with $G=1$''.}
+\fld{Reason}{The form splitting was invoked (conceptually with $G=1$) before membership
+was established.  The reordering makes the logical flow correct.}
+\end{change}
+
+% --- STEP D3 ---
+\subsection*{Step D3 --- Perron--Frobenius Consequences}
+
+\begin{change}{rowmin}{Minor}{Strong continuity verified (Audit \#22)}
+\fld{Location}{Proposition~5, Step~3 justification}
+\fld{Original}{Began with ``$A_\lambda$ is selfadjoint and lower bounded\dots''}
+\fld{Updated}{Prepended: ``$T(t)$ is strongly continuous ($C_0$): by the spectral theorem,
+$\|T(t)f-f\|_2^2=\int_0^\infty|e^{-t\mu}-1|^2\,d\|E_{A_\lambda}(\mu)f\|^2\to 0$
+as $t\to 0^+$ by dominated convergence.''}
+\fld{Reason}{The $C_0$ property is needed for holomorphy but was not explicitly verified.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{$\sigma(A_\lambda)\ne\emptyset$ noted automatic (Audit \#23)}
+\fld{Location}{Theorem~1 (external), conclusion~(a)}
+\fld{Original}{``(a) $\sigma(A)\ne\emptyset$;''}
+\fld{Updated}{``(a) $\sigma(A)\ne\emptyset$ (automatic for a selfadjoint operator on a nonzero
+Hilbert space);''}
+\fld{Reason}{This conclusion does not require positivity improving; the parenthetical
+clarifies.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{Notation $\lambda_1\to\mu_0$ in application (Audit \#24)}
+\fld{Location}{Proposition~5, Step~5 justification}
+\fld{Original}{``$\lambda_1:=\min\sigma(A_\lambda)$ exists and is an eigenvalue;
+\dots $\lambda_1$ is a simple eigenvalue''}
+\fld{Updated}{``$\mu_0:=\min\sigma(A_\lambda)$ exists and is an eigenvalue
+(we write $\mu_0$ instead of the $\lambda_1$ of Theorem~1 to avoid confusion with
+the form parameter~$\lambda$); \dots $\mu_0$ is a simple eigenvalue''}
+\fld{Reason}{The symbol $\lambda$ is already the form parameter; using $\mu_0$
+(consistent with Corollary~4) avoids confusion.}
+\end{change}
+
+% --- STEP F ---
+\subsection*{Step F --- Reflection Symmetry and Even Ground State}
+
+\begin{change}{rowmin}{Minor}{``Norm is symmetric'' corrected (Audit \#34)}
+\fld{Location}{Proposition~7, Substep~3.4 justification}
+\fld{Original}{``$\|\phi-S_{-t}\phi\|_2=\|S_t\phi-\phi\|_2=\|\phi-S_t\phi\|_2$ (norm is symmetric).
+More formally: \dots substituting $v=u+t$\dots''}
+\fld{Updated}{Retained only the substitution: ``Substituting $v=u+t$:
+$\|\phi-S_{-t}\phi\|_2^2=\int|\phi(u)-\phi(u+t)|^2\,du
+=\int|\phi(v-t)-\phi(v)|^2\,dv=\|\phi-S_t\phi\|_2^2$.''}
+\fld{Reason}{The informal sentence conflated unitarity of $S_t$ with norm symmetry;
+the direct substitution is correct and cleaner.}
+\end{change}
+
+\begin{change}{rowtri}{Trivial}{Unitarity of $R$ on $L^2(\mathbb R)$ (Audit \#35)}
+\fld{Location}{Proposition~7, Substep~3.3 justification}
+\fld{Original}{``Unitarity of $R$.''}
+\fld{Updated}{``$R$ is unitary on $L^2(\mathbb R)$ by the same substitution $v=-u$ as in Step~1
+(the isometry and surjectivity arguments carry over verbatim from $L^2(I)$ to $L^2(\mathbb R)$).''}
+\fld{Reason}{Step~1 establishes unitarity on $L^2(I)$; the extension to $L^2(\mathbb R)$
+was implicit.}
+\end{change}
+
+% ============================================================
+\newpage
+\section{Addendum: Issues Not Addressed}
+% ============================================================
+
+The following audit issue was deemed not necessary to address.
+
+\begin{skipped}{\#5}{Premature side-condition on Lemma~2 application}
+\fld{Severity}{\sev{Trivial}}
+\fld{Location}{Lemma~3, Step~2 (lines~$\approx$270--278)}
+\fld{Audit recommendation}{Remove the restriction $p^m\le\lambda^2$ from Step~2
+and introduce it only in Step~3.}
+\fld{Reason for not addressing}{Lemma~2 is a purely algebraic identity that is indeed
+valid for all~$m$, so the early restriction to $p^m\le\lambda^2$ in Step~2 is cosmetically
+premature.  However, the restriction does not affect correctness: Steps~1--2 are now
+explicitly flagged as a finite computation (via the forward reference added for Audit
+Issue~\#4), and the constraint is introduced precisely where it is first \emph{needed}
+(Step~3).  Restructuring Steps~2--3 solely to move a harmless side-condition would risk
+introducing errors for negligible expository benefit, so we leave the original ordering.}
+\end{skipped}
+
+% ============================================================
+\section*{Summary of New Bibliography Entries}
+% ============================================================
+
+Two new references were added to the bibliography:
+
+\begin{enumerate}[nosep]
+\item \textbf{Engel--Nagel [EN00]:}
+K.-J.~Engel and R.~Nagel,
+\emph{One-Parameter Semigroups for Linear Evolution Equations},
+Graduate Texts in Mathematics vol.~194, Springer, 2000.
+\newline Cited in: Lemma~12, Step~3 (Laplace-transform resolvent formula).
+
+\item \textbf{Reed--Simon [RS80]:}
+M.~Reed and B.~Simon,
+\emph{Methods of Modern Mathematical Physics.\ I:\ Functional Analysis},
+Academic Press, revised ed., 1980.
+\newline Cited in: Lemma~12, Step~4 (spectral commutativity theorem).
+\end{enumerate}
+
+\end{document}
