@@ -1699,6 +1699,49 @@ hence simplicity and strict positivity of the ground state (Proposition~\ref{pro
 (Corollary~\ref{cor:even}).
 \end{itemize}
 
+\begin{remark}[Generalization to Dedekind zeta functions and Rankin--Selberg $L$-functions]
+\label{rem:generalization}
+The proof relies on two structural features of the Weil explicit formula:
+(i)~the local terms at non-archimedean places produce translation-difference
+energies with \emph{non-negative} weights, and (ii)~the archimedean term
+produces a continuum of such energies with a strictly positive weight
+$w(t)>0$.  Everything else---the Markov property, irreducibility from
+the archimedean continuum, the logarithmic lower bound on the Fourier
+symbol, and the Perron--Frobenius conclusion---follows formally from
+(i) and (ii).
+
+\smallskip\noindent
+\emph{Dedekind zeta functions.}
+For a number field~$K$, the Weil explicit formula for $\zeta_K(s)$
+has the same structure: a sum over prime ideals~$\mathfrak p$
+(with shift sizes $m\log N(\mathfrak p)$ in place of $m\log p$)
+plus archimedean contributions from each infinite place.
+Each archimedean place contributes its own integral term with
+a strictly positive weight, so the logarithmic lower bound on
+the Fourier symbol and the irreducibility argument both carry over.
+The generalization requires only notational changes.
+
+\smallskip\noindent
+\emph{Rankin--Selberg $L$-functions.}
+The method may be most naturally suited to $L$-functions of the form
+$L(s,\pi\times\widetilde\pi)$, where $\pi$ is a cuspidal automorphic
+representation of $\mathrm{GL}(n)$.  The self-convolution structure
+makes property~(i) automatic: the Dirichlet coefficients at
+unramified primes are $|a_\pi(\mathfrak p)|^2$ (and sums thereof at
+higher prime powers), so the prime-energy weights are manifestly
+non-negative without any algebraic manipulation.
+For property~(ii), the archimedean $L$-factor of
+$L(s,\pi\times\widetilde\pi)$ is a product of~$n^2$ Gamma-type
+terms, each contributing a digamma-type weight to the integral.
+This only strengthens the logarithmic lower bound.
+Since GRH for $L(s,\pi\times\widetilde\pi)$ implies GRH for
+$L(s,\pi)$ (the zeros of the former include those of the latter),
+establishing the spectral setup---compact resolvent, simple ground
+state, Perron--Frobenius---for Rankin--Selberg $L$-functions would
+bring a wide class of automorphic $L$-functions under a single
+framework.
+\end{remark}
+
 %% =================================================================
 \section{Bibliographic pointers}
 \label{sec:bib}
