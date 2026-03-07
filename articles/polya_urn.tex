@@ -5,7 +5,7 @@
 \usepackage{hyperref}
 
 \title{The Eight-Fold Path to a Classical P\'olya Urn Computation}
-\author{Christopher D. Long}
+\author{Mathematical Foundations Series}
 \date{}
 
 \newtheorem{theorem}{Theorem}
@@ -25,7 +25,7 @@ The answer is
 \[
 P_\infty=\frac{11}{16}.
 \]
-This note presents eight rigorous viewpoints on the computation: an exact beta-binomial formula, a Riemann-sum limit, a Bayesian/conjugacy argument, a martingale-plus-factorial-moments proof, an exchangeability/de Finetti proof, a continuous-time branching-process embedding, a first-tie/Catalan decomposition, and an analytic generating-function approach based on a transport PDE together with a Beta-kernel normalization.
+This note presents eight rigorous proofs/viewpoints on the computation: an exact beta-binomial formula with explicit finite summation, a Riemann-sum limit, a Bayesian/conjugacy argument, a martingale-plus-factorial-moments proof, an exchangeability/de Finetti proof, a continuous-time branching-process embedding, a first-tie/Catalan decomposition, and an analytic generating-function approach based on a transport PDE together with a Beta-kernel normalization.
 \end{abstract}
 
 \tableofcontents
@@ -82,7 +82,7 @@ Several of them identify the full limit law
 \[
 X_\infty\sim \mathrm{Beta}(3,2),
 \]
-from which the desired probability is the Beta tail
+while Solution 1 derives the answer directly from the exact finite-$N$ law. In the Beta-law routes, the desired probability is the Beta tail
 \[
 \int_{1/2}^1 12x^2(1-x)\,dx=\frac{11}{16}.
 \]
@@ -94,9 +94,9 @@ For the P\'olya urn started from $(3,2)$,
 \]
 \end{theorem}
 
-\section{Solution 1: Exact state probabilities (the beta-binomial law)}
+\section{Solution 1: Exact state probabilities and explicit finite summation}
 
-This gives the exact finite-$N$ distribution.
+This gives the exact finite-$N$ distribution and then evaluates the majority probability explicitly.
 
 \subsection*{Step 1: probability of a specific color word}
 Fix a particular color sequence of length $N$ containing exactly $k$ white draws and $N-k$ black draws.
@@ -134,13 +134,105 @@ Expanding the factorials gives the concrete formula
 \frac{12\,(k+1)(k+2)(N-k+1)}{(N+1)(N+2)(N+3)(N+4)}.
 \end{align*}
 
-\subsection*{Step 3: the finite-$N$ majority probability}
-Thus
+\subsection*{Step 3: write the finite-$N$ majority probability as a polynomial sum}
+Since
+\[
+X_N>\frac12
+\quad\Longleftrightarrow\quad
+I_N>\frac{N-1}{2},
+\]
+we have
 \[
 \mathbb{P}\!\left(X_N>\frac12\right)
 =
 \sum_{k>\frac{N-1}{2}}
 \frac{12\,(k+1)(k+2)(N-k+1)}{(N+1)(N+2)(N+3)(N+4)}.
+\]
+The denominator is constant in $k$, so the problem reduces to summing the cubic polynomial
+\[
+(k+1)(k+2)(N-k+1).
+\]
+Expanding,
+\[
+(k+1)(k+2)(N-k+1)
+=
+-k^3+(N-2)k^2+(3N+1)k+(2N+2).
+\]
+
+\subsection*{Step 4: evaluate the sum in the even case}
+Let $N=2m$. Then
+\[
+X_{2m}>\frac12
+\quad\Longleftrightarrow\quad
+I_{2m}\ge m,
+\]
+so
+\[
+\mathbb{P}\!\left(X_{2m}>\frac12\right)
+=
+\frac{12}{(2m+1)(2m+2)(2m+3)(2m+4)}
+\sum_{k=m}^{2m}(k+1)(k+2)(2m-k+1).
+\]
+Using the standard formulas for $\sum k$, $\sum k^2$, and $\sum k^3$, one finds
+\[
+\sum_{k=m}^{2m}(k+1)(k+2)(2m-k+1)
+=
+\frac{11m^4+58m^3+109m^2+86m+24}{12}.
+\]
+Therefore
+\[
+\mathbb{P}\!\left(X_{2m}>\frac12\right)
+=
+\frac{11m^2+25m+12}{4(2m+1)(2m+3)}.
+\]
+
+\subsection*{Step 5: evaluate the sum in the odd case}
+Let $N=2m+1$. Then
+\[
+X_{2m+1}>\frac12
+\quad\Longleftrightarrow\quad
+I_{2m+1}\ge m+1,
+\]
+so
+\[
+\mathbb{P}\!\left(X_{2m+1}>\frac12\right)
+=
+\frac{12}{(2m+2)(2m+3)(2m+4)(2m+5)}
+\sum_{k=m+1}^{2m+1}(k+1)(k+2)(2m+2-k).
+\]
+Again using the standard power-sum formulas, one obtains
+\[
+\sum_{k=m+1}^{2m+1}(k+1)(k+2)(2m+2-k)
+=
+\frac{11m^4+63m^3+133m^2+121m+36}{12}.
+\]
+Hence
+\[
+\mathbb{P}\!\left(X_{2m+1}>\frac12\right)
+=
+\frac{11m^2+41m+36}{4(2m+3)(2m+5)}.
+\]
+
+\subsection*{Step 6: take the limit}
+In the even case,
+\[
+\mathbb{P}\!\left(X_{2m}>\frac12\right)
+=
+\frac{11m^2+25m+12}{4(2m+1)(2m+3)}
+\longrightarrow
+\frac{11}{16}.
+\]
+In the odd case,
+\[
+\mathbb{P}\!\left(X_{2m+1}>\frac12\right)
+=
+\frac{11m^2+41m+36}{4(2m+3)(2m+5)}
+\longrightarrow
+\frac{11}{16}.
+\]
+Therefore
+\[
+P_\infty=\lim_{N\to\infty}\mathbb{P}\!\left(X_N>\frac12\right)=\frac{11}{16}.
 \]
 
 \section{Solution 2: A Riemann-sum asymptotic}
