@@ -1,0 +1,849 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,amsfonts,mathrsfs}
+\usepackage{hyperref}
+
+\title{The Eight-Fold Path to a Classical P\'olya Urn Computation}
+\author{Christopher D. Long}
+\date{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We consider the classical two-color P\'olya urn started from $3$ white balls and $2$ black balls. At each step, one ball is drawn uniformly at random, returned to the urn, and an additional ball of the same color is added. If $X_N$ denotes the proportion of white balls after $N$ draws, we compute
+\[
+P_\infty:=\lim_{N\to\infty}\mathbb{P}\!\left(X_N>\frac12\right).
+\]
+The answer is
+\[
+P_\infty=\frac{11}{16}.
+\]
+This note presents eight rigorous viewpoints on the computation: an exact beta-binomial formula, a Riemann-sum limit, a Bayesian/conjugacy argument, a martingale-plus-factorial-moments proof, an exchangeability/de Finetti proof, a continuous-time branching-process embedding, a first-tie/Catalan decomposition, and an analytic generating-function approach based on a transport PDE together with a Beta-kernel normalization.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction and notation}
+
+Let $W_0=3$ and $B_0=2$. After $N$ draws, let
+\[
+W_N=\text{number of white balls}, \qquad B_N=\text{number of black balls},
+\]
+so that
+\[
+W_N+B_N=N+5.
+\]
+Let
+\[
+I_N:=W_N-3
+\]
+be the number of white draws among the first $N$ draws. Then
+\[
+W_N=3+I_N,\qquad B_N=2+(N-I_N).
+\]
+The white proportion is
+\[
+X_N:=\frac{W_N}{N+5}=\frac{3+I_N}{N+5}.
+\]
+We seek
+\[
+P_\infty:=\lim_{N\to\infty}\mathbb{P}\!\left(X_N>\frac12\right).
+\]
+
+Note that
+\[
+X_N>\frac12
+\quad\Longleftrightarrow\quad
+\frac{3+I_N}{N+5}>\frac12
+\quad\Longleftrightarrow\quad
+I_N>\frac{N-1}{2}.
+\]
+
+For $a>0$ and $m\in\mathbb{N}$, write
+\[
+(a)_m:=a(a+1)\cdots(a+m-1),
+\]
+with $(a)_0=1$, for the rising factorial.
+
+The eight routes below fall into three broad families:
+\begin{itemize}
+    \item exact discrete formulas (Solutions 1, 7, 8),
+    \item probabilistic representation theorems and stochastic-process arguments (Solutions 3, 4, 5, 6),
+    \item asymptotic extraction (Solution 2).
+\end{itemize}
+Several of them identify the full limit law
+\[
+X_\infty\sim \mathrm{Beta}(3,2),
+\]
+from which the desired probability is the Beta tail
+\[
+\int_{1/2}^1 12x^2(1-x)\,dx=\frac{11}{16}.
+\]
+
+\begin{theorem}
+For the P\'olya urn started from $(3,2)$,
+\[
+\lim_{N\to\infty}\mathbb{P}\!\left(X_N>\frac12\right)=\frac{11}{16}.
+\]
+\end{theorem}
+
+\section{Solution 1: Exact state probabilities (the beta-binomial law)}
+
+This gives the exact finite-$N$ distribution.
+
+\subsection*{Step 1: probability of a specific color word}
+Fix a particular color sequence of length $N$ containing exactly $k$ white draws and $N-k$ black draws.
+
+Along that path, the white-draw factors contributed to the numerator are
+\[
+3\cdot 4\cdots (k+2)=(3)_k,
+\]
+and the black-draw factors are
+\[
+2\cdot 3\cdots (N-k+1)=(2)_{N-k}.
+\]
+The denominator is always
+\[
+5\cdot 6\cdots (N+4)=(5)_N.
+\]
+Hence every such color word has probability
+\[
+\frac{(3)_k(2)_{N-k}}{(5)_N}.
+\]
+
+\subsection*{Step 2: sum over all words with $k$ white draws}
+There are $\binom{N}{k}$ such color words. Therefore
+\[
+\mathbb{P}(I_N=k)=\binom{N}{k}\frac{(3)_k(2)_{N-k}}{(5)_N}.
+\]
+This is the beta-binomial distribution with parameters $(N,3,2)$.
+
+Expanding the factorials gives the concrete formula
+\begin{align*}
+\mathbb{P}(I_N=k)
+&=
+\binom{N}{k}\frac{(k+2)!}{2!}\frac{(N-k+1)!}{1!}\frac{4!}{(N+4)!} \\
+&=
+\frac{12\,(k+1)(k+2)(N-k+1)}{(N+1)(N+2)(N+3)(N+4)}.
+\end{align*}
+
+\subsection*{Step 3: the finite-$N$ majority probability}
+Thus
+\[
+\mathbb{P}\!\left(X_N>\frac12\right)
+=
+\sum_{k>\frac{N-1}{2}}
+\frac{12\,(k+1)(k+2)(N-k+1)}{(N+1)(N+2)(N+3)(N+4)}.
+\]
+
+\section{Solution 2: A Riemann-sum asymptotic}
+
+This route derives the limit directly from the exact finite law.
+
+\subsection*{Step 1: recover the exact mass function locally}
+As in Solution 1, any color word with exactly $k$ white draws and $N-k$ black draws has probability
+\[
+\frac{(3)_k(2)_{N-k}}{(5)_N},
+\]
+and there are $\binom{N}{k}$ such words. Hence
+\[
+\mathbb{P}(I_N=k)
+=
+\binom{N}{k}\frac{(3)_k(2)_{N-k}}{(5)_N}
+=
+\frac{12\,(k+1)(k+2)(N-k+1)}{(N+1)(N+2)(N+3)(N+4)}.
+\]
+
+\subsection*{Step 2: pass to a density}
+Write $x=k/N$. Uniformly in $0\le k\le N$,
+\[
+\mathbb{P}(I_N=k)
+=
+\frac{12}{N}x^2(1-x)+O\!\left(\frac{1}{N^2}\right).
+\]
+Therefore
+\[
+\mathbb{P}\!\left(X_N>\frac12\right)
+=
+\sum_{k>\frac{N-1}{2}}
+\left[
+\frac{1}{N}\,12\left(\frac{k}{N}\right)^2\left(1-\frac{k}{N}\right)
++O\!\left(\frac{1}{N^2}\right)
+\right].
+\]
+Since there are $O(N)$ summands, the total error is $O(1/N)$. Thus
+\[
+\mathbb{P}\!\left(X_N>\frac12\right)
+\longrightarrow
+\int_{1/2}^{1} 12x^2(1-x)\,dx.
+\]
+
+\subsection*{Step 3: evaluate the integral}
+We compute
+\[
+12\int_{1/2}^{1}(x^2-x^3)\,dx
+=
+12\left[\frac{x^3}{3}-\frac{x^4}{4}\right]_{1/2}^{1}
+=
+\left[4x^3-3x^4\right]_{1/2}^{1}
+=
+1-\frac{5}{16}
+=
+\frac{11}{16}.
+\]
+Hence
+\[
+P_\infty=\frac{11}{16}.
+\]
+
+\section{Solution 3: Bayesian conjugacy and predictive equivalence}
+
+This route interprets the urn as a mixture of Bernoulli sequences.
+
+\subsection*{Step 1: the latent parameter}
+Let $P\sim \mathrm{Beta}(3,2)$, with density
+\[
+f(p)=\frac{p^{3-1}(1-p)^{2-1}}{B(3,2)}=12p^2(1-p), \qquad 0<p<1.
+\]
+Conditional on $P=p$, let the colors be i.i.d.\ Bernoulli$(p)$, where ``white'' means success.
+
+\subsection*{Step 2: posterior predictive probabilities}
+After observing $k$ white draws in $N$ trials, the posterior is
+\[
+P\mid \text{data}\sim \mathrm{Beta}(3+k,\,2+N-k).
+\]
+Its mean is
+\[
+\mathbb{E}[P\mid \text{data}]
+=
+\frac{3+k}{5+N}.
+\]
+But this is exactly the physical probability of drawing a white ball from the urn when the current state is
+\[
+(W_N,B_N)=(3+k,\,2+N-k).
+\]
+Therefore the Bayesian predictive process and the P\'olya urn have the same finite-dimensional distributions.
+
+\subsection*{Step 3: pass to the limit}
+Conditional on $P$, the strong law of large numbers gives
+\[
+\frac{I_N}{N}\longrightarrow P
+\qquad\text{almost surely.}
+\]
+Since
+\[
+X_N=\frac{3+I_N}{N+5}
+\quad\text{and}\quad
+\frac{I_N}{N}\to P,
+\]
+we also have
+\[
+X_N\longrightarrow P
+\qquad\text{almost surely.}
+\]
+Thus
+\[
+X_\infty\sim \mathrm{Beta}(3,2),
+\]
+and
+\[
+P_\infty
+=
+\mathbb{P}\!\left(P>\frac12\right)
+=
+\int_{1/2}^{1}12p^2(1-p)\,dp
+=
+\frac{11}{16}.
+\]
+
+\section{Solution 4: Martingale convergence and factorial moments}
+
+This proof identifies the limit law through martingales alone.
+
+\subsection*{Step 1: $X_N$ is a bounded martingale}
+Let $\mathcal{F}_N$ be the natural filtration. Since
+\[
+\mathbb{P}(W_{N+1}=W_N+1\mid \mathcal{F}_N)=\frac{W_N}{N+5},
+\]
+we have
+\begin{align*}
+\mathbb{E}[X_{N+1}\mid \mathcal{F}_N]
+&=
+\frac{W_N+1}{N+6}\cdot \frac{W_N}{N+5}
++
+\frac{W_N}{N+6}\cdot \left(1-\frac{W_N}{N+5}\right) \\
+&=
+\frac{W_N}{N+5}
+=
+X_N.
+\end{align*}
+Thus $(X_N)$ is a martingale. Since $0\le X_N\le 1$, the martingale convergence theorem gives
+\[
+X_N\longrightarrow X_\infty
+\qquad\text{almost surely and in }L^1.
+\]
+
+\subsection*{Step 2: factorial-moment martingales}
+Fix $m\ge 1$ and define
+\[
+M_N^{(m)}:=\frac{(W_N)_m}{(N+5)_m}.
+\]
+We claim $(M_N^{(m)})$ is also a martingale.
+
+Indeed, given $\mathcal{F}_N$, either $W_{N+1}=W_N+1$ with probability $W_N/(N+5)$, or $W_{N+1}=W_N$ with the complementary probability. Hence
+\begin{align*}
+\mathbb{E}\!\left[(W_{N+1})_m\mid \mathcal{F}_N\right]
+&=
+\frac{W_N}{N+5}(W_N+1)_m
++
+\left(1-\frac{W_N}{N+5}\right)(W_N)_m.
+\end{align*}
+Using
+\[
+(W_N+1)_m=\frac{W_N+m}{W_N}(W_N)_m,
+\]
+we obtain
+\begin{align*}
+\mathbb{E}\!\left[(W_{N+1})_m\mid \mathcal{F}_N\right]
+&=
+\left(
+\frac{W_N+m}{N+5}
++
+1-\frac{W_N}{N+5}
+\right)(W_N)_m \\
+&=
+\frac{N+5+m}{N+5}(W_N)_m.
+\end{align*}
+Therefore
+\[
+\mathbb{E}[M_{N+1}^{(m)}\mid \mathcal{F}_N]
+=
+\frac{1}{(N+6)_m}\cdot \frac{N+5+m}{N+5}(W_N)_m
+=
+\frac{(W_N)_m}{(N+5)_m}
+=
+M_N^{(m)}.
+\]
+
+\subsection*{Step 3: identify the moments of $X_\infty$}
+Since $0\le M_N^{(m)}\le 1$ and
+\[
+\frac{(W_N)_m}{(N+5)_m}\longrightarrow X_\infty^m
+\qquad\text{almost surely,}
+\]
+dominated convergence gives
+\[
+\mathbb{E}[X_\infty^m]
+=
+\lim_{N\to\infty}\mathbb{E}[M_N^{(m)}]
+=
+\mathbb{E}[M_0^{(m)}]
+=
+\frac{(3)_m}{(5)_m}.
+\]
+But these are exactly the moments of $\mathrm{Beta}(3,2)$:
+\[
+\mathbb{E}[P^m]=\frac{(3)_m}{(5)_m},
+\qquad P\sim \mathrm{Beta}(3,2).
+\]
+Since probability measures on $[0,1]$ are uniquely determined by their moments (Hausdorff moment problem), it follows that
+\[
+X_\infty\sim \mathrm{Beta}(3,2).
+\]
+Therefore
+\[
+P_\infty=\mathbb{P}\!\left(X_\infty>\frac12\right)=\frac{11}{16}.
+\]
+
+\begin{remark}
+There is also a different structural identification of the same Beta law via exchangeability and de Finetti's theorem. We present that separately in Solution 5.
+\end{remark}
+
+\section{Solution 5: Exchangeability and de Finetti's theorem}
+
+This proof identifies the directing measure of the exchangeable color sequence.
+
+\subsection*{Step 1: exchangeability from local path weights}
+Fix a color word of length $N$ with exactly $k$ white draws and $N-k$ black draws. As in the exact path calculation,
+\[
+\mathbb{P}(\text{that word})
+=
+\frac{(3)_k(2)_{N-k}}{(5)_N}.
+\]
+This depends only on the counts $(k,N-k)$, not on the order of the colors. Therefore the infinite color sequence is exchangeable.
+
+\subsection*{Step 2: de Finetti representation}
+By de Finetti's theorem, there exists a unique probability measure $\mu$ on $[0,1]$ such that for all $N$ and $k$,
+\[
+\mathbb{P}(I_N=k)
+=
+\binom{N}{k}\int_0^1 p^k(1-p)^{N-k}\,d\mu(p).
+\]
+On the other hand, summing over the $\binom{N}{k}$ exchangeable words gives
+\[
+\mathbb{P}(I_N=k)
+=
+\binom{N}{k}\frac{(3)_k(2)_{N-k}}{(5)_N}.
+\]
+Hence
+\[
+\int_0^1 p^k(1-p)^{N-k}\,d\mu(p)
+=
+\frac{(3)_k(2)_{N-k}}{(5)_N}.
+\]
+
+\subsection*{Step 3: identify the directing measure}
+Now
+\begin{align*}
+12\int_0^1 p^{k+2}(1-p)^{N-k+1}\,dp
+&=
+12\,B(k+3,N-k+2) \\
+&=
+12\,\frac{\Gamma(k+3)\Gamma(N-k+2)}{\Gamma(N+5)} \\
+&=
+\frac{(3)_k(2)_{N-k}}{(5)_N}.
+\end{align*}
+Therefore $\mu$ is exactly the Beta$(3,2)$ law:
+\[
+d\mu(p)=12p^2(1-p)\,dp.
+\]
+
+Conditional on the directing variable $P$, the colors are i.i.d.\ Bernoulli$(P)$, so the empirical fraction of white draws converges almost surely to $P$. Therefore $X_N\to P$ almost surely, and hence
+\[
+X_\infty\sim \mathrm{Beta}(3,2).
+\]
+Thus
+\[
+P_\infty=\frac{11}{16}.
+\]
+
+\section{Solution 6: Continuous-time embedding via Yule processes}
+
+This route embeds the urn into continuous time.
+
+\subsection*{Step 1: the continuous-time model}
+Attach an independent rate-$1$ exponential clock to each ball. When a ball's clock rings, that ball produces one offspring of the same color. Let $W(t)$ and $B(t)$ be the white and black populations at time $t$.
+
+At any moment, the total birth rate is $W(t)+B(t)$, and the probability that the next birth is white is
+\[
+\frac{W(t)}{W(t)+B(t)}.
+\]
+Therefore, if one observes the process only at birth times, the embedded jump chain is exactly the original P\'olya urn.
+
+\subsection*{Step 2: Yule-process limits}
+The white and black populations evolve independently as Yule processes started from $3$ and $2$ individuals. A standard theorem for Yule processes states that
+\[
+e^{-t}W(t)\longrightarrow \mathcal{W},
+\qquad
+e^{-t}B(t)\longrightarrow \mathcal{B}
+\qquad\text{almost surely,}
+\]
+where
+\[
+\mathcal{W}\sim \mathrm{Gamma}(3,1),
+\qquad
+\mathcal{B}\sim \mathrm{Gamma}(2,1),
+\]
+and $\mathcal{W}$ and $\mathcal{B}$ are independent.
+
+\subsection*{Step 3: pass to the ratio}
+Let $\tau_N$ be the time of the $N$-th birth. Then $\tau_N\to\infty$ almost surely and
+\[
+W(\tau_N)=W_N,\qquad B(\tau_N)=B_N.
+\]
+Hence
+\[
+X_N
+=
+\frac{W_N}{W_N+B_N}
+=
+\frac{W(\tau_N)}{W(\tau_N)+B(\tau_N)}
+\longrightarrow
+\frac{\mathcal{W}}{\mathcal{W}+\mathcal{B}}
+\qquad\text{almost surely.}
+\]
+By the gamma-beta algebra, if $U\sim \Gamma(\alpha,1)$ and $V\sim \Gamma(\beta,1)$ are independent, then
+\[
+\frac{U}{U+V}\sim \mathrm{Beta}(\alpha,\beta).
+\]
+Therefore
+\[
+X_\infty\sim \mathrm{Beta}(3,2),
+\]
+and
+\[
+P_\infty=\frac{11}{16}.
+\]
+
+\section{Solution 7: First tie, Catalan numbers, and a finite-time tie lemma}
+
+This proof is self-contained and works directly with the finite-time probabilities
+\[
+\mathbb{P}\!\left(X_N>\frac12\right),
+\]
+without needing any continuity statement about the limiting law.
+
+\subsection*{Step 1: majority probabilities from a tied start}
+
+For $m\ge 1$, let $q_N^{(m)}$ denote the probability that, starting from a tied state $(m,m)$, the white proportion is strictly larger than $1/2$ after $N$ further draws.
+
+\begin{lemma}[tie lemma]
+For each fixed $m\ge 1$,
+\[
+q_N^{(m)}\longrightarrow \frac12
+\qquad\text{as }N\to\infty.
+\]
+More precisely:
+\begin{itemize}
+    \item if $N=2n+1$ is odd, then $q_{2n+1}^{(m)}=\frac12$ exactly;
+    \item if $N=2n$ is even, then
+    \[
+    q_{2n}^{(m)}
+    =
+    \frac12\left(1-\binom{2n}{n}\frac{(m)_n^2}{(2m)_{2n}}\right),
+    \]
+    and the tie probability
+    \[
+    \binom{2n}{n}\frac{(m)_n^2}{(2m)_{2n}}
+    \longrightarrow 0.
+    \]
+\end{itemize}
+\end{lemma}
+
+\begin{proof}
+Start from $(m,m)$.
+
+If $N=2n+1$ is odd, then after $2n+1$ draws the difference between white and black counts is odd, so a tie is impossible. By color symmetry,
+\[
+q_{2n+1}^{(m)}=\frac12.
+\]
+
+If $N=2n$ is even, then white has strict majority exactly when there are more white draws than black draws among these $2n$ draws. By symmetry,
+\[
+q_{2n}^{(m)}
+=
+\frac12\Bigl(1-\mathbb{P}(\text{tie after }2n\text{ draws from }(m,m))\Bigr).
+\]
+A tie after $2n$ draws means exactly $n$ white draws and $n$ black draws. Every such color word has probability
+\[
+\frac{(m)_n(m)_n}{(2m)_{2n}},
+\]
+and there are $\binom{2n}{n}$ such words. Therefore
+\[
+\mathbb{P}(\text{tie after }2n\text{ draws from }(m,m))
+=
+\binom{2n}{n}\frac{(m)_n^2}{(2m)_{2n}}.
+\]
+Using Stirling's formula,
+\[
+\binom{2n}{n}\frac{(m)_n^2}{(2m)_{2n}}
+=
+\binom{2n}{n}
+\frac{\Gamma(m+n)^2\Gamma(2m)}{\Gamma(m)^2\Gamma(2m+2n)}
+=
+O(n^{-1/2}),
+\]
+so it tends to $0$. Hence
+\[
+q_{2n}^{(m)}\longrightarrow \frac12.
+\]
+Combining the odd and even cases proves the lemma.
+\end{proof}
+
+\subsection*{Step 2: the first-tie distribution from the initial state $(3,2)$}
+
+Now return to the original urn started from $(3,2)$, and let
+\[
+T:=\inf\{N\ge 0: W_N=B_N\}
+\]
+be the first time the process ever reaches a tie.
+
+A first tie can only occur at some state
+\[
+(n+3,n+3),\qquad n\ge 0,
+\]
+after exactly $2n+1$ draws, consisting of
+\[
+n\ \text{white draws and}\ n+1\ \text{black draws}.
+\]
+
+To be a \emph{first} tie, the path must stay strictly above the diagonal until the final step. The number of such paths is the Catalan number
+\[
+C_n=\frac{1}{n+1}\binom{2n}{n}.
+\]
+Every such path has probability
+\[
+\frac{(3)_n(2)_{n+1}}{(5)_{2n+1}}
+=
+12\,\frac{(n+2)!^2}{(2n+5)!}.
+\]
+Therefore
+\[
+a_n:=\mathbb{P}\bigl(T=2n+1,\ (W_T,B_T)=(n+3,n+3)\bigr)
+=
+12\,C_n\,\frac{(n+2)!^2}{(2n+5)!}.
+\]
+
+Using
+\[
+C_n=\frac{(2n)!}{n!(n+1)!},
+\]
+this simplifies to
+\[
+a_n
+=
+\frac{3(n+2)}{(2n+1)(2n+3)(2n+5)}.
+\]
+
+\subsection*{Step 3: sum the first-tie probabilities}
+A partial fraction decomposition gives
+\[
+\frac{3(n+2)}{(2n+1)(2n+3)(2n+5)}
+=
+\frac{9}{16(2n+1)}-\frac{3}{8(2n+3)}-\frac{3}{16(2n+5)}.
+\]
+Hence
+\[
+\sum_{n=0}^{\infty} a_n
+=
+\sum_{n=0}^{\infty}
+\frac{3(n+2)}{(2n+1)(2n+3)(2n+5)}
+=
+\frac58.
+\]
+So
+\[
+\mathbb{P}(T<\infty)=\frac58.
+\]
+
+\subsection*{Step 4: decompose the finite-$N$ majority event}
+For each $N\ge 0$,
+\[
+\mathbb{P}_{(3,2)}\!\left(X_N>\frac12\right)
+=
+\mathbb{P}(T>N)
++
+\sum_{\substack{n\ge 0\\2n+1\le N}}
+a_n\, q_{N-(2n+1)}^{(n+3)}.
+\]
+Indeed:
+\begin{itemize}
+    \item if $T>N$, then no tie has yet occurred, so the process is still strictly above the diagonal at time $N$, hence $X_N>1/2$;
+    \item if the first tie occurs at time $2n+1$, then the process is at the tied state $(n+3,n+3)$, and the remaining probability of white majority after $N-(2n+1)$ further draws is exactly $q_{N-(2n+1)}^{(n+3)}$.
+\end{itemize}
+
+Now let $N\to\infty$. Since
+\[
+\mathbb{P}(T>N)\longrightarrow \mathbb{P}(T=\infty)=1-\sum_{n=0}^\infty a_n,
+\]
+and since each $q_{N-(2n+1)}^{(n+3)}\to \tfrac12$ by the tie lemma, dominated convergence yields
+\begin{align*}
+P_\infty
+&=
+\lim_{N\to\infty}\mathbb{P}_{(3,2)}\!\left(X_N>\frac12\right) \\
+&=
+\mathbb{P}(T=\infty)
++
+\sum_{n=0}^\infty a_n\cdot \frac12 \\
+&=
+\left(1-\sum_{n=0}^\infty a_n\right)+\frac12\sum_{n=0}^\infty a_n \\
+&=
+1-\frac12\sum_{n=0}^\infty a_n.
+\end{align*}
+Since $\sum a_n=5/8$, we obtain
+\[
+P_\infty
+=
+1-\frac12\cdot\frac58
+=
+\frac{11}{16}.
+\]
+
+\section{Solution 8: Transport PDEs, raw weights, and Beta normalization}
+
+This analytic route begins with an unnormalized generating function whose coefficients capture the correct state weights up to a factor depending only on the total level $N=i+j$. A Beta-kernel integral then restores the exact normalization.
+
+\subsection*{Step 1: the unnormalized generating function}
+For $i,j\ge 0$, define the raw weight
+\[
+u_{i,j}:=\frac{(3)_i(2)_j}{i!\,j!}
+=
+\binom{i+2}{2}(j+1).
+\]
+Consider the shifted generating function
+\[
+U(x,y,t):=\sum_{i,j\ge 0} u_{i,j}\,x^{i+3}y^{j+2}t^{i+j}.
+\]
+Summing the geometric series gives
+\[
+U(x,y,t)
+=
+x^3y^2\sum_{i\ge 0}\binom{i+2}{2}(xt)^i
+\sum_{j\ge 0}(j+1)(yt)^j
+=
+\frac{x^3}{(1-xt)^3}\,\frac{y^2}{(1-yt)^2}.
+\]
+
+\subsection*{Step 2: the transport PDE}
+The function $U$ satisfies the first-order PDE
+\[
+\frac{\partial U}{\partial t}
+=
+x^2\frac{\partial U}{\partial x}
++
+y^2\frac{\partial U}{\partial y},
+\qquad
+U(x,y,0)=x^3y^2.
+\]
+Indeed, this follows either by direct differentiation of the closed form above or by the method of characteristics: along the characteristic curves
+\[
+\frac{dx}{dt}=-x^2,\qquad \frac{dy}{dt}=-y^2,
+\]
+the quantity $U$ remains constant, yielding exactly
+\[
+U(x,y,t)=\frac{x^3}{(1-xt)^3}\frac{y^2}{(1-yt)^2}.
+\]
+
+The coefficient of $x^{i+3}y^{j+2}t^{i+j}$ in $U$ is $u_{i,j}$, which captures the correct state dependence in $i$ and $j$ but is not yet normalized to a probability.
+
+\subsection*{Step 3: identify the missing normalization}
+The exact probability from Solution 1 is
+\[
+p_{i,j}:=\mathbb{P}(I_{i+j}=i)
+=
+\binom{i+j}{i}\frac{(3)_i(2)_j}{(5)_{i+j}}.
+\]
+Since
+\[
+\binom{i+j}{i}\frac{(3)_i(2)_j}{(5)_{i+j}}
+=
+u_{i,j}\cdot \frac{(i+j)!}{(5)_{i+j}},
+\]
+the discrepancy between $u_{i,j}$ and $p_{i,j}$ depends only on the total level
+\[
+N=i+j.
+\]
+For this urn,
+\[
+\frac{N!}{(5)_N}
+=
+\frac{24}{(N+1)(N+2)(N+3)(N+4)}
+=
+4\int_0^1 u^N(1-u)^3\,du.
+\]
+
+This suggests the integral operator
+\[
+(\mathcal T f)(t):=4\int_0^1 (1-u)^3 f(ut)\,du,
+\]
+which multiplies the coefficient of $t^N$ by the factor $N!/(5)_N$.
+
+\subsection*{Step 4: Beta-kernel normalization}
+Define the normalized shifted generating function
+\[
+\widetilde G(x,y,t):=(\mathcal T U)(x,y,t)
+=
+4\int_0^1 (1-u)^3 U(x,y,ut)\,du.
+\]
+Substituting the closed form for $U$ gives
+\[
+\widetilde G(x,y,t)
+=
+4x^3y^2
+\int_0^1
+\frac{(1-u)^3}{(1-uxt)^3(1-uyt)^2}\,du.
+\]
+
+Now extract coefficients under the integral:
+\begin{align*}
+[x^{i+3}y^{j+2}t^{i+j}]\,\widetilde G
+&=
+4\binom{i+2}{2}(j+1)\int_0^1 u^{i+j}(1-u)^3\,du \\
+&=
+4\binom{i+2}{2}(j+1)B(i+j+1,4) \\
+&=
+\frac{12(i+1)(i+2)(j+1)}{(i+j+1)(i+j+2)(i+j+3)(i+j+4)} \\
+&=
+p_{i,j}.
+\end{align*}
+Thus
+\[
+\widetilde G(x,y,t)
+=
+\sum_{i,j\ge 0} p_{i,j}\,x^{i+3}y^{j+2}t^{i+j}.
+\]
+In particular, the PDE route reproduces the exact beta-binomial law.
+
+\subsection*{Step 5: recover the Beta-mixture form}
+If one removes the harmless initial factor $x^3y^2$, the corresponding unshifted normalized generating function is
+\[
+G(x,y,t):=\sum_{i,j\ge 0} p_{i,j}\,x^i y^j t^{i+j}.
+\]
+Using the Beta-binomial formula and summing over $N=i+j$,
+\begin{align*}
+G(x,y,t)
+&=
+\sum_{N\ge 0}\sum_{i=0}^N
+\binom{N}{i}
+\left(\int_0^1 12\,p^{i+2}(1-p)^{N-i+1}\,dp\right)
+x^i y^{N-i} t^N \\
+&=
+12\int_0^1 p^2(1-p)
+\sum_{N\ge 0}\bigl(t(px+(1-p)y)\bigr)^N\,dp \\
+&=
+12\int_0^1 \frac{p^2(1-p)}{1-t(px+(1-p)y)}\,dp.
+\end{align*}
+This is exactly the generating-function form of the Beta$(3,2)$ mixture.
+
+Therefore the coefficient array is beta-binomial, and the same limit law follows:
+\[
+X_\infty\sim \mathrm{Beta}(3,2).
+\]
+Hence
+\[
+P_\infty
+=
+\mathbb{P}\!\left(X_\infty>\frac12\right)
+=
+\int_{1/2}^1 12p^2(1-p)\,dp
+=
+\frac{11}{16}.
+\]
+
+\begin{remark}[optional normalized PDE]
+One can also write down a first-order PDE directly for the normalized shifted generating function $\widetilde G$:
+\[
+t\,\widetilde G_t+4\widetilde G-4x^3y^2
+=
+t x^2 \widetilde G_x + t y^2 \widetilde G_y,
+\qquad
+\widetilde G(x,y,0)=x^3y^2.
+\]
+This equation is exact, but less transparent than the raw transport PDE for $U$. For this reason, the unnormalized PDE together with the Beta-kernel normalization is the cleaner analytic route.
+\end{remark}
+
+\section{Conclusion}
+
+All eight routes lead to the same answer:
+\[
+\boxed{
+\lim_{N\to\infty}\mathbb{P}\!\left(X_N>\frac12\right)=\frac{11}{16}
+}.
+\]
+
+The common structural theme is the repeated appearance of the Beta$(3,2)$ law:
+\begin{itemize}
+    \item exactly, via the beta-binomial formula;
+    \item asymptotically, via the density $12x^2(1-x)$;
+    \item probabilistically, via Bayesian conjugacy, martingales, de Finetti, and Yule processes;
+    \item analytically, via a transport PDE for raw weights and a Beta-kernel normalization.
+\end{itemize}
+
+\end{document}
