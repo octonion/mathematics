@@ -13,15 +13,15 @@
 For an integer $r\ge 1$, let
 
 $$
-\mathcal A_r
+{\mathcal A_r}
 =
-\mathbb C\bigl[u,z_1^{\pm 1},\ldots,z_r^{\pm 1}\bigr].
+{\mathbb C}\bigl[u,z_1^{\pm 1},\ldots,z_r^{\pm 1}\bigr].
 $$
 
 Define the factorially weighted constant-term functional on monomials by
 
 $$
-\Gamma_r\bigl(u^n z^\mu\bigr)
+\Gamma_{r}\bigl(u^n z^\mu\bigr)
 =
 \begin{cases}
  n!, & \mu=0,\\
@@ -57,7 +57,7 @@ $$
 \Gamma_r\bigl(F^{kp}\bigr)\ne 0
 $$
 
-for every sufficiently large prime $p$. The proof combines the multivariable constant-term theorem of Duistermaat and van der Kallen, an exposed-face construction, and a reduction-modulo-$p$ argument that isolates the lowest balanced coefficient through factorial weights. As a specialization, an explicit embedding of the two-variable Gaussian functional into $\Gamma_1$ proves the Gaussian Moments Conjecture in dimension two and the corresponding orthogonal nullcone classification.
+for every sufficiently large prime $p$. The proof combines the multivariable constant-term theorem of Duistermaat and van der Kallen, an exposed-face construction, and a reduction-modulo-{$p$} argument that isolates the lowest balanced coefficient through factorial weights. As a specialization, an explicit embedding of the two-variable Gaussian functional into $\Gamma_1$ proves the Gaussian Moments Conjecture in dimension two and the corresponding orthogonal nullcone classification.
 
 ## AI-assisted research disclaimer
 
