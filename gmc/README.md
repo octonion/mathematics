@@ -13,17 +13,51 @@
 For an integer $r\ge 1$, let
 
 $$
-\mathcal A_r=\mathbb C[u,z_1^{\pm1},\ldots,z_r^{\pm1}]
+\mathcal A_r
+=
+\mathbb C\bigl[u,z_1^{\pm 1},\ldots,z_r^{\pm 1}\bigr].
 $$
 
-and define the factorially weighted constant-term functional by
+Define the factorially weighted constant-term functional on monomials by
 
 $$
-\Gamma_r(u^n z^\mu)=n!\,\mathbf 1_{\mu=0}
-\qquad(n\ge0,\ \mu\in\mathbb Z^r).
+\Gamma_r\bigl(u^n z^\mu\bigr)
+=
+\begin{cases}
+ n!, & \mu=0,\\
+ 0, & \mu\ne 0,
+\end{cases}
+\qquad
+n\ge 0,\quad \mu\in\mathbb Z^r.
 $$
 
-For $F\in\mathcal A_r$, let $\Omega(F)\subset\mathbb Z^r$ be its torus-weight support. We prove that the following are equivalent: $\Gamma_r(F^m)=0$ for all sufficiently large $m$; $\Gamma_r(F^m)=0$ for every $m\ge1$; and $0\notin\operatorname{conv}\Omega(F)$. Under these conditions, $\Gamma_r(GF^m)=0$ for every fixed $G\in\mathcal A_r$ and all sufficiently large $m$. Hence $\ker\Gamma_r$ is a Mathieu--Zhao subspace for every torus rank. More quantitatively, if $0\in\operatorname{conv}\Omega(F)$, then there is an integer $k\ge1$ such that $\Gamma_r(F^{kp})\ne0$ for every sufficiently large prime $p$. The proof combines the multivariable constant-term theorem of Duistermaat and van der Kallen, an exposed-face construction, and a reduction-modulo-$p$ argument that isolates the lowest balanced coefficient through factorial weights. As a specialization, an explicit embedding of the two-variable Gaussian functional into $\Gamma_1$ proves the Gaussian Moments Conjecture in dimension two and the corresponding orthogonal nullcone classification.
+For $F\in\mathcal A_r$, let $\Omega(F)\subset\mathbb Z^r$ be its torus-weight support. We prove that the following are equivalent:
+
+1. $\Gamma_r(F^m)=0$ for all sufficiently large $m$;
+2. $\Gamma_r(F^m)=0$ for every $m\ge 1$;
+3. $0\notin\mathrm{conv}\bigl(\Omega(F)\bigr)$.
+
+Under these conditions,
+
+$$
+\Gamma_r\bigl(GF^m\bigr)=0
+$$
+
+for every fixed $G\in\mathcal A_r$ and all sufficiently large $m$. Hence $\ker(\Gamma_r)$ is a Mathieu–Zhao subspace for every torus rank.
+
+More quantitatively, if
+
+$$
+0\in\mathrm{conv}\bigl(\Omega(F)\bigr),
+$$
+
+then there is an integer $k\ge 1$ such that
+
+$$
+\Gamma_r\bigl(F^{kp}\bigr)\ne 0
+$$
+
+for every sufficiently large prime $p$. The proof combines the multivariable constant-term theorem of Duistermaat and van der Kallen, an exposed-face construction, and a reduction-modulo-$p$ argument that isolates the lowest balanced coefficient through factorial weights. As a specialization, an explicit embedding of the two-variable Gaussian functional into $\Gamma_1$ proves the Gaussian Moments Conjecture in dimension two and the corresponding orthogonal nullcone classification.
 
 ## AI-assisted research disclaimer
 
