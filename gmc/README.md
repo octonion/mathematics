@@ -11,20 +11,18 @@
 ## Abstract
 
 For an integer $r\ge 1$, let
+
 $${\mathcal A}_r = {\mathbb C}\bigl[u,z_1^{\pm 1},\ldots,z_r^{\pm 1}\bigr].$$
 
 Define the factorially weighted constant-term functional on monomials by
 
-$$
-\Gamma_{r}\bigl(u^n z^\mu\bigr)
-=
-\begin{cases}
+$$\Gamma_{r}\bigl(u^n z^\mu\bigr)
+= \begin{cases}
  n!, & \mu=0,\\
  0, & \mu\ne 0,
 \end{cases}
 \qquad
-n\ge 0,\quad \mu\in\mathbb Z^r.
-$$
+n\ge 0,\quad \mu\in\mathbb Z^r.$$
 
 For $F\in\mathcal A_r$, let $\Omega(F)\subset\mathbb Z^r$ be its torus-weight support. We prove that the following are equivalent:
 
