@@ -1,0 +1,56 @@
+PASS {D,R}=1
+PASS {S,T}=1
+PASS {R,S}=0
+PASS {R,T}=0
+PASS {D,S}=0
+PASS {D,T}=0
+PASS R=x(2-3xq)
+PASS Psi0 inverse: q
+PASS Psi0 inverse: p
+PASS Psi0 inverse: z
+PASS det J Psi0 = -1
+PASS det J Psi = -1
+PASS App A derivative R_x
+PASS App A derivative R_y
+PASS App A derivative R_b
+PASS App A derivative S_x
+PASS App A derivative S_y
+PASS App A derivative S_b
+PASS App A derivative T_x
+PASS App A derivative T_y
+PASS App A derivative T_b
+PASS App A derivative H_x
+PASS App A derivative H_y
+PASS App A derivative H_b
+PASS C_xy closed form
+PASS C_xbeta closed form
+PASS C_ybeta closed form
+PASS C_xy = A1
+PASS C_xbeta = A2
+PASS C_ybeta = A3
+PASS omega = dR^dD0 + dR^dH + dT^dS in (x,y,beta,D0)
+PASS det d(R,T,S)/d(x,y,beta) = 1
+PASS R = x*alpha
+PASS S = b/x
+PASS T = c/x^2
+PASS Delta = -1
+PASS {x,y}=x^3
+PASS {x,beta}=-3x^2
+PASS {y,beta}=-2+6xy+3x^2 beta
+PASS three points map to (0,1/8,0,0)
+PASS core fiber = 3 stated points
+PASS H(0,0,-1/4) = -1/48
+PASS H(1,-3/2,13/2) = -1097/192
+PASS H(-1,3/2,13/2) = -1097/192
+PASS size table beta: 4 terms, deg 3
+PASS size table y: 5 terms, deg 4
+PASS size table R: 2 terms, deg 3
+PASS size table S: 22 terms, deg 11
+PASS size table T: 47 terms, deg 15
+PASS size table H: 137 terms, deg 23
+PASS size table D: 139 terms, deg 23
+PASS A * Jf^T = I4
+PASS det Jf = 1 (via product of factor dets)
+PASS all pairwise brackets of D,S,R,T constant
+
+FAILURES: none

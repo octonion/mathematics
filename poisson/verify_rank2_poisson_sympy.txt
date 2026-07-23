@@ -1,0 +1,6 @@
+SymPy 1.12
+All exact assertions passed.
+Term counts and total degrees: {'beta': (4, 3), 'y': (5, 4), 'R': (2, 3), 'S': (22, 11), 'T': (47, 15), 'H': (137, 23), 'D': (139, 23)}
+det d(r,s,t)/d(X,Y,W) = -1
+det J(R,T,D,S) = 1
+Three collision points map to (0, 1/8, 0, 0)

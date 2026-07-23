@@ -1,0 +1,9 @@
+{D,R}-1: 0
+{S,T}-1: 0
+{R,T}: 0
+{R,S}: 0
+{D,T}: 0
+{D,S}: 0
+Jacobian determinant: 1
+R factorization: -x*(3*q*x - 2)
+All exact checks passed.

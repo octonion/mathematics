@@ -1,0 +1,4 @@
+All independent sparse-polynomial assertions passed.
+Term counts and total degrees: {'beta': (4, 3), 'y': (5, 4), 'R': (2, 3), 'S': (22, 11), 'T': (47, 15), 'H': (137, 23), 'D': (139, 23)}
+det J(R,T,D,S) = {(0, 0, 0, 0): Fraction(1, 1)}
+Three collision points map to (Fraction(0, 1), Fraction(1, 8), Fraction(0, 1), Fraction(0, 1))
