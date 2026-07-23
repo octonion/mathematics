@@ -11,12 +11,7 @@
 ## Abstract
 
 For an integer $r\ge 1$, let
-
-$$
-{\mathcal A_r}
-=
-{\mathbb C}\bigl[u,z_1^{\pm 1},\ldots,z_r^{\pm 1}\bigr].
-$$
+$${\mathcal A}_r = {\mathbb C}\bigl[u,z_1^{\pm 1},\ldots,z_r^{\pm 1}\bigr].$$
 
 Define the factorially weighted constant-term functional on monomials by
 
