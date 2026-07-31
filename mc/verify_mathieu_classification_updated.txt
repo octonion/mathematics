@@ -1,0 +1,2 @@
+All updated exact identities verified, including the weighted xz reparametrization.
+Explicit w-spectrum: [-1, 0, 1, 2]
