@@ -1,0 +1,2707 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1.06in]{geometry}
+\usepackage{amsmath,amssymb,mathtools,amsthm}
+\usepackage{aliascnt}
+\usepackage{mathrsfs}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={The Two-Variable Factorial Conjecture},
+  pdfauthor={Christopher D. Long},
+  pdfsubject={Factorial Conjecture, Mittag-Leffler constellations, Fourier-Laplace rigidity},
+  pdfkeywords={Factorial Conjecture, polynomial moments, Mittag-Leffler function, constellation monodromy, E-function, Fourier-Laplace transform}
+}
+
+\numberwithin{equation}{section}
+\setlength{\emergencystretch}{3em}
+
+\newtheorem{theorem}{Theorem}[section]
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+% Load cleveref after the theorem environments so shared counters retain
+% their proposition/lemma/corollary names in cross-references.
+\usepackage[capitalize,noabbrev]{cleveref}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Qbar}{\overline{\mathbb Q}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Aone}{\mathbb A^1}
+\newcommand{\Gm}{\mathbb G_m}
+\newcommand{\Lfac}{\mathcal L}
+\newcommand{\FC}{\mathrm{FC}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\Gcal}{\mathcal G}
+\newcommand{\Jcal}{\mathcal J}
+\newcommand{\Kcal}{\mathcal K}
+\newcommand{\Mcal}{\mathcal M}
+\newcommand{\Ecal}{\mathcal E}
+\newcommand{\Rcal}{\mathcal R}
+\newcommand{\Ncal}{\mathcal N}
+\newcommand{\Lcal}{\mathscr L}
+\newcommand{\Vcal}{\mathscr V}
+\newcommand{\Dmod}{\mathcal D}
+\newcommand{\Ocal}{\mathcal O}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,d}
+
+\title{The Two-Variable Factorial Conjecture\\
+via Mittag--Leffler Constellations and Fourier--Laplace Rigidity}
+\author{Christopher D. Long}
+\date{Revised research draft, August 1, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\small
+Headlamp Software, Lexington, Kentucky, USA\\
+\texttt{galizur@gmail.com}
+\end{center}
+
+\begin{abstract}
+Let $\Lfac(x^a y^b)=a!b!$ on $\C[x,y]$.  We prove the two-variable
+Factorial Conjecture: if $\Lfac(f^m)=0$ for every $m\ge1$, then $f=0$.
+The proof has three parts.  First, algebraic specialization reduces a
+hypothetical counterexample to coefficients in $\Qbar$.  Second, an exact
+Mittag--Leffler generating period rules out every nonflat projective leading
+form.  Its parameterized radial reversion has a computable logarithmic
+symbol; the positive-interval constellation of Pakovich and Muzychuk forces
+a primitive Fourier relation, and inverse-branch asymptotics at infinity
+contradict that relation.  In the remaining flat-top case
+$f_D=(x+y)^D$, the leading singular coefficient of the normalized generating
+function is
+\[
+  \int_0^1\exp\!\left(\frac{f_{D-1}(t,1-t)}D\right)\,dt,
+\]
+so vanishing of all factorial moments forces this integral to vanish.
+Finally, we prove that for every nonconstant $q\in\Qbar[x]$ and distinct
+$A,B\in\Qbar$, the integral $\int_A^B e^{q(x)}\,dx$ is transcendental.
+The arithmetic proof uses an inhomogeneous $E$-function moment system,
+semisimplicity of its Fourier--Laplace connection, horizontal-endomorphism
+rigidity in the Jacobian algebra of $q$, Beukers' refinement of the
+Siegel--Shidlovskii theorem, and a Cauchy-transform moment argument.  Applied
+to $q(t)=f_{D-1}(t,1-t)/D$, this gives the final contradiction.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}\label{sec:introduction}
+
+For $g\in\C[x,y]$, define the factorial functional by
+\begin{equation}\label{eq:def-L}
+  \Lfac(x^a y^b)=a!b!,\qquad a,b\ge0.
+\end{equation}
+The Factorial Conjecture was introduced by van den Essen, Wright, and Zhao
+in their study of the Image Conjecture \cite[\S4]{vdEWZ}.  Its two-variable form
+is the following.
+
+\begin{theorem}[Two-variable Factorial Conjecture]\label{thm:FC2}
+For every $f\in\C[x,y]$,
+\[
+  \Lfac(f^m)=0\quad\text{for all }m\ge1
+  \qquad\Longrightarrow\qquad f=0.
+\]
+\end{theorem}
+
+The homogeneous two-variable case was proved by Liu and Sun
+\cite{LiuSun}.  The inhomogeneous problem is not formally reduced to that
+case because radial integration couples the homogeneous layers through
+Gamma factors.
+
+Write a nonzero polynomial of exact degree $D$ as
+\[
+  f=f_D+f_{D-1}+\cdots+f_0,
+\]
+where every $f_j$ is homogeneous of degree $j$, and put
+\begin{equation}\label{eq:intro-projective-layers}
+  A_j(t)=f_{D-j}(t,1-t),\qquad 0\le j\le D.
+\end{equation}
+The proof of \cref{thm:FC2} follows the implication chain
+\[
+\begin{aligned}
+\text{counterexample over }\C
+&\Longrightarrow \text{counterexample over }\Qbar,\\
+&\Longrightarrow A_0(t)\text{ is constant},\\
+&\Longrightarrow f_D=(x+y)^D\text{ after scaling},\\
+&\Longrightarrow \int_0^1 e^{A_1(t)/D}\,dt=0,\\
+&\Longrightarrow \text{contradiction}.
+\end{aligned}
+\]
+The second implication is the nonflat-top theorem proved in
+\cref{sec:radial,sec:mittag,sec:symbol,sec:constellation,sec:infinity}.
+The fourth is the flat first-symbol calculation in \cref{sec:flat-symbol}.
+The final contradiction is supplied by the algebraic exponential-integral
+theorem of \cref{thm:exp-integral}, proved in
+\cref{sec:E-functions,sec:exp-moment,sec:exp-semisimple,sec:exp-rigidity,sec:exp-relations,sec:exp-annihilation,sec:exp-phase-rigidity}.
+
+\section{Algebraic specialization}\label{sec:specialization}
+
+\begin{proposition}[Algebraic specialization]\label{prop:algebraic-specialization}
+If a nonzero counterexample to \cref{thm:FC2} exists in $\C[x,y]$, then
+there is one in $\Qbar[x,y]$ with the same monomial support.
+\end{proposition}
+
+\begin{proof}
+Let
+\[
+  f=\sum_{\alpha\in S}c_\alpha x^{\alpha_1}y^{\alpha_2}
+\]
+be a nonzero counterexample with finite support $S$, and choose
+$\alpha_0\in S$.  Replacing $f$ by $c_{\alpha_0}^{-1}f$ preserves every
+moment vanishing, since
+\[
+  \Lfac\!\left((c_{\alpha_0}^{-1}f)^n\right)
+  =c_{\alpha_0}^{-n}\Lfac(f^n)=0
+  \qquad(n\ge1),
+\]
+and it preserves the support.  We may therefore impose the normalization
+$c_{\alpha_0}=1$.
+
+For every $n\ge1$, the quantity $\Lfac(f^n)$ is a polynomial with integer
+coefficients in the remaining coefficients $c_\alpha$: the multinomial
+coefficients are integers, and applying $\Lfac$ to each resulting monomial
+multiplies its coefficient by two factorials.  Put
+\[
+  R=\Qbar[c_\alpha,u_\alpha:
+       \alpha\in S\setminus\{\alpha_0\}],
+\]
+and let $I\subseteq R$ be generated by all moment polynomials
+$\Lfac(f^n)$, $n\ge1$, together with the Rabinowitsch equations
+\[
+  u_\alpha c_\alpha-1=0
+  \qquad(\alpha\in S\setminus\{\alpha_0\}).
+\]
+Although the displayed family of moment generators is infinite, the ideal
+is proper: evaluation at the original normalized complex coefficient vector,
+with $u_\alpha=c_\alpha^{-1}$, annihilates every generator.  Hence $I$ is
+contained in a maximal ideal $\mathfrak m$ of $R$.  By the weak
+Nullstellensatz, $\mathfrak m$ is the vanishing ideal of a point with
+coordinates in $\Qbar$.  At that point the Rabinowitsch equations force every
+coefficient indexed by $S$ to remain nonzero, while all the factorial-moment
+polynomials vanish.  The resulting polynomial in $\Qbar[x,y]$ therefore has
+support exactly $S$ and satisfies every factorial-moment equation.
+\end{proof}
+
+\section{Radial--projective coordinates}\label{sec:radial}
+
+\begin{lemma}[Gamma integral]\label{lem:factorial-integral}
+For every $g\in\C[x,y]$,
+\begin{equation}\label{eq:factorial-integral}
+  \Lfac(g)
+  =\int_0^\infty\int_0^\infty
+    g(x,y)e^{-x-y}\,dx\,dy.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The integral is absolutely convergent for every polynomial, since a
+polynomial has at most polynomial growth and the weight is $e^{-x-y}$.
+It is therefore enough by linearity to test the monomial $x^a y^b$.
+Fubini's theorem and the Gamma integral give
+\[
+  \int_0^\infty\int_0^\infty
+  x^a y^b e^{-x-y}\,dx\,dy
+  =\Gamma(a+1)\Gamma(b+1)=a!b!.
+\]
+\end{proof}
+
+Let $f$ have exact degree $D$, with homogeneous decomposition and
+projective layers $A_j$ as in \eqref{eq:intro-projective-layers}.
+
+\begin{lemma}[Projective degree and the factor $x+y$]\label{lem:projective-degree}
+Let $f_D$ be homogeneous of degree $D$, and write
+\[
+  f_D=(x+y)^m g_D,
+  \qquad x+y\nmid g_D.
+\]
+Then
+\[
+  \deg f_D(t,1-t)=D-m.
+\]
+In particular, $f_D(t,1-t)$ is constant if and only if $f_D$ is a scalar multiple of $(x+y)^D$.
+\end{lemma}
+
+\begin{proof}
+Since $t+(1-t)=1$,
+\[
+  f_D(t,1-t)=g_D(t,1-t).
+\]
+The polynomial on the right has degree at most $D-m$.  Its coefficient of
+$t^{D-m}$ is $g_D(1,-1)$.  For a homogeneous polynomial $g_D$, the equality
+$g_D(1,-1)=0$ is equivalent to the identity $g_D(x,-x)=0$, and hence to the
+divisibility $x+y\mid g_D$.  The defining assumption therefore gives
+$g_D(1,-1)\ne0$, so the degree is exactly $D-m$.  The final assertion follows
+by taking $D-m=0$.
+\end{proof}
+
+For $r>0$, homogeneity gives
+\begin{equation}\label{eq:radial-polynomial}
+  f(rt,r(1-t))
+  =r^D\left(A_0(t)+\frac{A_1(t)}r+\cdots+\frac{A_D(t)}{r^D}\right).
+\end{equation}
+
+\begin{proposition}[Exact radial--projective formula]\label{prop:radial-projective}
+For every $n\ge0$,
+\begin{equation}\label{eq:normalized-radial}
+\begin{split}
+  I_n(f)&:=\frac{\Lfac(f^n)}{\Gamma(Dn+2)}\\
+  &=\frac1{\Gamma(Dn+2)}
+    \int_0^1\!\int_0^\infty
+    e^{-r}r\,f(rt,r(1-t))^n\,dr\,dt\\
+  &=\frac1{\Gamma(Dn+2)}
+    \int_0^1\!\int_0^\infty
+    e^{-r}r^{Dn+1}
+    \left(A_0(t)+\frac{A_1(t)}r+\cdots+\frac{A_D(t)}{r^D}\right)^n
+    \,dr\,dt.
+\end{split}
+\end{equation}
+In the last integral the apparent singularity at $r=0$ is removable: the
+full integrand is the preceding nonsingular expression
+$e^{-r}r\,f(rt,r(1-t))^n$.
+\end{proposition}
+
+\begin{proof}
+Use the change of variables
+\[
+  x=rt,\qquad y=r(1-t),
+  \qquad r\ge0,\ 0\le t\le1.
+\]
+The absolute value of its Jacobian determinant is $r$, and $x+y=r$.
+Substitution into \eqref{eq:factorial-integral} gives the first integral in
+\eqref{eq:normalized-radial}.  For $r>0$, insert
+\eqref{eq:radial-polynomial}; the resulting equality extends across $r=0$
+by the removable-singularity observation in the statement.
+\end{proof}
+
+
+\section{Mittag--Leffler generating periods}\label{sec:mittag}
+
+Throughout \cref{sec:mittag,sec:symbol,sec:constellation,sec:infinity}, fix $D\ge1$ and polynomials
+\[
+  A_0,A_1,\ldots,A_D\in\C[t].
+\]
+Put
+\begin{equation}\label{eq:P-general}
+  P(t,r)=\sum_{j=0}^D A_j(t)r^{D-j}.
+\end{equation}
+For the projective layers of a degree-$D$ polynomial, this is exactly $f(rt,r(1-t))$.
+
+For $\beta\in\N$, define the Mittag--Leffler function
+\begin{equation}\label{eq:mittag-general}
+  E_{D,\beta}(z)=\sum_{n\ge0}\frac{z^n}{\Gamma(Dn+\beta)}.
+\end{equation}
+
+\begin{lemma}[Uniform Mittag--Leffler growth and initial holomorphy]
+\label{lem:mittag-growth}
+For $\beta\in\{2,3\}$ there are constants $C,N>0$, depending only on
+$D$ and $\beta$, such that
+\begin{equation}\label{eq:mittag-growth}
+  |E_{D,\beta}(z)|
+  \le C(1+|z|)^N\exp\!\bigl(C|z|^{1/D}\bigr)
+  \qquad(z\in\C).
+\end{equation}
+Let $K\subset\C$ be compact.  Then there is $C_K>0$ such that
+\begin{equation}\label{eq:P-growth}
+  |P(t,r)|^{1/D}\le C_K(1+r)
+  \qquad(t\in K,\ r\ge0).
+\end{equation}
+Consequently, for $|s|$ sufficiently small, the integrals in
+\eqref{eq:Gcal-Mittag-general} and \eqref{eq:Jcal-Mittag} converge
+absolutely and locally uniformly in $t$ on $K$ and in $s$.  They define
+holomorphic functions of $s$, and of $t$ whenever $t$ is retained as a
+complex parameter; termwise integration of the Mittag--Leffler series is
+valid.
+\end{lemma}
+
+\begin{proof}
+For $|z|\le1$, the entire functions $E_{D,\beta}$ are bounded.  If
+$|z|\ge1$, choose $X$ with $X^D=z$.  The elementary root-of-unity filter, recorded precisely in
+Lemma~\ref{lem:root-filter-general}, writes
+$E_{D,\beta}(X^D)$ as a finite sum of terms of the form
+$X^{1-\beta}e^{\omega^kX}$ together with a finite Laurent correction.
+Since $|X|=|z|^{1/D}$, this gives \eqref{eq:mittag-growth} after enlarging
+$C$ and $N$.
+
+Because $P(t,r)$ has degree at most $D$ in $r$ and its coefficients are
+bounded on $K$, one has $|P(t,r)|\le C_K^D(1+r)^D$, which is
+\eqref{eq:P-growth}.  Hence the absolute value of either integrand is
+bounded by
+\[
+  C'e^{-r}r(1+r)^{N'}
+  \exp\!\bigl(C'C_K|s|^{1/D}(1+r)\bigr).
+\]
+For $|s|$ small enough this is dominated by
+$C''e^{-r/2}(1+r)^{N'+1}$, uniformly for $t\in K$.  Dominated convergence
+and the Weierstrass theorem now give all asserted holomorphy and
+termwise-integration statements.
+\end{proof}
+
+\begin{definition}[Normalized generating periods]\label{def:generating-periods}
+Let $I_n=I_n(f)$ denote the normalized radial moment in \eqref{eq:normalized-radial}.  Define
+\begin{align}
+  \Gcal(s)&=\sum_{n\ge0}I_n s^n,\label{eq:Gcal-general}\\
+  \Jcal(s)&=\sum_{n\ge0}\frac{I_n}{Dn+2}s^n,\label{eq:Jcal-series-new}\\
+  \Kcal(w)&=\frac1w\Jcal(w^{-1}).\label{eq:Kcal-new}
+\end{align}
+\end{definition}
+
+\begin{proposition}[Exact Mittag--Leffler representations]\label{prop:Mittag-representations}
+For $|s|$ sufficiently small,
+\begin{align}
+  \Gcal(s)
+  &=\int_0^1\int_0^\infty
+    e^{-r}r\,E_{D,2}\bigl(sP(t,r)\bigr)\,dr\,dt,\label{eq:Gcal-Mittag-general}\\
+  \Jcal(s)
+  &=\int_0^1\int_0^\infty
+    e^{-r}r\,E_{D,3}\bigl(sP(t,r)\bigr)\,dr\,dt.\label{eq:Jcal-Mittag}
+\end{align}
+Consequently, for $|w|$ sufficiently large,
+\begin{equation}\label{eq:Bcal-Mittag}
+  \Kcal(w)=\int_0^1\Bcal(w,t)\,dt,
+  \qquad
+  \Bcal(w,t)=\frac1w\int_0^\infty
+  e^{-r}r\,E_{D,3}\!\left(\frac{P(t,r)}w\right)dr.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Expand the Mittag--Leffler functions and use
+\eqref{eq:normalized-radial}.  The locally uniform integrable majorant
+from Lemma~\ref{lem:mittag-growth} justifies termwise integration and proves
+both identities.  Substituting $s=w^{-1}$ and multiplying by $w^{-1}$
+gives \eqref{eq:Bcal-Mittag}.
+\end{proof}
+
+
+\begin{lemma}[Root-of-unity filter with low-degree corrections]\label{lem:root-filter-general}
+Let $m\ge0$, let $\omega=e^{2\pi i/D}$, and define the finite Laurent polynomial
+\[
+  C_{D,m}(X)
+  =\sum_{\substack{0\le \ell<m\\ \ell\equiv m\pmod D}}
+   \frac{X^{\ell-m}}{\ell!}.
+\]
+Then
+\begin{equation}\label{eq:root-filter-general}
+  E_{D,m+1}(X^D)
+  =\frac1{DX^m}\sum_{k=0}^{D-1}
+   \omega^{-mk}e^{\omega^kX}-C_{D,m}(X).
+\end{equation}
+In particular, $C_{D,1}=0$ unless $D=1$, while $C_{D,2}=0$ for $D\ge3$, $C_{2,2}(X)=X^{-2}$, and
+\[
+  C_{1,2}(X)=X^{-2}+X^{-1}.
+\]
+\end{lemma}
+
+\begin{proof}
+Expand the exponentials.  The root-of-unity sum retains precisely the indices $\ell\equiv m\pmod D$:
+\[
+  \frac1{DX^m}\sum_{k=0}^{D-1}\omega^{-mk}e^{\omega^kX}
+  =\sum_{\substack{\ell\ge0\\\ell\equiv m\pmod D}}
+   \frac{X^{\ell-m}}{\ell!}.
+\]
+The terms with $\ell\ge m$ form $E_{D,m+1}(X^D)$; the finitely many terms with $\ell<m$ form $C_{D,m}$.
+\end{proof}
+
+\section{Parameterized radial reversion and the local logarithmic symbol}\label{sec:symbol}
+
+The local singularity of \eqref{eq:Bcal-Mittag} is controlled entirely by the behavior of $P(t,r)$ at $r=\infty$.
+
+\begin{lemma}[Uniform radial reversion near a nonzero leading value]\label{lem:uniform-nonflat-reversion}
+Let $t_0\in\C$ satisfy $u_0=A_0(t_0)\neq0$.  After shrinking a neighborhood $U$ of $t_0$, there is a common exterior region in which
+\begin{equation}\label{eq:Phi-nonflat}
+  \Phi_t(r)=\left(\frac{P(t,r)}{A_0(t)}\right)^{1/D}
+  =r+\frac{A_1(t)}{DA_0(t)}+O(r^{-1})
+\end{equation}
+has a holomorphic inverse
+\begin{equation}\label{eq:chi-nonflat}
+  r=\chi(t,Y)
+  =Y-\frac{A_1(t)}{DA_0(t)}+O(Y^{-1}).
+\end{equation}
+All expansions are locally uniform in $t\in U$, and their coefficients are holomorphic in $t$.
+\end{lemma}
+
+\begin{proof}
+The quotient $P(t,r)/(A_0(t)r^D)$ is $1+O(r^{-1})$ uniformly on compact subsets of $U$.  Choose the $D$-th root asymptotic to $1$, giving \eqref{eq:Phi-nonflat}.  In the coordinate $r^{-1}$, the derivative of $\Phi_t$ at infinity is $1$, uniformly in $t$.  The parameter-dependent holomorphic inverse-function theorem gives a common inverse and the expansion \eqref{eq:chi-nonflat}.
+\end{proof}
+
+\begin{lemma}[Uniform exterior-ray deformation]\label{lem:nonflat-common-ray}
+Under the hypotheses of Lemma~\ref{lem:uniform-nonflat-reversion}, after
+shrinking $U$ and increasing $R$, there are a common exterior sector
+$\mathfrak S$, a point $Y_0\in\mathfrak S$, and a ray
+\[
+  \ell=Y_0+e^{i\theta}[0,\infty)\subset\mathfrak S
+\]
+with the following property.  For every $t\in U$, the image curve
+\[
+  \Gamma_t=\Phi_t([R,\infty))
+\]
+lies in $\mathfrak S$, remains in the common domain of the inverse
+$\chi(t,Y)$, and is asymptotic to $\ell$.
+
+Let $F(t,Y)$ be jointly holomorphic on $U\times\mathfrak S$ and satisfy
+$F(t,Y)=O(Y^{-1})$ there, locally uniformly in $t$.  For $\eta$ in a
+sufficiently small sector such that
+\[
+  \Re(\eta e^{i\theta})\ge c|\eta|
+\]
+for some $c>0$, the difference
+\begin{equation}\label{eq:common-ray-difference}
+  \int_{\Gamma_t}e^{-\eta Y}F(t,Y)\,dY
+  -\int_{\ell}e^{-\eta Y}F(t,Y)\,dY
+\end{equation}
+extends jointly holomorphically to $(t,\eta)\in U\times\{|\eta|<\eps\}$.
+\end{lemma}
+
+\begin{proof}
+The expansions in Lemma~\ref{lem:uniform-nonflat-reversion} are uniform in
+$t$.  Thus, after increasing $R$, the curves $\Gamma_t$ lie in one narrow
+exterior sector and admit compatible parameterizations over the ray $\ell$
+for which the transverse displacement is $O(1)$ and the tangent difference
+is $O(|Y|^{-2})$, locally uniformly in $t$.  Shrinking $U$ if necessary,
+join the initial point of each $\Gamma_t$ to $Y_0$ by a path in a fixed
+compact annular subset of $\mathfrak S$, depending holomorphically on $t$.
+
+Truncate $\Gamma_t$ and $\ell$ at the same large ray parameter $M$ and join
+the corresponding outer endpoints inside $\mathfrak S$.  Their distance,
+and hence the length of this outer connector, is $O(1)$ rather than $O(M)$.
+On the connector one has $F(t,Y)=O(M^{-1})$.  Moreover, after narrowing the
+$\eta$-sector and the exterior sector, $e^{-\eta Y}$ is uniformly bounded
+there on every closed admissible subsector together with its vertex
+$\eta=0$.  The outer-connector integral is therefore $O(M^{-1})$ uniformly
+on compact subsets of $U$ and of such a closed subsector, and tends to zero.
+
+Cauchy's theorem now identifies \eqref{eq:common-ray-difference}, throughout
+the admissible sector, with the finite initial-connector integral.  That
+integral is entire in $\eta$ and holomorphic in $t$, and therefore furnishes
+the asserted joint extension to a full disk about $\eta=0$.  The same
+argument applies after termwise differentiation on smaller compact sets.
+\end{proof}
+
+\begin{lemma}[A parameterized Laplace logarithm]\label{lem:parameter-Laplace-log}
+Let $q_0(t)$ be holomorphic on a neighborhood $U$, and let $H(t,z)$ be holomorphic for $(t,z)\in U\times\{|z|<\rho\}$.  On a fixed sector
+\[
+  0<|\eta|<\eps,
+  \qquad
+  |\arg\eta-\theta|<\frac\pi2-\delta,
+\]
+consider
+\[
+  L(t,\eta)=\int_{Y_0}^{\infty e^{i\theta}}
+  e^{-\eta Y}\left(\frac{q_0(t)}Y+\frac{H(t,Y^{-1})}{Y^2}\right)dY.
+\]
+Then
+\begin{equation}\label{eq:Laplace-log-structure}
+  L(t,\eta)=-q_0(t)\log\eta+H_0(t,\eta)
+  +\eta\log\eta\,H_1(t,\eta),
+\end{equation}
+where $H_0,H_1$ are jointly holomorphic in $t$ and $\eta$ near $U\times\{0\}$.
+\end{lemma}
+
+\begin{proof}
+The $Y^{-1}$ term gives the exponential integral and hence $-\log\eta$ modulo a holomorphic function.  Expand
+\[
+  H(t,z)=\sum_{m\ge0}h_m(t)z^m
+\]
+normally on a smaller bidisk.  The Laplace transform of $Y^{-m-2}$ is, modulo a holomorphic function, a nonzero scalar multiple of $\eta^{m+1}\log\eta$.  Normal convergence, uniform on compact subsets of $U$, permits termwise integration and gives \eqref{eq:Laplace-log-structure}.  Equivalently, one may subtract finitely many terms and integrate the analytic remainder repeatedly by parts; the Cauchy estimates for $H$ give the required uniform bounds.
+\end{proof}
+
+\begin{theorem}[Parameterized local logarithmic symbol]\label{thm:boundary-symbol}
+Let $t_0\in\C$ satisfy $u_0=A_0(t_0)\neq0$.  The germ \eqref{eq:Bcal-Mittag}, initially defined for large $w$, admits multivalued analytic continuation to a neighborhood of $(w,t)=(u_0,t_0)$ outside the divisor $w=A_0(t)$.  On a local slit neighborhood,
+\begin{align}\label{eq:boundary-symbol}
+  \Bcal(w,t)
+  &=-\frac1{DA_0(t)}
+  \exp\!\left(\frac{A_1(t)}{DA_0(t)}\right)
+  \log\bigl(w-A_0(t)\bigr)\notag\\
+  &\quad+H_0(w,t)
+  +\bigl(w-A_0(t)\bigr)
+   \log\bigl(w-A_0(t)\bigr)H_1(w,t),
+\end{align}
+where $H_0,H_1$ are jointly holomorphic.  Thus the lowest logarithmic symbol depends only on $A_0$ and $A_1$.
+\end{theorem}
+
+\begin{proof}
+Shrink the neighborhood $U$ from \cref{lem:uniform-nonflat-reversion} so that $A_0$ never vanishes.  Split the radial integral in \eqref{eq:Bcal-Mittag} at a sufficiently large $R$, increasing $R$ so that $\Phi_t(r)$ is uniformly bounded away from zero for $t\in U$ and $r\ge R$.  The compact part $0\le r\le R$ is holomorphic for $w$ near $u_0\neq0$ because $E_{D,3}$ is entire.
+
+Choose the branch
+\[
+  \lambda=\left(\frac{A_0(t)}w\right)^{1/D}
+\]
+near $\lambda=1$.  Since
+\[
+  \frac{P(t,r)}w=(\lambda\Phi_t(r))^D,
+\]
+\cref{lem:root-filter-general} with $m=2$ gives, on the tail,
+\begin{align}\label{eq:root-tail-nonflat}
+  \Bcal(w,t)
+  &=\frac{\lambda^{D-2}}{DA_0(t)}
+  \sum_{k=0}^{D-1}\omega^{-2k}
+  \int_R^\infty
+  e^{-r+\omega^k\lambda\Phi_t(r)}
+  \frac{r}{\Phi_t(r)^2}\,dr
+  +H_{\mathrm{corr}}(w,t),
+\end{align}
+where the finite correction $H_{\mathrm{corr}}$ is holomorphic near $(u_0,t_0)$.  Indeed, the root filter is used only on the radial tail, where $\lambda\Phi_t(r)$ stays away from zero; hence the negative powers occurring for $D=1,2$ have holomorphic, exponentially integrable coefficients.  For $k\neq0$, one has
+\[
+  \Re(1-\omega^k\lambda)>0
+\]
+uniformly after shrinking the neighborhood, so those tail integrals are holomorphic.  Only $k=0$ can be singular.
+
+In the principal term put $Y=\Phi_t(r)$ and $r=\chi(t,Y)$.  Its amplitude becomes
+\begin{equation}\label{eq:nonflat-amplitude}
+  e^{Y-\chi(t,Y)}
+  \frac{\chi(t,Y)}{Y^2}\,\partial_Y\chi(t,Y)
+  =\frac{q_0(t)}Y+\frac{H(t,Y^{-1})}{Y^2},
+\end{equation}
+where
+\[
+  q_0(t)=\exp\!\left(\frac{A_1(t)}{DA_0(t)}\right)
+\]
+and $H$ is jointly holomorphic.  Apply Lemma~\ref{lem:nonflat-common-ray} to the
+amplitude in \eqref{eq:nonflat-amplitude}.  Replacing the image curves
+$\Phi_t([R,\infty))$ by one fixed ray changes the principal tail only by
+a function jointly holomorphic in $(t,\eta)$ at $\eta=0$.
+
+Put $\eta=1-\lambda$.  By \cref{lem:parameter-Laplace-log}, the principal tail is
+\[
+  \frac{\lambda^{D-2}}{DA_0(t)}
+  \left[-q_0(t)\log\eta+\widetilde H_0(t,\eta)
+  +\eta\log\eta\,\widetilde H_1(t,\eta)\right].
+\]
+Finally,
+\[
+  \eta=1-\left(\frac{A_0(t)}w\right)^{1/D}
+  =\frac{w-A_0(t)}{DA_0(t)}
+   +O\bigl((w-A_0(t))^2\bigr).
+\]
+Hence $\log\eta=\log(w-A_0(t))$ modulo a jointly holomorphic function, and $\eta\log\eta$ is $(w-A_0(t))\log(w-A_0(t))$ times a holomorphic unit, modulo a holomorphic function.  Evaluating the analytic prefactor at $\lambda=1$ gives \eqref{eq:boundary-symbol}.
+
+  The lowest logarithmic coefficient is independent of the local
+  $D$-th-root sheet.  Indeed, suppose a continued branch satisfies
+  $\lambda\to\omega^q$ as $w\to A_0(t)$.  The unique potentially singular
+  root-filter summand is then $k\equiv-q\pmod D$.  With
+  $\mu=\omega^k\lambda\to1$, the same Laplace calculation applies with
+  $\eta=1-\mu$, while its analytic prefactor has limiting root-of-unity
+  factor
+  \[
+    \lambda^{D-2}\omega^{-2k}
+    \longrightarrow
+    \omega^{q(D-2)}\omega^{2q}=\omega^{qD}=1.
+  \]
+  Thus every continuation sheet has the coefficient displayed in
+  \eqref{eq:boundary-symbol}.  This sheet-independence will be used in the
+  constellation argument.
+\end{proof}
+
+\begin{lemma}[Continuation away from the leading divisor]
+\label{lem:Bcal-continuation}
+Let $U$ be a sufficiently small neighborhood on which $A_0$ is nowhere
+zero and the uniform reversion of \cref{lem:uniform-nonflat-reversion} is
+valid.  Put
+\[
+  \mathfrak X_U=
+  \{(w,t)\in\C^\times\times U:w\ne A_0(t)\}.
+\]
+The germ $\Bcal(w,t)$ defined for large $w$ admits joint multivalued analytic
+continuation along every path in $\mathfrak X_U$.  Every continued branch is
+locally holomorphic on $\mathfrak X_U$.
+\end{lemma}
+
+\begin{proof}
+Split the radial integral at a sufficiently large $R$.  On $0\le r\le R$,
+\[
+  \frac1w e^{-r}rE_{D,3}\!\left(\frac{P(t,r)}w\right)
+\]
+is jointly holomorphic for $w\ne0$, and compact integration preserves this
+holomorphy.
+
+For the tail, choose locally a branch
+\[
+  \lambda^D=\frac{A_0(t)}w.
+\]
+After the root-of-unity filter and the change of variable $Y=\Phi_t(r)$,
+each exponential summand is, up to a locally holomorphic prefactor, of the
+form
+\begin{equation}\label{eq:continued-root-tail}
+  L_k(t,\lambda)
+  =\int_{\Gamma_t}e^{-\eta_kY}F(t,Y)\,dY,
+  \qquad
+  \eta_k=1-\omega^k\lambda,
+\end{equation}
+where
+\[
+  F(t,Y)=e^{Y-\chi(t,Y)}
+  \frac{\chi(t,Y)}{Y^2}\partial_Y\chi(t,Y)=O(Y^{-1})
+\]
+is jointly holomorphic on a full common exterior neighborhood.
+
+Fix a point $(t_*,\lambda_*)$ at which $\eta_k\ne0$.  Choose a ray
+direction $\theta$ and a neighborhood $W$ of $(t_*,\lambda_*)$ such that
+\[
+  \Re(\eta_ke^{i\theta})\ge\delta>0
+  \qquad\text{on }W.
+\]
+Inside the common exterior domain, join the initial point of $\Gamma_t$ to a
+fixed sufficiently distant ray in direction $\theta$ by a finite connector,
+chosen locally holomorphically in $t$.  The sum of the connector integral and
+the integral along that ray converges normally and is jointly holomorphic on
+$W$.
+
+Whenever two such ray representations have a common decay region, Cauchy's
+theorem on the truncated sector between the rays identifies them: the outer
+circular arc tends to zero because of exponential decay and
+$F(t,Y)=O(Y^{-1})$.  The admissible half-planes obtained by varying $\theta$
+cover $\eta_k\ne0$, and along any path avoiding $0$ one may choose a finite
+chain of overlapping half-planes.  Starting with the original decay region
+of \eqref{eq:continued-root-tail}, the corresponding ray representations
+therefore give its analytic continuation along the path.  Uniqueness on the
+overlaps gives the asserted multivalued continuation.
+
+A singularity of the $k$th summand can therefore occur only when
+\[
+  \eta_k=0
+  \quad\Longleftrightarrow\quad
+  \omega^k\lambda=1
+  \quad\Longleftrightarrow\quad
+  w=A_0(t).
+\]
+The algebraic parameter $\lambda$ can branch only around $w=0$, which is
+already removed from $\mathfrak X_U$.
+
+It remains to check the finite root-filter corrections.  For $D\ge3$ there
+are none.  For $D=2$ the correction reduces on the tail to an exponentially
+weighted multiple of $1/P(t,r)$, and for $D=1$ to a combination of
+$1/P(t,r)$ and $w/P(t,r)^2$.  After increasing $R$, the polynomial $P(t,r)$
+is uniformly nonzero there, so these correction integrals are jointly
+holomorphic.  This proves the asserted continuation and local holomorphy.
+\end{proof}
+
+\begin{remark}[Why the lower layers do not enter the symbol]\label{rem:exact-symbol}
+The degree-$(D-1)$ layer changes the constant term in the reverted coordinate and exponentiates to the factor in \eqref{eq:boundary-symbol}.  The layers $A_2,\ldots,A_D$ first occur in the $Y^{-2}$ and lower terms of \eqref{eq:nonflat-amplitude}; their Laplace transforms therefore begin at order $(w-A_0)\log(w-A_0)$.
+\end{remark}
+
+\section{Positive-interval constellations}\label{sec:constellation}
+
+Let
+\[
+  A=A_0\in\C[t],\qquad d=\deg A\ge1.
+\]
+Choose a sufficiently large regular value $c$ of $A$.  Join $c$ by pairwise disjoint arcs to every finite critical value of $A$, and also to $A(0)$ and $A(1)$ if either is not already a critical value.  Let $S$ be the resulting star.  The preimage $A^{-1}(S)$ is a planar tree, and there is a unique oriented path $\mu_{0,1}$ from $0$ to $1$.
+
+Let
+\[
+  t_1(u),\ldots,t_d(u)
+\]
+be the inverse branches of $A$ near $c$.  For each arm $\gamma_s$ of the star, the path $\mu_{0,1}$ determines an incidence vector
+\[
+  f_s=(f_{s,1},\ldots,f_{s,d})\in\Z^d.
+\]
+Let $G_A$ be the monodromy group and define
+\begin{equation}\label{eq:incidence-module}
+  M_{A,0,1}=\Span_\Q\{\sigma f_s:\sigma\in G_A,\ s\}.
+\end{equation}
+This is the module $M_{P,a,b}$ of Pakovich and Muzychuk \cite[\S2.1]{PakovichMuzychuk}.
+
+Number the branches at infinity so that monodromy around infinity is $(1\ 2\ \cdots\ d)$, and put
+\[
+  \omega=e^{2\pi i/d},
+  \qquad
+  \mathbf w_j=(1,\omega^j,\omega^{2j},\ldots,\omega^{(d-1)j}).
+\]
+For a rational subspace $M\subseteq\Q^d$, write
+\[
+  M_\C^\perp
+  =\left\{v\in\C^d:\sum_{i=1}^d m_iv_i=0
+    \text{ for every }m=(m_i)\in M\right\}.
+\]
+Thus $M_\C^\perp$ is taken with respect to the complex-bilinear extension
+of the rational dot product, not a Hermitian form.
+
+\begin{proposition}[Primitive Fourier inclusion; Pakovich--Muzychuk]\label{prop:PM-Fourier}
+If $d\ge2$, then $(M_{A,0,1})_\C$ contains $\mathbf w_1$ and $\mathbf w_{d-1}$.
+\end{proposition}
+
+\begin{proof}
+Pakovich and Muzychuk prove that $M_{A,0,1}$ contains a distinguished irreducible rational monodromy subspace $W$ \cite[Proposition~4.1 and its proof]{PakovichMuzychuk}.  Their proof explicitly places $\mathbf w_1$ in $W_\C$.  Since $W$ is defined over $\Q$, it is stable under complex conjugation, so $\mathbf w_{d-1}=\overline{\mathbf w_1}$ also belongs to $W_\C$.
+\end{proof}
+
+For $|w|$ large, $\Bcal(w,t)\,dt$ is holomorphic in $t$.  Deforming $[0,1]$ to $\mu_{0,1}$ and changing variables $u=A(t)$ on each lifted edge gives
+\begin{equation}\label{eq:constellation-decomposition}
+  \Kcal(w)=\sum_s\int_{\gamma_s}
+  \sum_{i=1}^d f_{s,i}
+  \frac{\Bcal(w,t_i(u))}{A'(t_i(u))}\,du.
+\end{equation}
+This is the same geometric decomposition as
+\cite[(16)--(17)]{PakovichMuzychuk}; only the branch density differs.  The
+edge integrals are understood as improper integrals at critical-value
+vertices.  If $u_*$ is such a vertex, a lifted branch tends to a point
+$\tau$ of ramification index $e$, and locally
+\[
+  t_i(u)-\tau=O\bigl((u-u_*)^{1/e}\bigr),
+  \qquad
+  \frac1{A'(t_i(u))}=\frac{dt_i}{du}
+  =O\bigl(|u-u_*|^{1/e-1}\bigr).
+\]
+Since $1/e-1>-1$, these endpoint singularities are integrable.  In
+particular, the deformation and every later edgewise integration are
+well-defined.
+
+Define
+\begin{equation}\label{eq:E-and-v}
+  E(t)=\exp\!\left(\frac{A_1(t)}{DA(t)}\right),
+  \qquad
+  v_i(u)=\frac{E(t_i(u))}{A'(t_i(u))}.
+\end{equation}
+For an arm $\gamma_s$, put
+\begin{equation}\label{eq:arm-density}
+  F_s(w,u)=\sum_{i=1}^d f_{s,i}
+  \frac{\Bcal(w,t_i(u))}{A'(t_i(u))}.
+\end{equation}
+
+\begin{lemma}[Terminal continuation and arm isolation]
+\label{lem:arm-continuation}
+Choose the terminal subarcs of the star pairwise disjoint except at their
+common regular endpoint $c$, and choose their interiors to avoid $0$ and a
+prescribed finite set of points.  After shortening a terminal subarc
+$\tau_s$ if necessary, the following hold on every continuation sheet
+reached from large $w$.
+
+First, in a slit neighborhood of the diagonal $w=u$ over $u\in\tau_s$, the
+density \eqref{eq:arm-density} has the joint expansion
+\begin{equation}\label{eq:tubular-arm-expansion}
+  F_s(w,u)
+  =g_{s,0}(u)\log(w-u)
+   +(w-u)\log(w-u)G_s(w,u)+H_s(w,u),
+\end{equation}
+where $G_s$ and $H_s$ are jointly holomorphic and
+\begin{equation}\label{eq:g-s0}
+  g_{s,0}(u)=-\frac1{Du}\sum_{i=1}^d f_{s,i}v_i(u).
+\end{equation}
+Second, for every interior point $w_0\in\tau_s\setminus\{c\}$ sufficiently
+close to $c$, there is a disk $D_{w_0}$ whose closure meets no other arm and
+no prescribed point.  On $D_{w_0}$, the sum of all other arm integrals,
+together with the part of the $s$-th arm outside $\tau_s$, is single-valued
+and holomorphic.  Thus only the integral over $\tau_s$ can have a lateral
+jump across the selected arm at $w_0$.
+\end{lemma}
+
+\begin{proof}
+The terminal subarc contains no critical value, so the branches $t_i(u)$ and
+the factors $A'(t_i(u))^{-1}$ are holomorphic on a neighborhood of
+$\tau_s$.  The parameterized boundary symbol, including the
+sheet-independence proved at the end of \cref{thm:boundary-symbol}, gives
+\eqref{eq:tubular-arm-expansion} jointly in $(w,u)$; summing its lowest
+coefficients gives \eqref{eq:g-s0}.  Uniformity on the compact shortened
+subarc permits termwise integration.
+
+Fix $w_0\in\tau_s\setminus\{c\}$ sufficiently close to $c$.  Since the
+terminal arms are disjoint away from $c$, a small closed disk around $w_0$
+meets no other arm, no prescribed point, and no part of the selected arm
+outside $\tau_s$.  For every integration point on those omitted pieces one
+has $w\ne u$ throughout the disk.  By
+\cref{lem:Bcal-continuation}, every already continued branch of the
+integrand is locally holomorphic there.  The endpoint estimates preceding
+\eqref{eq:E-and-v} give a locally uniform integrable majorant at
+critical-value vertices, so integration preserves holomorphy.  The disk is
+simply connected, hence these local branches are single-valued on it.  This
+proves the asserted isolation of the selected terminal integral.
+\end{proof}
+
+\begin{lemma}[Terminal lateral jump]\label{lem:Volterra}
+Let $\tau=\gamma([0,1])$ be an oriented analytic arc, where $\gamma$ extends
+holomorphically to a neighborhood of $[0,1]$, $\gamma'(1)\neq0$, and
+$\gamma(1)=c$.  Suppose that on a slit tube around the terminal part of
+$\tau$ one has
+\[
+  F(w,u)=g_0(u)\log(w-u)
+  +(w-u)\log(w-u)G(w,u)+H(w,u),
+\]
+with $g_0$, $G$, and $H$ holomorphic and with $H$ single-valued.  Let
+$I(w)=\int_\tau F(w,u)\,du$, and let $I_+$ and $I_-$ denote its two lateral
+continuations across the terminal subarc.  For $w=\gamma(s)$ with $s<1$
+sufficiently close to $1$,
+\begin{equation}\label{eq:terminal-jump-formula}
+\begin{aligned}
+ I_+(\gamma(s))-I_-(\gamma(s))
+  ={}&2\pi i\,\varepsilon_\tau
+  \int_s^1\Bigl[g_0(\gamma(v))\\
+ &\quad +(\gamma(s)-\gamma(v))
+  G(\gamma(s),\gamma(v))\Bigr]\gamma'(v)\,dv.
+\end{aligned}
+\end{equation}
+where $\varepsilon_\tau\in\{\pm1\}$ depends only on the orientation and the
+choice of lateral sides.  In particular, if the lateral jump vanishes,
+then $g_0(c)=0$.
+\end{lemma}
+
+\begin{proof}
+Across the chosen slit, $\log(w-u)$ changes by the constant
+$2\pi i\varepsilon_\tau$ precisely for the portion of the oriented arc
+between $w$ and the terminal endpoint $c$; it has no jump on the remaining
+portion.  This proves \eqref{eq:terminal-jump-formula}.
+
+Let the integral on the right, without its nonzero constant factor, be
+$J(s)$.  Differentiating with respect to $s$ gives
+\[
+  J'(s)=-g_0(\gamma(s))\gamma'(s)+R(s),
+\]
+where $R(s)\to0$ as $s\to1$: every term in $R(s)$ is an integral over
+$[s,1]$ of a bounded holomorphic function, and the lower-end contribution
+from the factor $\gamma(s)-\gamma(v)$ is zero.  If the jump vanishes, then
+$J\equiv0$, so
+\[
+  0=\lim_{s\to1}J'(s)=-g_0(c)\gamma'(1).
+\]
+Since $\gamma'(1)\neq0$, one obtains $g_0(c)=0$.
+\end{proof}
+
+\begin{proposition}[Rationality forces incidence orthogonality]\label{prop:rational-orthogonality}
+Assume that $\Kcal$ is rational.  For a sufficiently large regular center
+$c$, chosen away from $0$ and the poles of $\Kcal$,
+\begin{equation}\label{eq:incidence-relations}
+  \sum_{i=1}^d f_{s,i}v_i(c)=0
+  \qquad\text{for every arm }s.
+\end{equation}
+After analytic continuation, the same identity holds for every monodromy
+conjugate of every $f_s$.  Equivalently,
+\begin{equation}\label{eq:v-orthogonal}
+  v(c)\in(M_{A,0,1})_\C^\perp.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Choose $c$ outside the finite critical-value set, outside $0$, and outside
+the finite pole set of the assumed rational function $\Kcal$.  Choose the
+interiors of the terminal subarcs to avoid the latter two finite sets.  On
+the overlap with the original large-$w$ domain, the continued constellation
+sum equals the rational function $\Kcal$.
+
+Fix an arm $s$ and a point $w_0$ in its terminal subarc, sufficiently close
+to $c$ but distinct from $c$.  Choose the disk $D_{w_0}$ supplied by
+\cref{lem:arm-continuation}, small enough to contain no pole of $\Kcal$.
+The two lateral continuations of the total constellation sum across the
+selected arm agree on this disk because $\Kcal$ is single-valued.  Every
+other contribution has zero jump there, so the lateral jump of the isolated
+terminal integral vanishes.  This holds for every such $w_0$.  Applying
+\cref{lem:Volterra} to \eqref{eq:tubular-arm-expansion} gives
+$g_{s,0}(c)=0$, and \eqref{eq:g-s0} yields
+\eqref{eq:incidence-relations}.
+
+It remains to justify the monodromy closure.  Choose a small simply
+connected disk $\Omega$ of regular values around $c$, disjoint from $0$ and
+from the poles of $\Kcal$.  The inverse branches $t_i(u)$ and the vectors
+$v(u)$ are holomorphic on $\Omega$.  Move the common endpoint of the star
+inside $\Omega$, keeping the remote parts of the arms fixed and identifying
+the terminal lifts by the local covering trivialization.  The incidence
+vectors are then locally constant.  Repeating the preceding lateral-jump
+argument for every $c'\in\Omega$ proves
+\[
+  \sum_i f_{s,i}v_i(c')=0
+  \qquad(c'\in\Omega),
+\]
+so this is an identity of analytic branches, not merely an equality at one
+point.
+
+Continue that identity around loops in the regular-value locus while
+avoiding $0$ and the finite pole set of $\Kcal$.  These additional punctures
+are regular values: every ordinary monodromy loop can be perturbed to avoid
+them, and a small loop around one of them has trivial covering monodromy.
+Thus all elements of $G_A$ are still realized.  Upon return, the inverse
+branches are permuted by the corresponding monodromy element $\sigma$.
+With the chosen left-action convention the continued relation is
+$(\sigma f_s)\cdot v=0$; with the opposite convention it is
+$(\sigma^{-1}f_s)\cdot v=0$, which generates the same module.  Thus every
+monodromy conjugate is orthogonal to $v$, which is exactly
+\eqref{eq:v-orthogonal} with the complex-bilinear convention fixed above.
+\end{proof}
+
+If $d\ge2$, combining
+\cref{prop:rational-orthogonality,prop:PM-Fourier} yields, on a sufficiently
+small regular-value disk $\Omega$ around $c$, the identity of analytic
+branches
+\begin{equation}\label{eq:primitive-relation}
+  \sum_{i=1}^d\omega^{-(i-1)}v_i(u)=0
+  \qquad(u\in\Omega).
+\end{equation}
+
+\section{The infinity obstruction and the diagonal theorem}\label{sec:infinity}
+
+\begin{lemma}[Rotated exponential averages do not vanish]\label{lem:rotated-exp}
+Let
+\[
+  T(U)=\alpha U+\beta+O(U^{-1}),
+  \qquad \alpha\neq0,
+\]
+be holomorphic for large $U$, let $R\in\C(t)$ be rational, and let $\omega=e^{2\pi i/d}$.  Then
+\[
+  \sum_{j=0}^{d-1}e^{R(T(\omega^jU))}T'(\omega^jU)
+\]
+is not identically zero near infinity.
+\end{lemma}
+
+\begin{proof}
+Write $R(T(U))=\Phi(U)+O(U^{-1})$, where $\Phi$ is the
+polynomial part of the Laurent expansion.  Partition the indices into
+classes for which the polynomials $\Phi(\omega^jU)$ are identical.
+Every rotated phase has the same constant term $\Phi(0)$; consequently,
+two distinct rotated phase polynomials cannot differ by a nonzero
+constant.  Their difference, when nonzero, has positive degree.  Choose
+a ray avoiding the finitely many anti-Stokes directions determined by
+these nonzero differences.  Along that ray one class $C$ has strictly
+maximal real part for large $U$.  Its contribution is
+\[
+  |C|\alpha e^{\Phi_C(U)}(1+o(1)),
+\]
+while every other class is exponentially smaller.  This is nonzero.  If all phase polynomials agree, the sum is $d\alpha e^{\Phi(U)}(1+o(1))$, again nonzero.
+\end{proof}
+
+\begin{theorem}[Diagonal positive-interval constellation theorem]\label{thm:diagonal}
+Assume $A_0$ is nonconstant.  Then
+\[
+  \Jcal(s)=\sum_{n\ge0}\frac{I_n}{Dn+2}s^n
+\]
+is not rational.  Consequently, $I_n\neq0$ for infinitely many $n$.
+\end{theorem}
+
+\begin{proof}
+Suppose $\Jcal$ were rational.  Then $\Kcal(w)=w^{-1}\Jcal(w^{-1})$ would be rational.  Put $A=A_0$ and $d=\deg A$.
+
+If $d=1$, the lifted path from $0$ to $1$ is nontrivial, so some arm has $f_{s,1}\neq0$.  Proposition \ref{prop:rational-orthogonality} would then force the nonzero density $E(t_1(c))/A'(t_1(c))$ to vanish, a contradiction.
+
+Assume $d\ge2$.  Choose a Laurent inverse at infinity
+\begin{equation}\label{eq:T-inverse}
+  A(T(U))=U^d,
+  \qquad
+  T(U)=\alpha U+\beta+O(U^{-1}),
+  \quad\alpha\neq0.
+\end{equation}
+Choose $U_0$ large with $c=U_0^d$, and number the branches compatibly so
+that, on a connected exterior sector containing $U_0$,
+\[
+  t_i(U^d)=T(\omega^{i-1}U).
+\]
+Put
+\[
+  R(t)=\frac{A_1(t)}{DA(t)}.
+\]
+Differentiating \eqref{eq:T-inverse} gives
+\[
+  A'(T(V))T'(V)=dV^{d-1}.
+\]
+Hence, after pulling the analytic identity
+\eqref{eq:primitive-relation} back under $u=U^d$,
+\[
+  0=\sum_{i=1}^d\omega^{-(i-1)}v_i(U^d)
+   =\frac1{dU^{d-1}}
+    \sum_{i=1}^d
+    e^{R(T(\omega^{i-1}U))}T'(\omega^{i-1}U)
+\]
+for $U$ in a neighborhood of $U_0$.  The last sum is holomorphic on the
+connected exterior sector.  By the identity theorem it vanishes identically
+there, contradicting \cref{lem:rotated-exp}.  Hence $\Jcal$ is not rational.
+If only finitely many $I_n$ were nonzero, then $\Jcal$ would be a polynomial,
+which is impossible.
+\end{proof}
+
+
+\begin{theorem}[Nonflat-top exclusion]\label{thm:nonflat-exclusion}
+Let $0\neq f\in\C[x,y]$ have exact degree $D$.  If
+$A_0(t)=f_D(t,1-t)$ is nonconstant, then $\Lfac(f^n)\neq0$ for infinitely
+many $n\ge1$.  In particular, $f$ is not a counterexample to
+\cref{thm:FC2}.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:diagonal} to the projective layers of $f$.  By
+\cref{prop:radial-projective},
+\[
+  I_n=\frac{\Lfac(f^n)}{\Gamma(Dn+2)}.
+\]
+Thus infinitely many factorial moments are nonzero.
+\end{proof}
+
+\begin{corollary}[Flat-top reduction]\label{cor:flat-top-reduction}
+Every hypothetical nonzero counterexample to \cref{thm:FC2} has
+\[
+  f_D(x,y)=a(x+y)^D
+\]
+for some $a\in\C^\times$.
+\end{corollary}
+
+\begin{proof}
+By \cref{thm:nonflat-exclusion}, $f_D(t,1-t)$ is constant.  The final
+assertion of \cref{lem:projective-degree} gives the stated form.
+\end{proof}
+
+
+\section{The first flat logarithmic symbol}\label{sec:flat-symbol}
+
+Assume that $f$ has exact degree $D\ge1$ and, after multiplication by a
+nonzero scalar,
+\begin{equation}\label{eq:flat-normalized}
+  f_D=(x+y)^D.
+\end{equation}
+Then
+\begin{equation}\label{eq:flat-P}
+  P(t,r)=f(rt,r(1-t))
+  =r^D+A_1(t)r^{D-1}+\cdots+A_D(t).
+\end{equation}
+Define
+\[
+  F(t,u)=1+A_1(t)u+\cdots+A_D(t)u^D.
+\]
+Choose a relatively compact complex neighborhood $U$ of $[0,1]$ and
+$\rho>0$ so small that $F(t,u)$ is nonzero for $t\in U$ and $|u|<\rho$.
+On this product take the unique holomorphic branch
+\[
+  \Psi(t,u)=F(t,u)^{1/D},
+  \qquad \Psi(t,0)=1,
+\]
+and put
+\begin{equation}\label{eq:flat-phi}
+  \phi_t(r)=r\Psi(t,r^{-1}).
+\end{equation}
+Thus $P(t,r)=\phi_t(r)^D$.
+
+\begin{lemma}[Uniform flat radial inverse]\label{lem:flat-inverse}
+After shrinking $U$ if necessary, there is a common exterior neighborhood
+on which $\phi_t$ has a holomorphic inverse $r=\chi(t,Y)$, jointly
+holomorphic in $(t,Y)$, satisfying
+\begin{equation}\label{eq:flat-chi}
+  \chi(t,Y)=Y-\frac{A_1(t)}D+O(Y^{-1}).
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:flat-amplitude-leading}
+  e^{Y-\chi(t,Y)}\frac{\chi(t,Y)}Y\partial_Y\chi(t,Y)
+  =\exp\!\left(\frac{A_1(t)}D\right)+O(Y^{-1}),
+\end{equation}
+locally uniformly in $t\in U$.
+\end{lemma}
+
+\begin{proof}
+Locally uniformly for $t\in U$,
+\[
+  \phi_t(r)=r+\frac{A_1(t)}D+O(r^{-1}).
+\]
+In the coordinate $z=r^{-1}$, the map
+$z\mapsto1/\phi_t(1/z)$ has derivative $1$ at $z=0$.  The
+parameter-dependent inverse-function theorem therefore gives a common
+inverse at infinity and \eqref{eq:flat-chi}.  Substitution into the left
+side of \eqref{eq:flat-amplitude-leading} gives the displayed constant
+term.
+\end{proof}
+
+\begin{lemma}[Common-ray comparison]\label{lem:flat-common-ray}
+After shrinking $U$ and increasing $R$, there are a common exterior sector
+$\mathfrak S$ and a ray $\ell=Y_0+[0,\infty)\subset\mathfrak S$ such that
+all curves $\Gamma_t=\phi_t([R,\infty))$, $t\in U$, lie in $\mathfrak S$
+and have bounded displacement from $\ell$.  Let $F(t,Y)$ be jointly
+holomorphic on $U\times\mathfrak S$, analytic in $Y^{-1}$ at infinity, and
+satisfy
+\[
+  F(t,Y)=q_0(t)+O(Y^{-1})
+\]
+locally uniformly in $t$.  For $\eta$ in a sufficiently small decay sector,
+the difference
+\[
+  \int_{\Gamma_t}e^{-\eta Y}F(t,Y)\,dY
+  -\int_\ell e^{-\eta Y}F(t,Y)\,dY
+\]
+extends jointly holomorphically across $\eta=0$.
+\end{lemma}
+
+\begin{proof}
+The expansion of $\phi_t$ shows that the curves, the common ray, and the
+initial and outer connectors used below all lie in one common exterior
+sector.  Write $F=q_0+\widetilde F$ with
+$\widetilde F=O(Y^{-1})$.  For the constant term, path independence of a
+primitive of $e^{-\eta Y}$ gives
+\[
+  q_0(t)\frac{e^{-\eta a_t}-e^{-\eta Y_0}}{\eta},
+  \qquad a_t=\phi_t(R),
+\]
+which is holomorphic at $\eta=0$.  For $\widetilde F$, truncate the two
+curves at a common large ray parameter.  Their outer endpoints remain at
+bounded distance, so the outer connector has bounded length and contributes
+$O(|Y|^{-1})$, uniformly on closed decay subsectors; this tends to zero.
+Cauchy's theorem, now applied inside the domain of holomorphy
+$U\times\mathfrak S$, reduces the difference to a finite initial-connector
+integral, which is jointly holomorphic.
+\end{proof}
+
+Define
+\begin{equation}\label{eq:flat-generating}
+  \Gcal_f(s)=\sum_{n\ge0}
+  \frac{\Lfac(f^n)}{\Gamma(Dn+2)}s^n.
+\end{equation}
+
+\begin{proposition}[First flat singular coefficient]\label{prop:first-flat-symbol}
+Let $\lambda^D=s$ near $\lambda=1$ and put $\eta=1-\lambda$.  On a fixed
+admissible sector at $\eta=0$,
+\begin{equation}\label{eq:first-flat-symbol}
+  \Gcal_f(\lambda^D)
+  =\frac{c_0(f)}{D\lambda\eta}+O(\log\eta),
+\end{equation}
+where the error is the sum of a holomorphic germ and a function bounded by
+$C(1+|\log\eta|)$ on every smaller closed sector, and
+\begin{equation}\label{eq:flat-c0}
+  c_0(f)=\int_0^1
+  \exp\!\left(\frac{A_1(t)}D\right)\,dt.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:moments-imply-c0}
+  \Lfac(f^n)=0\quad(n\ge1)
+  \qquad\Longrightarrow\qquad c_0(f)=0.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By \cref{prop:Mittag-representations},
+\[
+  \Gcal_f(s)=\int_0^1\int_0^\infty
+  e^{-r}rE_{D,2}(sP(t,r))\,dr\,dt.
+\]
+Split the radial integral at a sufficiently large $R$ and apply
+\cref{lem:root-filter-general} with $m=1$ on the tail, where $\phi_t(r)$ is
+uniformly nonzero.  The compact radial part is holomorphic near
+$\lambda=1$.  The low-degree correction vanishes for $D\ge2$; when $D=1$,
+$C_{1,1}(X)=X^{-1}$ and its tail contribution is
+\[
+  -\frac1\lambda\int_0^1\int_R^\infty
+  \frac{e^{-r}}{\Psi(t,r^{-1})}\,dr\,dt,
+\]
+which is also holomorphic near $\lambda=1$.  Every root-filter term with
+$k\neq0$ is holomorphic there because
+$\Re(1-\omega^k\lambda)>0$.  The only singular term is
+\begin{equation}\label{eq:flat-principal-tail}
+  \frac1{D\lambda}\int_0^1\int_R^\infty
+  \frac{e^{-r+\lambda\phi_t(r)}}{\Psi(t,r^{-1})}\,dr\,dt.
+\end{equation}
+Set $Y=\phi_t(r)$ and $r=\chi(t,Y)$.  Since
+$\Psi(t,r^{-1})=Y/r$, \eqref{eq:flat-principal-tail} becomes
+\[
+  \frac1{D\lambda}\int_0^1\int_{\Gamma_t}
+  e^{-\eta Y}
+  e^{Y-\chi(t,Y)}\frac{\chi(t,Y)}Y\partial_Y\chi(t,Y)
+  \,dY\,dt.
+\]
+By \cref{lem:flat-inverse,lem:flat-common-ray}, modulo a function
+holomorphic at $\eta=0$ this equals
+\[
+  \frac1{D\lambda}\int_{Y_0}^\infty e^{-\eta Y}
+  \left[c_0(f)+O(Y^{-1})\right]dY.
+\]
+The constant term contributes
+$c_0(f)e^{-\eta Y_0}/(D\lambda\eta)$, whose difference from the displayed
+pole in \eqref{eq:first-flat-symbol} is holomorphic.  The Laplace transform
+of the $O(Y^{-1})$ remainder is $O(1+|\log\eta|)$ on smaller closed sectors.
+This proves \eqref{eq:first-flat-symbol} and \eqref{eq:flat-c0}.
+
+For real $0<\lambda<1$, the root-filter integrals above converge absolutely
+and agree algebraically with the original Mittag--Leffler integral.  Hence
+the sectorial germ just computed is the analytic continuation, along the
+positive interval, of the original germ of $\Gcal_f(\lambda^D)$ at
+$\lambda=0$.
+
+If all positive factorial moments vanish, then that original germ is
+$\Gcal_f(s)\equiv1$, and uniqueness of analytic continuation makes the
+continued germ constant as well.  A constant function has no pole at
+$\lambda=1$, so \eqref{eq:first-flat-symbol} forces $c_0(f)=0$.
+\end{proof}
+
+
+\section{Algebraic exponential integrals}\label{sec:exp-integrals}
+
+\begin{theorem}[Algebraic exponential-integral theorem]\label{thm:exp-integral}
+Let $q\in\Qbar[x]$ be nonconstant, and let $A,B\in\Qbar$ with $A\ne B$.
+Then
+\[
+  \int_A^B e^{q(x)}\,dx
+\]
+is transcendental.  In particular, it is nonzero.
+\end{theorem}
+
+The integral is independent of the path because the integrand is entire.
+The rest of the paper proves this theorem before returning to
+\cref{thm:FC2}.
+
+\section{\texorpdfstring{$E$}{E}-functions and algebraic normalization}\label{sec:E-functions}
+
+We use the following definition, in the form adopted by Beukers \cite[\S1]{Beukers}.
+
+\begin{definition}[$E$-function]\label{def:E}
+An entire function
+\[
+  F(z)=\sum_{m\ge0} a_m\frac{z^m}{m!}
+\]
+is an $E$-function if:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.2em]
+\item $a_m\in\Qbar$ for every $m$;
+\item the logarithmic height $h(a_0,\ldots,a_m)$ is $O(m)$;
+\item $F$ satisfies a nonzero linear differential equation with coefficients in $\Qbar[z]$.
+\end{enumerate}
+\end{definition}
+
+The key arithmetic input is Beukers' lifting theorem.
+
+\begin{theorem}[Beukers]\label{thm:Beukers}
+Let $F_1,\ldots,F_N$ be $E$-functions forming a vector solution of
+\[
+  \mathbf F'=A(z)\mathbf F,
+  \qquad A(z)\in M_N(\Qbar(z)),
+\]
+and let $T(z)\in\Qbar[z]$ be a common denominator of the entries of $A(z)$.
+Let $\xi\in\Qbar$ satisfy $\xi T(\xi)\ne0$.  If
+$P\in\Qbar[X_1,\ldots,X_N]$ is homogeneous and
+\[
+  P\bigl(F_1(\xi),\ldots,F_N(\xi)\bigr)=0,
+\]
+then there is a polynomial
+$Q\in\Qbar[z,X_1,\ldots,X_N]$, homogeneous in the variables
+$X_1,\ldots,X_N$ and of the same degree as $P$, such that
+\[
+  Q\bigl(z,F_1(z),\ldots,F_N(z)\bigr)\equiv0,
+  \qquad
+  Q(\xi,X_1,\ldots,X_N)=P(X_1,\ldots,X_N).
+\]
+In particular, a linear relation at $z=\xi$ lifts to a linear functional
+relation whose coefficient polynomials specialize coefficientwise to the
+prescribed relation.  No hypothesis of $\C(z)$-linear independence of the
+$F_i$ is required.
+\end{theorem}
+
+This is \cite[Theorem~1.3]{Beukers}; its linear-relation form is
+\cite[Theorem~3.2]{Beukers}.
+
+We shall also use the elementary independence of distinct exponentials.
+
+\begin{lemma}[Distinct exponentials]\label{lem:exp-independent}
+If $\lambda_1,\ldots,\lambda_s\in\C$ are distinct, then
+\[
+  e^{\lambda_1 z},\ldots,e^{\lambda_s z}
+\]
+are linearly independent over $\C(z)$.
+\end{lemma}
+
+\begin{proof}
+Suppose a nontrivial relation with the fewest nonzero terms exists.  Differentiate it and eliminate one term.  Minimality then forces the logarithmic derivative of a nonzero rational function to be a nonzero constant.  This is impossible, since a logarithmic derivative has no nonzero constant term at infinity.
+\end{proof}
+
+\subsection{Algebraic normalization}
+
+Let $q_0$ have degree $n\ge2$.  Translation by an algebraic number removes the coefficient of $x^{n-1}$, and an algebraic nonzero scaling of the variable normalizes the leading coefficient to $1/n$.  Thus there are $\alpha\in\Qbar^\times$ and $\beta\in\Qbar$ such that
+\begin{equation}\label{eq:normalized-q}
+  q(y):=q_0(\alpha y+\beta)
+  =\frac{y^n}{n}+a_{n-2}y^{n-2}+\cdots+a_1y+a_0,
+  \qquad a_j\in\Qbar.
+\end{equation}
+The change of variable $x=\alpha y+\beta$ gives
+\[
+  \int_A^B e^{q_0(x)}\,dx
+  =\alpha\int_{(A-\beta)/\alpha}^{(B-\beta)/\alpha}
+  e^{q(y)}\,dy.
+\]
+Hence the transformed endpoints remain distinct and algebraic, and the original integral differs from the normalized one by a nonzero algebraic factor.  Since such multiplication preserves transcendence, it suffices to prove \cref{thm:exp-integral} under \eqref{eq:normalized-q}.  We impose this normalization through \cref{sec:exp-main-proof}.
+
+\section{The intrinsic moment connection}\label{sec:exp-moment}
+
+Assume \eqref{eq:normalized-q}, put $n=\deg q$, and set
+\[
+  K=\Qbar(z).
+\]
+Define the twisted de Rham quotient
+\begin{equation}\label{eq:twisted-module}
+  \Mcal_q
+  =K[x]\big/(\partial_x+zq'(x))K[x].
+\end{equation}
+We write $[p]$ for the class of $p\in K[x]$.
+
+\begin{lemma}[Brieskorn basis]\label{lem:Brieskorn-basis}
+The classes
+\[
+  e_j=[x^j],
+  \qquad 0\le j\le n-2,
+\]
+form a $K$-basis of $\Mcal_q$.  More precisely,
+\[
+  \mathscr G_q
+  =\C[z,z^{-1},x]\Big/
+  (\partial_x+zq'(x))\C[z,z^{-1},x]
+\]
+is a free $\C[z,z^{-1}]$-module with the same basis.  Differentiation in $z$ defines the connection
+\begin{equation}\label{eq:brieskorn-connection}
+  \nabla_{\partial_z}[p]=[\partial_zp+q p].
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The relation
+\[
+  [zq'(x)p(x)]=-[p'(x)]
+\]
+reduces every monomial of degree at least $n-1$ to lower degree, both over $K$ and over $\C[z,z^{-1}]$.  Thus the displayed classes span.
+
+If $0\ne p\in K[x]$, then $(\partial_x+zq')p$ has $x$-degree $\deg_x p+n-1$, and its leading term cannot cancel.  The same argument applies over $\C[z,z^{-1}]$.  Hence the image contains no nonzero polynomial of degree at most $n-2$, proving independence.
+
+The connection is well defined because
+\[
+  [\partial_z+q,\,\partial_x+zq']=0:
+\]
+indeed, the commutators $[\partial_z,zq']=q'$ and $[q,\partial_x]=-q'$ cancel.  Formula \eqref{eq:brieskorn-connection} is the algebraic form of differentiating the kernel $e^{zq}$.
+\end{proof}
+
+For $0\le j\le n-2$, perform Euclidean division
+\begin{equation}\label{eq:division}
+  q(x)x^j=h_j(x)q'(x)+r_j(x),
+  \qquad \deg r_j\le n-2.
+\end{equation}
+Let $\mathsf C$ and $\mathsf D$ be the matrices whose $j$th columns are the coefficient vectors of $r_j$ and $-h_j'$ in the basis $1,x,\ldots,x^{n-2}$.
+
+\begin{lemma}[The matrices $\mathsf C$ and $\mathsf D$]\label{lem:CD}
+The following assertions hold.
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.2em]
+\item $\mathsf C$ is multiplication by $q$ on the Jacobian algebra $\Qbar[x]/(q')$;
+\item $\mathsf D$ is triangular with diagonal
+\[
+  -\frac1n,-\frac2n,\ldots,-\frac{n-1}{n};
+\]
+\item the connection matrix on $\Mcal_q$ is $\mathsf C+\mathsf D/z$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+In $\Mcal_q$,
+\[
+  [h_jq']=-\frac1z[h_j'],
+\]
+so \eqref{eq:division} gives
+\[
+  [qx^j]=[r_j]-\frac1z[h_j'].
+\]
+This proves (i) and (iii).
+
+Because $q$ has no $x^{n-1}$ term and $q'$ has no $x^{n-2}$ term, division gives
+\[
+  h_j(x)=\frac{x^{j+1}}n+
+  \text{a polynomial of degree at most }j-1.
+\]
+Therefore
+\[
+  -h_j'(x)=-\frac{j+1}{n}x^j+
+  \text{terms of degree at most }j-2,
+\]
+which proves (ii).
+\end{proof}
+
+The degree of $q$ is denoted by $n$ throughout the exponential-integral
+argument.  In \cref{sec:exp-moment,sec:exp-semisimple,sec:exp-rigidity,sec:exp-relations},
+the capital letter $D$ introduced below denotes a residue matrix and is
+unrelated to the bivariate degree used in \cref{sec:radial,sec:flat-symbol}.
+
+Let $A\ne B$ be algebraic, and define
+\begin{equation}\label{eq:Uj}
+  U_j(z)=\int_A^B x^j e^{zq(x)}\,dx,
+  \qquad
+  \mathbf U=(U_0,\ldots,U_{n-2})^{\mathsf T}.
+\end{equation}
+Define the endpoint vector
+\begin{equation}\label{eq:b-x}
+  \mathbf b(x)=n\bigl(h_0(x),\ldots,h_{n-2}(x)\bigr)^{\mathsf T}.
+\end{equation}
+Since $h_0(x)=x/n$, the first coordinate of $\mathbf b(x)$ is $x$.
+
+Let
+\[
+  \Lambda_{\partial}=\{q(A),q(B)\}
+\]
+with repetitions removed, and put
+\begin{equation}\label{eq:b-lambda}
+  \mathbf b_\lambda
+  =\sum_{\substack{x\in\{A,B\}\\q(x)=\lambda}}
+  \varepsilon_x\mathbf b(x),
+  \qquad
+  \varepsilon_B=1,
+  \quad \varepsilon_A=-1.
+\end{equation}
+
+\begin{proposition}[Moment system]\label{prop:moment-system}
+Put $C=\mathsf C^{\mathsf T}$ and $D=\mathsf D^{\mathsf T}$.  Then
+\begin{equation}\label{eq:moment-system}
+  \mathbf U'
+  =\left(C+\frac Dz\right)\mathbf U
+  +\frac1{nz}\sum_{\lambda\in\Lambda_{\partial}}
+  \mathbf b_\lambda e^{\lambda z}.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:D-spectrum}
+  \Spec(D)=
+  \left\{-\frac1n,-\frac2n,\ldots,-\frac{n-1}{n}\right\},
+\end{equation}
+and
+\begin{equation}\label{eq:block-sum}
+  \sum_{\lambda\in\Lambda_{\partial}}
+  (\mathbf b_\lambda)_0=B-A\ne0.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+From \eqref{eq:division},
+\begin{align*}
+  U_j'
+  &=\int_A^B q(x)x^j e^{zq(x)}\,dx\\
+  &=\int_A^B\left(r_j(x)-\frac1z h_j'(x)\right)e^{zq(x)}\,dx
+    +\frac1z\left[h_j(x)e^{zq(x)}\right]_{A}^{B}.
+\end{align*}
+Writing these identities simultaneously gives \eqref{eq:moment-system}.  The spectral assertion follows from \cref{lem:CD}.  The first coordinate of $\mathbf b(x)$ is $x$, which gives \eqref{eq:block-sum}.
+\end{proof}
+
+
+\begin{lemma}[Joint height from one common denominator]\label{lem:joint-height}
+Let $K$ be a number field, let $\alpha_0,\ldots,\alpha_m\in K$, and let
+$\delta\in\Z_{\ge1}$ satisfy $\delta\alpha_k\in\mathcal O_K$ for every
+$k$.  Then
+\[
+  h(\alpha_0,\ldots,\alpha_m)
+  \le \log\delta
+  +\log\max\!\left(
+    1,\max_{0\le k\le m}\max_{\sigma:K\hookrightarrow\C}
+    |\sigma(\alpha_k)|
+  \right).
+\]
+Here the left side is the absolute logarithmic Weil height of
+$(1:\alpha_0:\cdots:\alpha_m)$.
+\end{lemma}
+
+\begin{proof}
+With the standard absolute values and local degrees $n_v=[K_v:\Q_v]$,
+\[
+  h(\alpha_0,\ldots,\alpha_m)
+  =\frac1{[K:\Q]}\sum_{v\in M_K}n_v
+   \log\max\bigl(1,|\alpha_0|_v,\ldots,|\alpha_m|_v\bigr).
+\]
+Put $\beta_k=\delta\alpha_k\in\mathcal O_K$.  Projective invariance gives
+\[
+  (1:\alpha_0:\cdots:\alpha_m)
+  =(\delta:\beta_0:\cdots:\beta_m).
+\]
+At every finite place, all displayed coordinates have absolute value at most
+$1$, so the corresponding logarithm is at most zero.  At an infinite place,
+\[
+  \max\bigl(|\delta|_v,|\beta_0|_v,\ldots,|\beta_m|_v\bigr)
+  \le
+  \delta\max\!\left(
+    1,\max_{k,\sigma}|\sigma(\alpha_k)|
+  \right).
+\]
+Since $\sum_{v\mid\infty}n_v=[K:\Q]$, summing these upper bounds proves the
+claim.
+\end{proof}
+
+\begin{lemma}[Moment functions are $E$-functions]\label{lem:E-functions}
+For $0\le j\le n-2$, the entire function $U_j$ in \eqref{eq:Uj} is an
+$E$-function.  More precisely, if
+\[
+  U_j(z)=\sum_{m\ge0}u_{j,m}\frac{z^m}{m!},
+  \qquad
+  u_{j,m}=\int_A^B x^j q(x)^m\,dx,
+\]
+then there is a constant $\kappa_j$ such that
+\[
+  h(u_{j,0},\ldots,u_{j,m})\le \kappa_j(m+1)
+  \qquad(m\ge0),
+\]
+and $U_j$ satisfies a nonzero homogeneous linear differential equation over
+$\Qbar[z]$ of order at most $n+1$.
+\end{lemma}
+
+\begin{proof}
+We integrate over the straight segment from $A$ to $B$; the value is path
+independent because the integrand is entire in $x$.  Uniform convergence on
+compact subsets gives
+\[
+  U_j(z)=\sum_{m\ge0}u_{j,m}\frac{z^m}{m!},
+  \qquad
+  u_{j,m}=\int_A^B x^j q(x)^m\,dx,
+\]
+and also proves that $U_j$ is entire.
+
+Let
+\[
+  K_0=\Q\bigl(A,B,\text{the coefficients of }q\bigr).
+\]
+Write
+\[
+  q(x)=\sum_{i=0}^n c_i x^i,
+  \qquad
+  q(x)^m=\sum_{k=0}^{nm}\gamma_{m,k}x^k.
+\]
+For $m\ge1$,
+\[
+  \gamma_{m,k}
+  =\sum_{i_1+\cdots+i_m=k}c_{i_1}\cdots c_{i_m},
+\]
+while $\gamma_{0,0}=1$.  Termwise integration gives the exact formula
+\begin{equation}\label{eq:u-exact}
+  u_{j,m}
+  =\sum_{k=0}^{nm}\gamma_{m,k}
+   \frac{B^{j+k+1}-A^{j+k+1}}{j+k+1}.
+\end{equation}
+It follows immediately that $u_{j,m}\in K_0$.
+
+We next bound all archimedean conjugates simultaneously.  Put
+\[
+  M=\max_{\sigma:K_0\hookrightarrow\C}
+     \max\bigl(1,|\sigma(A)|,|\sigma(B)|\bigr),
+\]
+\[
+  \Theta=\max_{\sigma:K_0\hookrightarrow\C}
+          \max_{|x|\le M}|q^\sigma(x)|,
+  \qquad
+  \Delta=\max_{\sigma:K_0\hookrightarrow\C}
+          |\sigma(B)-\sigma(A)|.
+\]
+Every conjugate segment lies in $|x|\le M$, and applying $\sigma$ to
+\eqref{eq:u-exact} gives the corresponding conjugate integral.  Hence
+\[
+  |\sigma(u_{j,m})|
+  \le \Delta M^j\Theta^m.
+\]
+With $C_1=\max(1,\Delta,M,\Theta)$, this is at most
+$C_1^{m+j+1}$ for every embedding $\sigma$.
+
+Choose $d\in\Z_{\ge1}$ so that
+\[
+  dc_0,\ldots,dc_n,dA,dB\in\mathcal O_{K_0}.
+\]
+For $m\ge0$, set
+\[
+  \delta_m
+  =d^{(n+1)m+j+1}
+   \operatorname{lcm}(1,\ldots,nm+j+1).
+\]
+Then $d^m\gamma_{m,k}$ and
+$d^{j+k+1}(B^{j+k+1}-A^{j+k+1})$ are algebraic integers.  Since
+$0\le k\le nm$, the $k$th summand of \eqref{eq:u-exact}, after multiplication
+by $\delta_m$, is
+\[
+  \bigl(d^m\gamma_{m,k}\bigr)d^{nm-k}
+  \Bigl(d^{j+k+1}(B^{j+k+1}-A^{j+k+1})\Bigr)
+  \frac{\operatorname{lcm}(1,\ldots,nm+j+1)}{j+k+1},
+\]
+a product of algebraic integers.  Thus $\delta_m u_{j,m}$ is integral.
+Moreover $\delta_\ell\mid\delta_m$ whenever $0\le\ell\le m$, so $\delta_m$
+is a common denominator for $u_{j,0},\ldots,u_{j,m}$.
+
+By \cref{lem:joint-height},
+\[
+  h(u_{j,0},\ldots,u_{j,m})
+  \le \log\delta_m+(m+j+1)\log C_1.
+\]
+The elementary Chebyshev bound
+$\log\operatorname{lcm}(1,\ldots,N)\le2N$ gives
+\[
+  \log\delta_m
+  \le \bigl((n+1)m+j+1\bigr)\log d+2(nm+j+1).
+\]
+Since $j$ is fixed, these inequalities give
+$h(u_{j,0},\ldots,u_{j,m})=O(m)$.
+
+It remains to establish a scalar differential equation.  Order the distinct
+endpoint values as $\lambda_1,\ldots,\lambda_s$, where $s\le2$, and let
+$\mathcal W$ be the $\Qbar(z)$-span of
+\[
+  U_0,\ldots,U_{n-2},
+  e^{\lambda_1z},\ldots,e^{\lambda_sz}
+\]
+inside the field of meromorphic functions on $\C\setminus\{0\}$.  By
+\cref{prop:moment-system}, this space is stable under $\partial_z$, and
+\[
+  \dim_{\Qbar(z)}\mathcal W\le n-1+s\le n+1.
+\]
+Therefore the $n+2$ functions
+$U_j,\partial_zU_j,\ldots,\partial_z^{n+1}U_j$ are linearly dependent over
+$\Qbar(z)$.  Clearing denominators gives a nonzero operator in
+$\Qbar[z]\langle\partial_z\rangle$ of order at most $n+1$ annihilating
+$U_j$.  The three defining conditions of an $E$-function now follow.
+\end{proof}
+
+\section{Semisimplicity of the moment connection}\label{sec:exp-semisimple}
+
+Let $\Sigma$ be the finite set of branch values of $q$, and set
+\[
+  V=\Aone_t\setminus\Sigma.
+\]
+Over $V$, the map $q:q^{-1}(V)\to V$ is a degree-$n$ unramified covering.  Let $\Lcal$ be its permutation local system and
+\[
+  \Lcal^0=\ker(\Tr:\Lcal\to\C_V)
+\]
+its reduced, or augmentation, local system of rank $n-1$.
+
+\begin{proposition}[Semisimple Fourier--Laplace connection]\label{prop:semisimple}
+After extension of constants to $\C$, the differential module over $\C(z)$
+defined by the homogeneous system
+\begin{equation}\label{eq:homogeneous-system}
+  \mathbf Y'=\left(C+\frac Dz\right)\mathbf Y
+\end{equation}
+is semisimple.
+\end{proposition}
+
+\begin{proof}
+The cover $q^{-1}(V)\to V$ is connected, because $q^{-1}(V)$ is obtained
+from the affine line by deleting finitely many points.  Its monodromy action
+on a fiber is therefore transitive.  The permutation local system has the
+trace splitting
+\[
+  \Lcal\simeq\C_V\oplus\Lcal^0:
+\]
+indeed, the diagonal map followed by the trace is multiplication by
+$n$, which is invertible over $\C$.  The monodromy image is finite, so
+Maschke's theorem makes $\Lcal^0$ semisimple.  Write
+\[
+  \Lcal^0=\bigoplus_\alpha\Lcal_\alpha
+\]
+as a direct sum of irreducible local systems.
+
+A finite morphism has no positive-dimensional fibers, so the defining
+condition for smallness is vacuous; hence $q$ is small.  The proper small-map
+theorem gives
+\[
+  Rq_*\C_{\Aone_x}[1]\simeq\operatorname{IC}(\Lcal);
+\]
+see \cite[Proposition~4.2.1 and Remark~4.2.4]{deCataldoMigliorini}.  The
+intermediate extensions $\operatorname{IC}(\Lcal_\alpha)$ are simple
+perverse sheaves, while
+$\operatorname{IC}(\C_V)=\C_{\Aone_t}[1]$.  Under the Riemann--Hilbert
+correspondence they correspond to simple regular holonomic
+$\Dmod_{\Aone_t}$-modules; see
+\cite[\S\S3.4, 7.1--7.2, and 8.2.2]{HTT}.  Since the direct image above is
+perverse, the derived $D$-module direct image is concentrated in degree zero,
+and compatibility with proper direct image yields
+\begin{equation}\label{eq:direct-image-splitting}
+  q_+\Ocal_{\Aone_x}
+  \simeq
+  \Ocal_{\Aone_t}\oplus\Ncal^0,
+\end{equation}
+where $\Ncal^0$ is a direct sum of simple regular holonomic modules.
+
+Use a Fourier variable $\tau$ and the Weyl-algebra convention
+\begin{equation}\label{eq:Fourier-convention}
+  t\longmapsto-\partial_\tau,
+  \qquad
+  \partial_t\longmapsto\tau.
+\end{equation}
+It corresponds to the kernel $e^{-\tau t}$.  This is an isomorphism of Weyl
+algebras, so Fourier transform is an exact equivalence and preserves simple
+objects and direct sums.  The transform of the constant connection is
+\[
+  \widehat{\Ocal_{\Aone_t}}
+  \simeq
+  \Dmod_{\Aone_\tau}/\Dmod_{\Aone_\tau}\tau,
+\]
+which is supported at $\tau=0$ and disappears after localization to
+$\C(\tau)$.
+
+We record why generic localization preserves each surviving simple summand.
+Let $M$ be a simple Weyl module and let $S=\C[\tau]\setminus\{0\}$.  Its
+$S$-torsion is a Weyl submodule: if $p(\tau)m=0$, then
+$p(\tau)^2\partial_\tau m=0$.  Thus either $S^{-1}M=0$, or
+$M\hookrightarrow S^{-1}M$.  In the latter case, a nonzero differential
+submodule $N\subseteq S^{-1}M$ meets $M$ nontrivially after clearing a
+denominator.  The intersection $N\cap M$ is a nonzero Weyl submodule, hence
+is $M$, and therefore $N=S^{-1}M$.  Thus every nonzero localized simple
+summand is irreducible.
+
+It remains to identify the localized Fourier transform and its signs.  Factor
+$q$ as its graph embedding followed by the projection to the $t$-line.  The
+graph module is generated by a symbol $\delta_q$ satisfying
+\[
+  (t-q(x))\delta_q=0,
+  \qquad
+  (\partial_x+q'(x)\partial_t)\delta_q=0.
+\]
+After \eqref{eq:Fourier-convention}, the transformed generator satisfies
+\[
+  (\partial_\tau+q(x))\widehat\delta_q=0,
+  \qquad
+  (\partial_x+\tau q'(x))\widehat\delta_q=0;
+\]
+it is the exponential generator $e^{-\tau q(x)}$.  On its coefficient
+polynomials, the relative $x$-differential and the $\tau$-connection are
+therefore
+\[
+  \partial_x-\tau q'(x),
+  \qquad
+  \partial_\tau-q(x),
+\]
+respectively.  The projection along the $x$-line is computed by the relative
+de Rham complex
+\[
+  \left[
+    \C(\tau)[x]
+    \xrightarrow{\ \partial_x-\tau q'\ }
+    \C(\tau)[x]
+  \right],
+\]
+with the left term in degree $-1$ and the right term in degree $0$.  Its
+negative-degree cohomology is the kernel, which is zero: for nonzero
+$p\in\C(\tau)[x]$, the term $-\tau q'p$ has strictly larger $x$-degree than
+$p'$.  Consequently the degree-zero generic Fourier transform is the
+cokernel
+\begin{equation}\label{eq:negative-kernel-module}
+  \C(\tau)[x]\Big/(\partial_x-\tau q'(x))\C(\tau)[x],
+  \qquad
+  \nabla_{\partial_\tau}[p]=[\partial_\tau p-q p].
+\end{equation}
+
+Pulling back by $\tau=-z$ changes the relative operator to
+$\partial_x+zq'$ and, because $\partial_z=-\partial_\tau$, changes the
+connection to $\partial_z+q$.  Thus \eqref{eq:negative-kernel-module} becomes
+$\Mcal_q$ with the connection \eqref{eq:brieskorn-connection}.  By
+\cref{lem:CD}, its matrix in the monomial basis is
+$\mathsf C+\mathsf D/z$.  It follows from the preceding decomposition and
+localization argument that
+$\Mcal_q\otimes_{\Qbar(z)}\C(z)$ is semisimple.
+
+For clarity, if a connection has matrix $M$ in a basis $(e_j)$, so that
+$\nabla e_j=\sum_iM_{ij}e_i$, a horizontal functional has value column
+$\mathbf y=(\phi(e_j))_j$ satisfying $\mathbf y'=M^{\mathsf T}\mathbf y$.
+Thus the homogeneous period system has coefficient matrix
+\[
+  \mathsf C^{\mathsf T}+\frac{\mathsf D^{\mathsf T}}z
+  =C+\frac Dz.
+\]
+The row module with connection
+$\boldsymbol\phi\mapsto\boldsymbol\phi'+\boldsymbol\phi(C+D/z)$ used below
+is its dual.  Duality preserves semisimplicity, proving the proposition.
+\end{proof}
+
+\section{Horizontal-endomorphism rigidity}\label{sec:exp-rigidity}
+
+We now prove the main structural input.  The proof is entirely algebraic and treats degenerate critical points and coincident critical values uniformly.
+
+Let
+\[
+  \Vcal=\C[x]_{<n-1}.
+\]
+For $g\in\Vcal$, divide
+\begin{equation}\label{eq:g-division}
+  gq=h_gq'+r_g,
+  \qquad \deg r_g<n-1,
+\end{equation}
+and define linear operators
+\begin{equation}\label{eq:CstarDstar}
+  \mathsf C_*g=r_g,
+  \qquad
+  \mathsf D_*g=-h_g'.
+\end{equation}
+The quotient and remainder depend linearly on $g$ by uniqueness of Euclidean
+division.  Moreover,
+\[
+  \deg h_g\le\deg g+1\le n-1,
+  \qquad
+  \deg(-h_g')\le n-2,
+\]
+so both operators map $\Vcal$ to itself.  They are represented by
+$\mathsf C$ and $\mathsf D$ in the monomial basis.
+
+For a critical point $\tau$, put
+\[
+  m_\tau=\ord_\tau q',
+  \qquad
+  \lambda_\tau=q(\tau).
+\]
+
+\begin{lemma}[Critical-point basis and local spectrum]\label{lem:critical-basis}
+For every critical point $\tau$ and $1\le k\le m_\tau$, define
+\begin{equation}\label{eq:g-tau-k}
+  g_{\tau,k}(x)=\frac{q'(x)}{(x-\tau)^k}.
+\end{equation}
+Then:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.2em]
+\item the polynomials $g_{\tau,k}$, over all $\tau$ and $k$, form a basis of
+$\Vcal$;
+\item $\mathsf C_*$ is semisimple and
+\[
+  \mathsf C_*g_{\tau,k}=\lambda_\tau g_{\tau,k};
+\]
+\item put
+\[
+  E_\tau=\Span_\C\{g_{\tau,1},\ldots,g_{\tau,m_\tau}\}.
+\]
+If $E_\lambda=\ker(\mathsf C_*-\lambda I)$ and $\pi_\lambda$ is the spectral
+projection, then
+\[
+  E_\lambda=\bigoplus_{\tau:\lambda_\tau=\lambda}E_\tau,
+  \qquad
+  \overline D_\lambda=\pi_\lambda\mathsf D_*|_{E_\lambda}
+\]
+preserves every summand $E_\tau$.  In the ordered basis
+$g_{\tau,1},\ldots,g_{\tau,m_\tau}$, its restriction to $E_\tau$ is
+triangular with diagonal
+\begin{equation}\label{eq:local-D-spectrum}
+  -\frac{m_\tau}{m_\tau+1},
+  -\frac{m_\tau-1}{m_\tau+1},
+  \ldots,
+  -\frac1{m_\tau+1}.
+\end{equation}
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Factor
+\[
+  q'(x)=c\prod_\tau(x-\tau)^{m_\tau}.
+\]
+Reduction modulo $q'$ identifies $\Vcal$ with the Jacobian algebra, and the
+Chinese remainder theorem gives
+\[
+  \C[x]/(q')
+  \simeq
+  \bigoplus_\tau\C[x]/(x-\tau)^{m_\tau}.
+\]
+The $E_\sigma$-component of an element of $\Vcal$ is precisely its residue
+class modulo $(x-\sigma)^{m_\sigma}$.  For fixed $\tau$, the images of
+$g_{\tau,k}$ vanish in every other local factor, while in the $\tau$-factor,
+with $y=x-\tau$, they are
+\[
+  g_{\tau,k}=u_\tau(y)y^{m_\tau-k},
+  \qquad u_\tau(0)\ne0.
+\]
+Hence $g_{\tau,1},\ldots,g_{\tau,m_\tau}$ form a basis of the $\tau$-factor.
+Since $\sum_\tau m_\tau=n-1=\dim\Vcal$, all the displayed vectors form a
+basis of $\Vcal$, proving (i).
+
+Since $q-\lambda_\tau$ vanishes at $\tau$ to order $m_\tau+1$, the polynomial
+\[
+  h_{\tau,k}(x)=\frac{q(x)-\lambda_\tau}{(x-\tau)^k}
+\]
+is well defined and satisfies
+\[
+  qg_{\tau,k}=h_{\tau,k}q'+\lambda_\tau g_{\tau,k}.
+\]
+Thus $\mathsf C_*g_{\tau,k}=\lambda_\tau g_{\tau,k}$.  The basis just
+constructed is therefore an eigenbasis for $\mathsf C_*$, proving (ii), and
+\[
+  E_\lambda=\bigoplus_{\tau:\lambda_\tau=\lambda}E_\tau.
+\]
+
+Write $m=m_\tau$, $y=x-\tau$, and
+\[
+  q(x)-\lambda_\tau=ay^{m+1}+O(y^{m+2}),
+  \qquad a\ne0.
+\]
+Then
+\[
+  g_{\tau,k}=a(m+1)y^{m-k}+O(y^{m-k+1})
+\]
+and
+\[
+  -h_{\tau,k}'
+  =-a(m+1-k)y^{m-k}+O(y^{m-k+1}).
+\]
+In the ordered local basis, the error term can involve only
+$g_{\tau,j}$ with $j<k$: it has no local term of order below $y^{m-k}$.
+Consequently the compressed local block is triangular and its $k$th diagonal
+entry is
+\[
+  -\frac{m+1-k}{m+1}.
+\]
+
+It remains to exclude cross terms between distinct critical points over the
+same critical value.  If $\sigma\ne\tau$ and
+$\lambda_\sigma=\lambda_\tau$, then
+\[
+  h_{\tau,k}=\frac{q-\lambda_\tau}{(x-\tau)^k}
+\]
+vanishes at $\sigma$ to order $m_\sigma+1$, because the denominator is a unit
+there.  Hence $h_{\tau,k}'$ vanishes modulo
+$(x-\sigma)^{m_\sigma}$.  Thus the compression
+$\pi_\lambda\mathsf D_*|_{E_\lambda}$ preserves each $E_\tau$ and has the
+claimed diagonal spectrum.
+\end{proof}
+
+\begin{remark}\label{rem:full-vs-local-D}
+There is no conflict between \eqref{eq:D-spectrum} and
+\eqref{eq:local-D-spectrum}.  The first is the spectrum of the full operator
+$\mathsf D_*$, whereas the second describes its block-diagonal compression
+relative to the spectral decomposition of $\mathsf C_*$.  Their traces agree:
+\[
+  -\sum_\tau\sum_{r=1}^{m_\tau}\frac r{m_\tau+1}
+  =-\frac12\sum_\tau m_\tau
+  =-\frac{n-1}{2}
+  =-\sum_{j=1}^{n-1}\frac jn.
+\]
+\end{remark}
+
+\begin{theorem}[Horizontal-endomorphism rigidity]\label{thm:end-rigidity}
+Let $P(z)\in M_{n-1}(\C(z))$ satisfy
+\begin{equation}\label{eq:endomorphism-equation}
+  P'=\left[C+\frac Dz,P\right].
+\end{equation}
+Then $P$ is constant.  Consequently, the horizontal endomorphism matrices of
+the homogeneous moment system \eqref{eq:homogeneous-system} are exactly
+\[
+  Z(C)\cap Z(D),
+\]
+and all are constant.  Equivalently, in the monomial basis the horizontal
+endomorphism matrices of the algebraic connection $\Mcal_q$ are exactly
+\[
+  Z(\mathsf C)\cap Z(\mathsf D).
+\]
+The same constancy conclusion holds for the corresponding dual modules.
+\end{theorem}
+
+\begin{proof}
+First exclude finite poles.  If $P$ had a pole of order $m\ge1$ at
+$z_0\ne0$, then $P'$ would have pole order $m+1$, whereas the right side of
+\eqref{eq:endomorphism-equation} would have order at most $m$.  Thus no such
+pole occurs.
+
+At $z=0$, suppose
+\[
+  P=z^{-m}P_{-m}+O(z^{-m+1}),
+  \qquad m\ge1,
+  \quad P_{-m}\ne0.
+\]
+The coefficient of $z^{-m-1}$ is
+\[
+  -mP_{-m}=[D,P_{-m}].
+\]
+The eigenvalues of $D$ are $-j/n$, $1\le j\le n-1$, so the spectrum of
+$\operatorname{ad}D:X\mapsto[D,X]$ consists of their pairwise differences
+and is contained strictly in $(-1,1)$.  It does not contain the negative
+integer $-m$, a contradiction.  Hence $P$ has no finite pole.  Since $P$ is
+rational, it is a polynomial matrix.
+
+We now exclude positive degree.  Transpose
+\eqref{eq:endomorphism-equation} and put $Q=P^{\mathsf T}$.  Then
+\begin{equation}\label{eq:row-endomorphism}
+  Q'=[Q,\mathsf C_*+\mathsf D_*/z].
+\end{equation}
+Suppose
+\[
+  Q(z)=Q_dz^d+Q_{d-1}z^{d-1}+\cdots,
+  \qquad d\ge1,
+  \quad Q_d\ne0.
+\]
+Multiplying \eqref{eq:row-endomorphism} by $z$ and comparing the coefficients
+of $z^{d+1}$ and $z^d$ gives
+\begin{align}
+  [Q_d,\mathsf C_*]&=0,\label{eq:leading-commute}\\
+  dQ_d&=[Q_{d-1},\mathsf C_*]+[Q_d,\mathsf D_*].
+  \label{eq:next-leading}
+\end{align}
+This part of the argument uses only the matrix semisimplicity of
+$\mathsf C_*$ proved in \cref{lem:critical-basis}, not the differential-module
+semisimplicity of \cref{prop:semisimple}.
+
+For each critical value $\lambda$, its spectral projection is a polynomial in
+$\mathsf C_*$:
+\[
+  \pi_\lambda
+  =\prod_{\mu\ne\lambda}
+    \frac{\mathsf C_*-\mu I}{\lambda-\mu}.
+\]
+Equation \eqref{eq:leading-commute} therefore implies that $Q_d$ commutes with
+every $\pi_\lambda$ and is block diagonal.  Put
+\[
+  Q_{d,\lambda}=\pi_\lambda Q_d\pi_\lambda.
+\]
+For at least one $\lambda$, this block is nonzero.  Applying $\pi_\lambda$ on
+both sides of \eqref{eq:next-leading} kills the
+$[Q_{d-1},\mathsf C_*]$ term and gives
+\[
+  \pi_\lambda[Q_d,\mathsf D_*]\pi_\lambda
+  =[Q_{d,\lambda},\pi_\lambda\mathsf D_*\pi_\lambda]
+  =[Q_{d,\lambda},\overline D_\lambda].
+\]
+Thus
+\begin{equation}\label{eq:ad-local-D}
+  dQ_{d,\lambda}
+  =[Q_{d,\lambda},\overline D_\lambda].
+\end{equation}
+
+After triangularizing $\overline D_\lambda$, the commutator operator
+$X\mapsto[X,\overline D_\lambda]$ is triangular on matrix units, with diagonal
+entries equal to pairwise differences of eigenvalues of
+$\overline D_\lambda$.  By \eqref{eq:local-D-spectrum}, all those eigenvalues
+lie strictly in $(-1,0)$, so every difference lies strictly in $(-1,1)$.
+Equation \eqref{eq:ad-local-D} would make the positive integer $d$ an
+eigenvalue of this commutator operator, which is impossible.  Hence $d=0$.
+
+Therefore $P$ is constant.  Substitution into
+\eqref{eq:endomorphism-equation} gives $[C,P]=[D,P]=0$, and every constant
+matrix commuting with $C$ and $D$ is plainly horizontal.  Transposition gives
+the statement for $\Mcal_q$.  If a dual endomorphism acts on row vectors by
+right multiplication, the calculation
+\[
+  \nabla(\boldsymbol\phi P)=(\nabla\boldsymbol\phi)P
+  \quad\Longleftrightarrow\quad
+  P'=[C+D/z,P]
+\]
+shows that the same constancy result applies to the dual modules.
+\end{proof}
+
+\begin{corollary}[Multiplicity-free semisimplicity]\label{cor:multiplicity-free}
+The horizontal endomorphism algebra of the moment connection is a
+commutative finite-dimensional $\C$-algebra.  In particular, the semisimple
+moment connection is multiplicity-free: its simple constituents are
+pairwise nonisomorphic.
+\end{corollary}
+
+\begin{proof}
+The matrix $D$ has distinct eigenvalues, so it is diagonalizable and its
+centralizer is commutative.  Apply \cref{thm:end-rigidity}.  For a semisimple
+differential module, a repeated simple constituent contributes a full
+matrix algebra to the endomorphism algebra; commutativity therefore excludes
+repetitions.
+\end{proof}
+
+\begin{remark}
+The multiplicity-free conclusion is also visible geometrically.  Monodromy
+at infinity is an $n$-cycle, so its cyclic subgroup acts simply transitively
+on a generic fiber; the restriction of the permutation representation to
+that subgroup is its regular representation and is multiplicity-free.  If an
+irreducible constituent of the full monodromy representation occurred twice,
+then every cyclic character appearing in its restriction would occur at least
+twice, a contradiction.
+\end{remark}
+
+\section{Relation modules and constant projectors}\label{sec:exp-relations}
+
+Let
+\[
+  \Lambda=\{0,q(A),q(B)\}
+\]
+with repetitions removed, and put
+\begin{equation}\label{eq:E-space}
+  \Ecal=
+  \Span_{\C(z)}\{e^{\lambda z}:\lambda\in\Lambda\}.
+\end{equation}
+If $0$ is not an endpoint value, its forcing block is understood to be zero.
+
+The functions
+\[
+  U_0,\ldots,U_{n-2},
+  \{e^{\lambda z}:\lambda\in\Lambda\}
+\]
+form a vector of $E$-functions: the endpoint exponents $\lambda$ are
+algebraic, and $e^{\lambda z}$ is an $E$-function.  Adjoining these exponential
+coordinates to \eqref{eq:moment-system} gives a homogeneous block system over
+$\Qbar(z)$ with common denominator $z$.  When $0$ is not an endpoint value,
+the coordinate $e^{0z}=1$ is adjoined with a zero forcing column.  This
+coordinate will homogenize the value relation used below.
+
+Define the relation module over $\C(z)$ by
+\begin{equation}\label{eq:relation-module}
+  \Rcal=
+  \{\boldsymbol\phi\in\C(z)^{1\times(n-1)}:
+  \boldsymbol\phi\mathbf U\in\Ecal\}.
+\end{equation}
+
+\begin{lemma}[Relation subconnection]\label{lem:relation-subconnection}
+The space $\Rcal$ is a differential submodule of the dual homogeneous connection:
+\[
+  \boldsymbol\phi\in\Rcal
+  \quad\Longrightarrow\quad
+  \boldsymbol\phi'
+  +\boldsymbol\phi\left(C+\frac Dz\right)
+  \in\Rcal.
+\]
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+  A(z)=C+\frac Dz,
+  \qquad
+  \mathbf f(z)=\frac1{nz}\sum_{\lambda\in\Lambda}
+  \mathbf b_\lambda e^{\lambda z},
+\]
+where $\mathbf b_0=0$ when necessary.  From \eqref{eq:moment-system},
+\[
+  \left(\boldsymbol\phi\mathbf U\right)'
+  =\left(\boldsymbol\phi'+\boldsymbol\phi A\right)\mathbf U
+   +\boldsymbol\phi\mathbf f.
+\]
+The left side belongs to $\Ecal$ because $\Ecal$ is stable under differentiation, and $\boldsymbol\phi\mathbf f\in\Ecal$.  Hence
+\[
+  \left(\boldsymbol\phi'+\boldsymbol\phi A\right)\mathbf U\in\Ecal,
+\]
+which is the required assertion.
+\end{proof}
+
+\begin{proposition}[A value relation forces an exponential polynomial]\label{prop:value-to-exp-poly}
+If $U_0(1)$ is algebraic, then
+\begin{equation}\label{eq:exp-polynomial-U0}
+  U_0(z)=\sum_{\lambda\in\Lambda}p_\lambda(z)e^{\lambda z}
+\end{equation}
+for polynomials $p_\lambda\in\C[z]$.
+\end{proposition}
+
+\begin{proof}
+Let $a=U_0(1)\in\Qbar$.  Order
+\[
+  \Lambda=\{0,\lambda_2,\ldots,\lambda_s\}
+\]
+and form the full column
+\[
+  \mathbf F(z)
+  =\bigl(
+     U_0(z),\ldots,U_{n-2}(z),
+     1,e^{\lambda_2z},\ldots,e^{\lambda_sz}
+   \bigr)^{\mathsf T}.
+\]
+Put
+\[
+  B_\Lambda=\frac1n
+  \begin{pmatrix}
+    \mathbf b_0&\mathbf b_{\lambda_2}&\cdots&\mathbf b_{\lambda_s}
+  \end{pmatrix},
+  \qquad
+  \Delta_\Lambda=\diag(0,\lambda_2,\ldots,\lambda_s),
+\]
+where $\mathbf b_0=0$ if $0\notin\Lambda_\partial$.  Then
+\[
+  \mathbf F'
+  =\begin{pmatrix}
+      C+D/z&B_\Lambda/z\\
+      0&\Delta_\Lambda
+    \end{pmatrix}\mathbf F.
+\]
+The constant coordinate $1=e^{0z}$ makes
+$U_0(1)-a\cdot1=0$ a homogeneous linear relation.  More explicitly, let
+\[
+  \boldsymbol\alpha
+  =\bigl(1,0,\ldots,0;\,-a,0,\ldots,0\bigr),
+\]
+where the semicolon separates the moment and exponential coordinates.  Then
+$\boldsymbol\alpha\mathbf F(1)=0$.  The block-system matrix has common
+denominator $T(z)=z$, and the point $\xi=1$ satisfies
+$\xi T(\xi)=1\ne0$.  By \cref{thm:Beukers}, this prescribed linear form lifts
+to a polynomial coefficient row
+\[
+  R(z)\in\Qbar[z]^{1\times((n-1)+s)}
+\]
+such that
+\[
+  R(z)\mathbf F(z)=0,
+  \qquad
+  R(1)=\boldsymbol\alpha.
+\]
+Writing
+\[
+  R(z)=\bigl(
+    \boldsymbol\phi(z);
+    c_0(z),c_{\lambda_2}(z),\ldots,c_{\lambda_s}(z)
+  \bigr)
+\]
+gives
+\[
+  \boldsymbol\phi(z)\mathbf U(z)
+  +c_0(z)+\sum_{j=2}^s c_{\lambda_j}(z)e^{\lambda_jz}=0,
+  \qquad
+  \boldsymbol\phi(1)=\mathbf e_0:=(1,0,\ldots,0).
+\]
+Because $0\in\Lambda$, the entire right-hand exponential combination belongs
+to $\Ecal$; hence $\boldsymbol\phi\in\Rcal$.  We now regard this algebraic
+relation inside the complex differential module $\Rcal\subseteq\C(z)^{n-1}$.
+
+By \cref{prop:semisimple}, the homogeneous moment module and its dual are
+semisimple over $\C(z)$.  The differential submodule $\Rcal$ therefore has a
+horizontal complement and a horizontal idempotent projector.  In row
+coordinates the projector acts by right multiplication by a rational matrix
+$P(z)$ with image $\Rcal$.  Horizontality is
+\[
+  P'=\left[C+\frac Dz,P\right].
+\]
+By \cref{thm:end-rigidity}, $P$ is constant; substituting into the equation
+also gives $[C,P]=[D,P]=0$.  Let
+\[
+  W=\operatorname{im}_{\C}(\,\cdot P)
+  \subseteq\C^{1\times(n-1)}.
+\]
+Then $\Rcal=W\otimes_\C\C(z)$.  Since
+$\boldsymbol\phi=\boldsymbol\phi P$ and $P$ is constant, evaluation at
+$z=1$ gives
+\[
+  \mathbf e_0=\boldsymbol\phi(1)=\boldsymbol\phi(1)P\in W.
+\]
+Thus the constant row $\mathbf e_0$ lies in $\Rcal$, and
+$U_0=\mathbf e_0\mathbf U\in\Ecal$.
+
+It remains to upgrade rational exponential coefficients to polynomial ones.
+Choose a constant full-row-rank matrix $S$ whose rows form a basis of $W$, and
+put $\mathbf V=S\mathbf U$.  The space $W$ is invariant under right
+multiplication by $C$ and $D$: if $w=uP$, then
+\[
+  wC=uPC=uCP=(uC)P\in W,
+  \qquad
+  wD=uPD=uDP=(uD)P\in W.
+\]
+Hence there are unique constant matrices $C_W,D_W$ such that
+\[
+  SC=C_WS,
+  \qquad
+  SD=D_WS.
+\]
+With $\mathbf b_{W,\lambda}=S\mathbf b_\lambda$, where
+$\mathbf b_0=0$ when $0\notin\Lambda_\partial$, the moment system restricts
+to
+\begin{equation}\label{eq:restricted-system}
+  \mathbf V'
+  =\left(C_W+\frac{D_W}{z}\right)\mathbf V
+  +\frac1{nz}\sum_{\lambda\in\Lambda}
+   \mathbf b_{W,\lambda}e^{\lambda z}.
+\end{equation}
+Every row of $S$ belongs to $\Rcal$, so every component of $\mathbf V$ lies
+in $\Ecal$.  By \cref{lem:exp-independent}, there are unique rational vectors
+$\mathbf r_\lambda(z)\in\C(z)^{\dim W}$ such that
+\[
+  \mathbf V(z)=\sum_{\lambda\in\Lambda}
+  \mathbf r_\lambda(z)e^{\lambda z}.
+\]
+Equating the independent exponential coefficients in
+\eqref{eq:restricted-system} gives
+\begin{equation}\label{eq:restricted-block}
+  \mathbf r_\lambda'
+  =(C_W-\lambda I)\mathbf r_\lambda
+  +\frac{D_W}{z}\mathbf r_\lambda
+  +\frac1{nz}\mathbf b_{W,\lambda}.
+\end{equation}
+
+A pole of $\mathbf r_\lambda$ at $z_0\ne0$ is impossible: differentiation
+raises its order by one, whereas all terms on the right have at most the
+original order.  At $z=0$, suppose
+\[
+  \mathbf r_\lambda=z^{-m}v+O(z^{-m+1}),
+  \qquad m\ge1,
+  \quad v\ne0.
+\]
+The forcing term has pole order at most $1$, strictly below $m+1$ even when
+$m=1$.  Comparing the coefficient of $z^{-m-1}$ therefore gives
+\[
+  -mv=D_Wv.
+\]
+Every eigenvalue of $D_W$ is an eigenvalue of $D$.  Indeed, if
+$u^{\mathsf T}D_W=\mu u^{\mathsf T}$, then full row rank of $S$ gives
+$u^{\mathsf T}S\ne0$, and
+\[
+  (u^{\mathsf T}S)D
+  =u^{\mathsf T}D_WS
+  =\mu(u^{\mathsf T}S).
+\]
+By \eqref{eq:D-spectrum}, $\Spec(D_W)\subset(-1,0)$, so it contains no
+negative integer $-m$.  This contradiction excludes a pole at zero.  Thus
+every rational vector $\mathbf r_\lambda$ has no finite pole and belongs to
+$\C[z]^{\dim W}$.
+
+Finally choose a constant row $a_0$ with $\mathbf e_0=a_0S$.  Then
+\[
+  U_0=\mathbf e_0\mathbf U=a_0\mathbf V
+  =\sum_{\lambda\in\Lambda}
+   \bigl(a_0\mathbf r_\lambda(z)\bigr)e^{\lambda z},
+\]
+and $p_\lambda=a_0\mathbf r_\lambda\in\C[z]$.  In fact, the argument proves
+that every component of $\mathbf V$ is an exponential polynomial.
+\end{proof}
+
+\begin{remark}\label{rem:entire-rational-coefficients}
+Entirety alone does not imply polynomial exponential coefficients:
+\[
+  \frac{e^z-1}{z}
+  =\frac1z e^z-\frac1z
+\]
+is entire although both displayed coefficients have a pole.  This is
+$U_0(z)$ for $q(x)=x$, $A=0$, $B=1$; that linear case has rank-zero moment
+connection and is handled separately by Lindemann--Weierstrass.  For
+$n\ge2$, the residue nonresonance in \eqref{eq:D-spectrum} is therefore
+load-bearing.
+\end{remark}
+
+\section{Constant-coefficient annihilation}\label{sec:exp-annihilation}
+
+Assume \eqref{eq:exp-polynomial-U0}.  Choose an integer $N$ larger than the degrees of all nonzero polynomials $p_\lambda$; equivalently, with the convention $\deg0=-\infty$, choose
+\[
+  N>\max_{\lambda\in\Lambda}\deg p_\lambda.
+\]
+Define the constant-coefficient differential operator
+\begin{equation}\label{eq:L-operator}
+  L=\prod_{\lambda\in\Lambda}(\partial_z-\lambda)^N.
+\end{equation}
+Then $LU_0=0$.  Since differentiation under the integral sign multiplies by $q(x)$,
+\begin{equation}\label{eq:annihilated-integral}
+  0
+  =LU_0(z)
+  =\int_A^B H(q(x))e^{zq(x)}\,dx,
+\end{equation}
+where
+\begin{equation}\label{eq:H-def}
+  H(t)=\prod_{\lambda\in\Lambda}(t-\lambda)^N
+\end{equation}
+is nonzero.  Because $0\in\Lambda$ was introduced to homogenize the value
+relation, $H$ includes a factor $t^N$ even when $0$ is neither an endpoint
+value nor a critical value; no geometric assertion about $0$ is intended.
+Expanding at $z=0$ gives
+\begin{equation}\label{eq:phase-moments}
+  \int_A^B q(x)^mH(q(x))\,dx=0
+  \qquad(m\ge0).
+\end{equation}
+
+We now rule out \eqref{eq:phase-moments} for every nonconstant polynomial phase.
+
+\section{Phase-polynomial moment rigidity}\label{sec:exp-phase-rigidity}
+
+\begin{lemma}[Constellation representation]\label{lem:constellation}
+Let $q\in\C[x]$ be nonconstant and let $A\ne B$.  There exists a finite embedded tree $T$ in the $t$-plane, containing all finite branch values of $q$ and the endpoint values $q(A),q(B)$, together with an oriented path $\Gamma$ from $A$ to $B$ in the finite graph $q^{-1}(T)$, such that on every open edge $e$ of $T$ the path is a signed finite union of analytic inverse branches $x_i(t)$ of $q$.
+\end{lemma}
+
+\begin{proof}
+Choose a regular center and pairwise disjoint analytic arcs from it to the distinct finite branch values and endpoint values, omitting repeated arms.  Their union is an embedded star, hence a finite tree.  Over the center, its preimage consists of the $n$ sheets of the covering.  The lifts of the branch arms join these sheets according to the branch-monodromy generators.  Since the polynomial covering is connected, its monodromy action is transitive, so the resulting preimage graph is connected.  Adding the endpoint arms preserves connectedness.  The graph contains $A$ and $B$, and therefore contains a path $\Gamma$ joining them.  On the interior of every edge the covering is unramified, so $\Gamma$ decomposes there into signed analytic inverse branches.  This is the standard polynomial constellation construction; see \cite[\S2.1]{PakovichMuzychuk}.
+\end{proof}
+
+\begin{lemma}[Phase-polynomial moment rigidity]\label{lem:phase-moment}
+Let $q\in\C[x]$ be nonconstant, let $A\ne B$, and let $0\ne H\in\C[t]$.  Then the identities
+\[
+  \int_A^B q(x)^mH(q(x))\,dx=0
+  \qquad(m\ge0)
+\]
+cannot all hold.
+\end{lemma}
+
+\begin{proof}
+Let $T$ and $\Gamma$ be supplied by \cref{lem:constellation}.  In particular,
+$q(\Gamma)\subseteq T$.  Subdivide the finite graph $q^{-1}(T)$ at $A$ and
+$B$, and regard $\Gamma$ as an oriented finite edge path from $A$ to $B$.
+For every $m\ge0$, the differential
+\[
+  q(x)^mH(q(x))\,dx
+\]
+is a polynomial differential and hence has a polynomial primitive.  Its
+integral depends only on the endpoints.  Therefore the assumed identities
+remain valid on $\Gamma$:
+\begin{equation}\label{eq:phase-moments-Gamma}
+  \int_\Gamma q(x)^mH(q(x))\,dx=0
+  \qquad(m\ge0).
+\end{equation}
+
+Define, for $s\in\C\setminus T$,
+\begin{equation}\label{eq:phase-Cauchy-transform}
+  \mathcal C_H(s)
+  =\int_\Gamma\frac{H(q(x))}{s-q(x)}\,dx.
+\end{equation}
+The path $\Gamma$ is compact and piecewise analytic, and the denominator in
+\eqref{eq:phase-Cauchy-transform} is bounded away from zero locally uniformly
+for $s\in\C\setminus T$.  Thus $\mathcal C_H$ is holomorphic on
+$\C\setminus T$, with differentiation under the integral sign justified on
+compact subsets.  Put
+\[
+  M=\max_{x\in\Gamma}|q(x)|.
+\]
+For $|s|>M$, the geometric series
+\[
+  \frac1{s-q(x)}=\sum_{m\ge0}\frac{q(x)^m}{s^{m+1}}
+\]
+converges uniformly on $\Gamma$.  Using \eqref{eq:phase-moments-Gamma}, we
+obtain
+\[
+  \mathcal C_H(s)
+  =\sum_{m\ge0}\frac1{s^{m+1}}
+    \int_\Gamma q(x)^mH(q(x))\,dx
+  =0
+  \qquad(|s|>M).
+\]
+A finite embedded tree has connected complement in the plane.  Hence the
+identity theorem gives
+\begin{equation}\label{eq:phase-Cauchy-zero}
+  \mathcal C_H\equiv0
+  \qquad\text{on }\C\setminus T.
+\end{equation}
+
+We next express this Cauchy transform edge by edge.  Orient every open edge
+$e$ of $T$.  Since all finite branch values of $q$ are vertices of $T$, the
+map $q$ is unramified over $e$.  If $n=\deg q$, there are analytic inverse
+branches
+\[
+  x_{e,1},\ldots,x_{e,n}:e\longrightarrow\C,
+  \qquad q(x_{e,i}(t))=t.
+\]
+Let $f_{e,i}\in\Z$ be the signed number of times that $\Gamma$ traverses the
+lift $x_{e,i}(e)$, relative to the chosen orientation of $e$, and set
+\begin{equation}\label{eq:phase-edge-density-referee}
+  \psi_e(t)
+  =\sum_{i=1}^n f_{e,i}x_{e,i}'(t)
+  =\sum_{i=1}^n\frac{f_{e,i}}{q'(x_{e,i}(t))}.
+\end{equation}
+The edge integrals below are convergent even at branch-value vertices.  Indeed,
+if $c$ is an endpoint of $e$, $\xi\in q^{-1}(c)$ has ramification index
+$r\ge1$, and a lifted branch tends to $\xi$, then locally
+\[
+  q(x)-c=(x-\xi)^r u(x),
+  \qquad u(\xi)\ne0.
+\]
+After choosing the corresponding branch of $(t-c)^{1/r}$ along $e$, one has
+\[
+  x_{e,i}(t)-\xi=O\bigl((t-c)^{1/r}\bigr),
+  \qquad
+  x_{e,i}'(t)=O\bigl(|t-c|^{1/r-1}\bigr).
+\]
+Since $1/r-1>-1$, this singularity is integrable.  Changing variables
+$t=q(x)$ separately on every lifted edge therefore gives the absolutely
+convergent representation
+\begin{equation}\label{eq:phase-edge-Cauchy-referee}
+  \mathcal C_H(s)
+  =\sum_e\int_e\frac{H(t)\psi_e(t)}{s-t}\,dt,
+  \qquad s\in\C\setminus T.
+\end{equation}
+
+Fix an open edge $e$ and an interior point $t_0\in e$ with $H(t_0)\ne0$.
+Choose a compact analytic subarc $\eta\Subset e$ containing $t_0$ in its
+interior and a disk $D$ about $t_0$ such that
+\[
+  \overline D\cap(T\setminus\eta)=\varnothing.
+\]
+After shrinking $\eta$ if necessary, the inverse branches occurring in
+\eqref{eq:phase-edge-density-referee} extend holomorphically to a neighborhood
+of $\eta$.  Thus
+\[
+  \rho(t):=H(t)\psi_e(t)
+\]
+extends holomorphically there.  By the integrability just proved and the
+positive distance from $\overline D$ to $T\setminus\eta$, the function
+\[
+  R(s):=\mathcal C_H(s)-\int_\eta\frac{\rho(t)}{s-t}\,dt
+\]
+extends holomorphically throughout $D$.  Hence the entire lateral jump of
+$\mathcal C_H$ across $\eta$ is the lateral jump of the local Cauchy integral
+\[
+  J(s)=\int_\eta\frac{\rho(t)}{s-t}\,dt.
+\]
+
+We verify that jump directly.  Let $a,b$ be the initial and terminal endpoints
+of the oriented arc $\eta$.  For $s$ near $t_0$, define
+\[
+  K(t,s)=
+  \begin{cases}
+    \dfrac{\rho(t)-\rho(s)}{t-s},&t\ne s,\\[2mm]
+    \rho'(s),&t=s.
+  \end{cases}
+\]
+The function $K$ is jointly holomorphic near $\eta\times\eta$, and
+\begin{equation}\label{eq:local-Cauchy-splitting}
+  J(s)
+  =\rho(s)\int_\eta\frac{dt}{s-t}
+   -\int_\eta K(t,s)\,dt.
+\end{equation}
+The second term in \eqref{eq:local-Cauchy-splitting} is holomorphic across
+$\eta$.  On either side of the arc, the first scalar integral is a branch of
+\[
+  \int_\eta\frac{dt}{s-t}
+  =\log(s-a)-\log(s-b).
+\]
+Its two lateral determinations differ by
+$2\pi i\varepsilon_e$, where $\varepsilon_e\in\{\pm1\}$ depends only on the
+orientation of $\eta$ and on which side is denoted by $+$.  Taking lateral
+limits in \eqref{eq:local-Cauchy-splitting} therefore gives the local
+Sokhotski--Plemelj formula
+\begin{equation}\label{eq:phase-local-jump-referee}
+  (\mathcal C_H)_+(t_0)-(\mathcal C_H)_-(t_0)
+  =2\pi i\varepsilon_e\,H(t_0)\psi_e(t_0).
+\end{equation}
+
+Both sides of the local arc lie in $\C\setminus T$, and
+\eqref{eq:phase-Cauchy-zero} says that $\mathcal C_H$ vanishes identically on
+each side.  The left side of \eqref{eq:phase-local-jump-referee} is therefore
+zero.  Since $H(t_0)\ne0$, we conclude that
+\[
+  \psi_e(t_0)=0.
+\]
+The point $t_0$ was arbitrary outside the finite zero set of the nonzero
+polynomial $H$.  The function $\psi_e$ is analytic on the open edge and hence
+continuous there, so it follows that
+\begin{equation}\label{eq:phase-density-zero}
+  \psi_e\equiv0
+  \qquad\text{on every open edge }e\text{ of }T.
+\end{equation}
+
+Finally, decompose the line integral of $dx$ over the same lifted edges.  The
+endpoint-integrability estimate above justifies the resulting improper edge
+integrals, and \eqref{eq:phase-density-zero} gives
+\[
+  B-A
+  =\int_\Gamma dx
+  =\sum_e\sum_{i=1}^n f_{e,i}\int_e x_{e,i}'(t)\,dt
+  =\sum_e\int_e\psi_e(t)\,dt
+  =0.
+\]
+This contradicts $A\ne B$.  Therefore the phase-moment identities cannot all
+hold.
+\end{proof}
+
+\section{Proof of the exponential-integral theorem}\label{sec:exp-main-proof}
+
+\begin{proof}[Proof of \cref{thm:exp-integral}]
+Suppose first that $q(x)=ax+b$ with $a\ne0$, and put
+\[
+  \alpha=aB+b,
+  \qquad
+  \beta=aA+b.
+\]
+Then $\alpha\ne\beta$ are algebraic and
+\[
+  \int_A^B e^{q(x)}\,dx
+  =\frac{e^\alpha-e^\beta}{a}.
+\]
+If this value were an algebraic number $\gamma$, then
+\[
+  e^\alpha-e^\beta-a\gamma e^0=0.
+\]
+After combining terms if one of $\alpha,\beta$ equals $0$, this is a nontrivial algebraic linear relation among exponentials of distinct algebraic numbers drawn from $\{\alpha,\beta,0\}$.  The Lindemann--Weierstrass theorem excludes such a relation; see \cite[Chapter~1]{Baker}.  Hence the integral is transcendental.
+
+Now let $n=\deg q\ge2$.  Apply the algebraic affine normalization of \cref{eq:normalized-q}; it suffices to treat the normalized polynomial, and we retain the notation $q,A,B$.  Let
+\[
+  U_0(z)=\int_A^B e^{zq(x)}\,dx.
+\]
+Assume, toward a contradiction, that $U_0(1)$ is algebraic.  By \cref{prop:value-to-exp-poly}, $U_0$ has the exponential-polynomial representation \eqref{eq:exp-polynomial-U0}.  Sections \ref{sec:exp-annihilation} and \ref{sec:exp-phase-rigidity} then give a nonzero polynomial $H$ satisfying the impossible moment identities \eqref{eq:phase-moments}.  This contradiction proves that $U_0(1)$ is transcendental.
+\end{proof}
+
+
+
+\section{Completion of the proof of the Factorial Conjecture}\label{sec:FC-proof}
+
+\begin{proof}[Proof of \cref{thm:FC2}]
+Assume that a nonzero counterexample exists.  By
+\cref{prop:algebraic-specialization}, we may take
+$f\in\Qbar[x,y]$.  A nonzero constant has nonzero first factorial moment,
+so $D=\deg f\ge1$.
+
+If $A_0(t)=f_D(t,1-t)$ is nonconstant, then
+\cref{thm:nonflat-exclusion} gives infinitely many nonzero factorial
+moments, a contradiction.  Hence $A_0$ is constant, and
+\cref{cor:flat-top-reduction} gives
+\[
+  f_D=a(x+y)^D,
+  \qquad a\in\Qbar^\times.
+\]
+Multiplying $f$ by $a^{-1}$ preserves the vanishing of all positive power
+moments, so we may assume $f_D=(x+y)^D$.
+
+Put
+\[
+  q(t)=\frac{A_1(t)}D
+  =\frac{f_{D-1}(t,1-t)}D\in\Qbar[t].
+\]
+By \cref{prop:first-flat-symbol},
+\begin{equation}\label{eq:final-zero-integral}
+  \int_0^1 e^{q(t)}\,dt=0.
+\end{equation}
+If $q$ is constant, the left side is the nonzero number $e^q$.  If $q$ is
+nonconstant, \cref{thm:exp-integral} with $A=0$ and $B=1$ says that the
+left side is transcendental and therefore nonzero.  Both cases contradict
+\eqref{eq:final-zero-integral}.  Thus no nonzero counterexample exists.
+\end{proof}
+
+\section*{Acknowledgments and AI-assisted research disclosure}
+
+This manuscript was developed through interactive work between Christopher
+D. Long and ChatGPT 5.6 Sol.  ChatGPT 5.6 Sol assisted in proof discovery,
+organization, symbolic checking, reference verification, adversarial
+auditing, and drafting.  Claude Opus 5 contributed the semisimple-projector
+strategy, the reduction to phase-polynomial moments, and extensive
+adversarial audits.  The AI systems are not authors.  The human author bears
+full responsibility for all statements, proofs, citations, and any remaining
+errors.  This draft has not yet undergone independent peer review or formal
+verification.
+
+\footnotesize
+\begin{thebibliography}{99}
+
+\bibitem{Baker}
+A.~Baker,
+\emph{Transcendental Number Theory},
+Cambridge Mathematical Library,
+Cambridge University Press, Cambridge, 1990.
+
+\bibitem{Beukers}
+F.~Beukers,
+\emph{A refined version of the Siegel--Shidlovskii theorem},
+Ann. of Math. (2) \textbf{163} (2006), no.~1, 369--379.
+\href{https://doi.org/10.4007/annals.2006.163.369}{doi:10.4007/annals.2006.163.369}.
+
+\bibitem{deCataldoMigliorini}
+M.~A.~A. de~Cataldo and L.~Migliorini,
+\emph{The decomposition theorem, perverse sheaves and the topology of algebraic maps},
+Bull. Amer. Math. Soc. (N.S.) \textbf{46} (2009), no.~4, 535--633.
+\href{https://doi.org/10.1090/S0273-0979-09-01260-9}{doi:10.1090/S0273-0979-09-01260-9}.
+
+
+\bibitem{HTT}
+R.~Hotta, K.~Takeuchi, and T.~Tanisaki,
+\emph{$D$-Modules, Perverse Sheaves, and Representation Theory},
+Progress in Mathematics, vol.~236,
+Birkh\"auser Boston, Boston, MA, 2008.
+\href{https://doi.org/10.1007/978-0-8176-4523-6}{doi:10.1007/978-0-8176-4523-6}.
+
+\bibitem{LiuSun}
+D.~Liu and X.~Sun,
+\emph{The Factorial Conjecture and images of locally nilpotent derivations},
+Bull. Aust. Math. Soc. \textbf{101} (2020), no.~1, 71--79.
+\href{https://doi.org/10.1017/S0004972719000546}{doi:10.1017/S0004972719000546}.
+
+\bibitem{PakovichMuzychuk}
+F.~Pakovich and M.~Muzychuk,
+\emph{Solution of the polynomial moment problem},
+Proc. Lond. Math. Soc. (3) \textbf{99} (2009), no.~3, 633--657.
+\href{https://doi.org/10.1112/plms/pdp010}{doi:10.1112/plms/pdp010}.
+
+
+\bibitem{vdEWZ}
+A.~van den Essen, D.~Wright, and W.~Zhao,
+\emph{On the Image Conjecture},
+J. Algebra \textbf{340} (2011), 211--224.
+\href{https://doi.org/10.1016/j.jalgebra.2011.04.036}{doi:10.1016/j.jalgebra.2011.04.036}.
+
+\end{thebibliography}
+
+\end{document}
