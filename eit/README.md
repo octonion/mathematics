@@ -55,7 +55,7 @@ $$a_{0}+\sum_{j=1}^{r} a_{j}I_{j}(\xi)=0\quad\Longleftrightarrow\quad a_{0}=0\ \
 
 Consequently
 
-$$\dim_{\overline{\mathbb{Q}}}\operatorname{span}_{\overline{\mathbb{Q}}}\lbrace 1,I_{1}(\xi),\dots,I_{r}(\xi)\rbrace=1+\dim_{\overline{\mathbb{Q}}}\operatorname{span}_{\overline{\mathbb{Q}}}\lbrace I_{1},\dots,I_{r}\rbrace,$$
+$$\dim_{\overline{\mathbb{Q}}}\mathrm{span}_{\overline{\mathbb{Q}}}\lbrace 1,I_{1}(\xi),\dots,I_{r}(\xi)\rbrace=1+\dim_{\overline{\mathbb{Q}}}\mathrm{span}_{\overline{\mathbb{Q}}}\lbrace I_{1},\dots,I_{r}\rbrace,$$
 
 the right-hand span being taken in the space of entire functions.
 
@@ -79,11 +79,11 @@ Write $n=\deg q\ge 2$ and, for $0\le j\le n-2$, perform the Euclidean divisions 
 
 1. **Moment system (§3).** The vector $\mathbf{U}=(U_{0},\dots,U_{n-2})^{\mathsf{T}}$ satisfies
 
-   $$\mathbf{U}'=\Bigl(C+\frac{D}{z}\Bigr)\mathbf{U}+\frac{1}{nz}\sum_{\lambda\in\Lambda_{\Delta}} \mathbf{b}_{\lambda}e^{\lambda z},\qquad \operatorname{Spec}(D)=\Bigl\lbrace -\tfrac{1}{n},-\tfrac{2}{n},\dots,-\tfrac{n-1}{n}\Bigr\rbrace .$$
+   $$\mathbf{U}'=\Bigl(C+\frac{D}{z}\Bigr)\mathbf{U}+\frac{1}{nz}\sum_{\lambda\in\Lambda_{\Delta}} \mathbf{b}_{\lambda}e^{\lambda z},\qquad \mathrm{Spec}(D)=\Bigl\lbrace -\tfrac{1}{n},-\tfrac{2}{n},\dots,-\tfrac{n-1}{n}\Bigr\rbrace .$$
 
 2. **Arithmetic (§4).** Each $U_{j}$ is an $E$-function, with the explicit joint-height bound $h(u_{j,0},\dots,u_{j,m})=O(m)$.
 
-3. **Structure (§5).** The row system $\boldsymbol{\phi}\mapsto\boldsymbol{\phi}'+\boldsymbol{\phi}A(z)$, $A=C+D/z$, is completely reducible — via the decomposition theorem, Riemann–Hilbert, and the generic Fourier transform of $q_{+}\mathcal{O}_{\mathbb{A}^{1}_{x}}$. Combined with the local spectrum of the compressed operator at a critical point $\tau$ of multiplicity $m_{\tau}=\operatorname{ord}_{\tau} q'$,
+3. **Structure (§5).** The row system $\boldsymbol{\phi}\mapsto\boldsymbol{\phi}'+\boldsymbol{\phi}A(z)$, $A=C+D/z$, is completely reducible — via the decomposition theorem, Riemann–Hilbert, and the generic Fourier transform of $q_{+}\mathcal{O}_{\mathbb{A}^{1}_{x}}$. Combined with the local spectrum of the compressed operator at a critical point $\tau$ of multiplicity $m_{\tau}=\mathrm{ord}_{\tau} q'$,
 
    $$-\frac{m_{\tau}}{m_{\tau}+1},\ -\frac{m_{\tau}-1}{m_{\tau}+1},\ \dots,\ -\frac{1}{m_{\tau}+1},$$
 
